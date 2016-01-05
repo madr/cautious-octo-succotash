@@ -14,15 +14,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    permission_classes = [permissions.IsAuthenticated, TokenHasScope, permissions.IsAdminUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    permission_classes = [permissions.IsAuthenticated, TokenHasScope, permissions.IsAdminUser]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
