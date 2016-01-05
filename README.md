@@ -6,24 +6,26 @@ The API backend for Tajm.me time tracking, powered by Django and Python 3.5.
 
 Requirements:
 
- * Python 3.5
- * SQLite
- * Virtualenv
+* Python 3.5
+* SQLite
+* Virtualenv
 
-    virtualenv /path/to/venv
-    . /path/to/venv/bin/activate
-    python manage.py migrate
-    python manage.py createsuperuser
-    python manage.py runserver
+```bash
+virtualenv /path/to/venv
+. /path/to/venv/bin/activate
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
 
 Visit the site at http://localhost:8000. This installs a SQLite database for local development.
 
 
 ## Component overview
 
- * Oauth 2, using [Django OAuth toolkit](https://django-oauth-toolkit.readthedocs.org)
- * [Django REST Framework](http://www.django-rest-framework.org)
-   * JSONAPI 1.0 spec, by [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.org)
+* Oauth 2, using [Django OAuth toolkit](https://django-oauth-toolkit.readthedocs.org)
+* [Django REST Framework](http://www.django-rest-framework.org)
+  * JSONAPI 1.0 spec, by [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.org)
 
 
 ## What about that bad-ass name?
