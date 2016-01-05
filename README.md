@@ -21,6 +21,30 @@ python manage.py runserver
 Visit the site at http://localhost:8000. This installs a SQLite database for local development.
 
 
+## API Auth Quickstart
+
+
+Create a client on http://localhost:8000/oauth2/applications with Resource owner password as grant type. Copy the generated
+client id.
+
+Generate access token using password grant, using the superuser recently created:
+
+```
+curl -d 'grant_type=password&client_id=<client_id>&username=<username>&password=<password>' http://localhost:8000/oauth2/token/
+```
+
+Use token in above response.
+
+```
+curl -H 'Authorization: bearer yxe3bTtUJnI6hc0ukVH5pQsdt5PKIP' -H 'Accept: application/vnd.api+json' http://localhost:8000/users/
+```
+
+For a pretty and readable output:
+
+```
+curl -H 'Authorization: bearer yxe3bTtUJnI6hc0ukVH5pQsdt5PKIP' -H 'Accept: application/vnd.api+json; indent=2' http://localhost:8000/users/
+```
+
 ## Component overview
 
 * Oauth 2, using [Django OAuth toolkit](https://django-oauth-toolkit.readthedocs.org)
