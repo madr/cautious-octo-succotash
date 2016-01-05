@@ -17,11 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from httpapi.views import httpapi_router
-from lab.views import ApiEndpoint
 
 urlpatterns = [
-    url(r'^', include(httpapi_router.urls)),
-    url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/', include(httpapi_router.urls)),
+    url(r'^semirhage/', admin.site.urls),
     url(r'^oauth2/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^api/hello', ApiEndpoint.as_view()),
 ]
