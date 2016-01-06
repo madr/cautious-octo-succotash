@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from core.models import Project, Progress, Customer
+
+
+@admin.register(Customer, Progress, Project)
+class SemirhageAdmin(admin.ModelAdmin):
+    pass

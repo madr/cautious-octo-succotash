@@ -1,3 +1,8 @@
 from django.db import models
+from oauth2_provider.models import AbstractApplication
 
-# Create your models here.
+from core.models import Customer
+
+
+class SemirhageApplication(AbstractApplication):
+    customer = models.ForeignKey(Customer)

@@ -156,6 +156,7 @@ REST_FRAMEWORK = {
 # https://django-oauth-toolkit.readthedocs.org/en/latest/rest-framework/getting_started.html
 
 OAUTH2_PROVIDER = {
-    'SCOPES': {'reporter': 'Time reporter user centralized scope', 'stats': 'Stats clients read-only scope',
-               'god': 'Almighty can-do-anything scope'}
+    'SCOPES': {'reporter': 'Time reporter user centralized scope', 'stats': 'Stats clients read-only scope'},
 }
+
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'httpapi.SemirhageApplication'

@@ -15,8 +15,8 @@ class Customer(models.Model):
     group = models.ForeignKey(Group)
     deactivated_users = models.ManyToManyField(User, blank=True)
 
-    def __unicode__(self):
-        return self.note
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ["active", "name"]
@@ -30,7 +30,7 @@ class Project(models.Model):
     active = models.BooleanField(default=True)
     created_at = models.DateField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -49,7 +49,7 @@ class Progress(models.Model):
     done_at = models.DateField(default=datetime.date.today)
     created_at = models.DateField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.note
 
     class Meta:
