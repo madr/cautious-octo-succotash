@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'sv-se'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -156,7 +156,11 @@ REST_FRAMEWORK = {
 # https://django-oauth-toolkit.readthedocs.org/en/latest/rest-framework/getting_started.html
 
 OAUTH2_PROVIDER = {
-    'SCOPES': {'reporter': 'Time reporter user centralized scope', 'stats': 'Stats clients read-only scope'},
+    'SCOPES': {
+        'reporter': 'Time reporter user centralized scope',
+        'stats': 'Stats clients read-only scope',
+        'management': 'Staff and superuser scope',
+    },
 }
 
 OAUTH2_PROVIDER_APPLICATION_MODEL = 'httpapi.SemirhageApplication'
