@@ -162,5 +162,3 @@ OAUTH2_PROVIDER = {
         'management': 'Staff and superuser scope',
     },
 }
-
-OAUTH2_PROVIDER_APPLICATION_MODEL = 'httpapi.SemirhageApplication'

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
 
@@ -8,13 +8,11 @@ from core.models import Progress, Project
 class ProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Progress
-        #exclude = ('customer',)
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        #exclude = ('customer',)
 
 
 class UserSerializer(serializers.ModelSerializer):

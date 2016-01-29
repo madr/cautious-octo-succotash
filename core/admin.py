@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from core.models import Project, Progress, Customer
+from core.models import Project, Progress
 
 
-@admin.register(Customer, Progress, Project)
+@admin.register(Progress, Project)
 class SemirhageAdmin(admin.ModelAdmin):
     pass
