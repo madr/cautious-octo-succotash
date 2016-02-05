@@ -1,0 +1,15 @@
+/* TEAM */
+	Developer: Anders Ytterström
+	Contact: support [at] tajm.me
+	Twitter: @tajmme
+	From: Östersund, Jämtland, Sweden
+
+/* THANKS */
+	Source Sans Pro by: Paul D. Hunt, Adobe Systems
+		
+/* SITE */
+	Last update: 2015/02/17
+	Language: Swedish
+	Doctype: HTML5
+        Standards: HTML5, CSS3, JavaScript (strict mode)
+	Software: Sublime Text, PyCharm, tmux
