@@ -4,3 +4,6 @@
 .idea
 static/admin
 static/rest_framework
+static/old
+.DS_Store
+**/.DS_Store

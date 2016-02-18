@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<div class="line wrap-withbuttons wrap-hhmm{% if form.duration.errors %} wrap-errors{% endif %}">
+    {% if form.duration.errors %}
+        <label for="id_duration" class="mb">
+        <strong>{% trans "Hoppsan!" %}</strong><br>{% trans "Ange en tid i formatet tt:mm, eller använd något" %} <a class="a" href="http://help.tajm.me/guides/report-time.html#duration-tips">{% trans "snabbkommando" %}.</a>
+        </label>
+    {% endif %}
+    <div class="pull-left pr">
+        <button type="button" id="plus-1-hour" class="bl btn btn-ingroup btn-first">+1h</button>
+        <button type="button" id="minus-1-hour" class="bl btn btn-ingroup btn-last">-1h</button>
+    </div>
+    <div class="pull-right pl">
+        <button type="button" id="minus-15-min" class="bl btn btn-ingroup btn-first">-15m</button>
+        <button type="button" id="plus-15-min" class="bl btn btn-ingroup btn-last">+15m</button>
+    </div>
+    <div class="fld-withbuttons fld-hhmm">
+        <input class="bl fld cntr"{% if form.duration.value != None %} value="{{ form.duration.value }}"{% endif %} placeholder="00:00" id="id_duration" name="duration">
+    </div>
+</div>
+<div class="wrap-fld{% if form.project.errors %} wrap-errors{% endif %}">
+    {% if form.project.errors %}
+        <div class="mb">
+        <strong>{% trans "Hoppsan!" %}</strong><br>{% trans "Ett projekt behövs. Om du inte får några bra förslag, skapa ett nytt: det går alltid att döpa om eller slå ihop projektet med något annat projekt vid behov." %}
+        </div>
+    {% endif %}
+    {% if not form.project.errors %}
+        <label for="id_project">
+            {% trans "Kund, projekt eller beställare" %}
+        </label>
+    {% endif %}
+    <input class="bl fld"{% if form.project.value != None %} value="{{ form.project.value }}"{% endif %} placeholder="{% trans "Nya projekt skapas automatiskt" %}" id="id_project" name="project">
+</div>
+<div class="wrap-fld{% if form.note.errors %} wrap-errors{% endif %}">
+    {% if form.note.errors %}
+        <div class="mb">
+            <strong>{% trans "Hoppsan!" %}</strong><br>
+            {% trans "Minnet är gott men kort: ange här något som summerar arbetet. Det kan vara en referens (telefonsamtal eller mail) eller en ticket." %}
+        </div>
+    {% endif %}
+    {% if not form.note.errors %}
+    <label for="id_note">{% trans "Anteckning" %}</label>
+    {% endif %}
+    <input class="bl fld"{% if form.note.value != None %} value="{{ form.note.value }}"{% endif %} placeholder="{% trans "Vad gjorde du och för vem?" %}" id="id_note" name="note">
+</div>

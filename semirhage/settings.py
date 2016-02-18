@@ -35,11 +35,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'core',
     'httpapi',
+    'legacy',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -71,6 +76,11 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 WSGI_APPLICATION = 'semirhage.wsgi.application'
 
@@ -163,3 +173,9 @@ OAUTH2_PROVIDER = {
         'management': 'Staff and superuser scope',
     },
 }
+
+# Allauth
+# http://django-allauth.readthedocs.org
+
+SITE_ID = 1
+LOGIN_URL = '/login/login/'

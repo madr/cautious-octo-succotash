@@ -1,0 +1,5 @@
+new tajmme.Autocomplete("id_project", [
+	{% for p in projects %}
+	"{{ p.name }}"{% if forloop.last == False %},{% endif %}
+	{% endfor %}
+], function () {});

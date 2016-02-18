@@ -1,0 +1,77 @@
+{% extends "oldbase.html" %}
+{% load i18n %}
+
+{% block sitetitle %}{% trans "Uppdatera tid" %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("progressform:init");
+        tajmme.fire("datefield:init");
+    </script>
+    <script src="{% url "projects.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    {% load reporter_extras %}
+    <div class="wrap-top">
+        <div class="wrap">
+            <div class="line">
+                <div class="pull-left bl pr mr">
+                    <a href="{% url "anyday" year=form.done_at_year.value week_label=form.done_at_week.value day=form.done_at_day.value %}">&larr; {{ prev_week.1 }} {% trans "Avbryt" %}</a>
+                </div>
+                <h1 class="bl h oh h-left pl ml">{% trans "Uppdatera tid" %}</h1>
+            </div>
+        </div>
+    </div>
+    <form action="{{ request.path }}" method="post" class="wrap wrap-padded">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.done_at.as_hidden }}
+        {% include "_progressform.html" %}
+        <div class="wrap-fld">
+            {{ form.done_at_year.errors }}
+            {{ form.done_at_week.errors }}
+            {{ form.done_at_day.errors }}
+            <label for="id_day">{% trans "Datum" %} <small>{% trans "dag, vecka, år" %}</small></label>
+            <div class="line wrap-withbuttons wrap-dwy">
+                <div class="pull-right pl">
+                    <button class="bl btn btn-ingroup btn-first" id="plus-1-week" type="button">+1v</button><button class="bl btn btn-ingroup btn-last" id="plus-1-day" type="button">+1d</button>
+                </div>
+
+                <div class="pull-left pr">
+                    <button class="bl btn btn-ingroup btn-first" id="minus-1-day" type="button">-1d</button><button class="bl btn btn-ingroup btn-last" id="minus-1-week" type="button">-1v</button>
+                </div>
+
+                <div class="oh fld-withbuttons fld-dwy">
+                    <div class="unit size2of5 pr">
+                        <select class="bl cntr" id="id_done_at_day" name="done_at_day">
+                            <option {% if form.done_at_day.value == "1" %}selected{% endif %} value="1">{% trans "Mån" %}</option>
+                            <option {% if form.done_at_day.value == "2" %}selected{% endif %} value="2">{% trans "Tis" %}</option>
+                            <option {% if form.done_at_day.value == "3" %}selected{% endif %} value="3">{% trans "Ons" %}</option>
+                            <option {% if form.done_at_day.value == "4" %}selected{% endif %} value="4">{% trans "Tors" %}</option>
+                            <option {% if form.done_at_day.value == "5" %}selected{% endif %} value="5">{% trans "Fre" %}</option>
+                            <option {% if form.done_at_day.value == "6" %}selected{% endif %} value="6">{% trans "Lör" %}</option>
+                            <option {% if form.done_at_day.value == "7" %}selected{% endif %} value="7">{% trans "Sön" %}</option>
+                        </select>
+                    </div>
+
+                    <div class="unit size3of5">
+                        <div class="unit size1of3">
+                            <input class="bl fld cntr" id="id_done_at_week" name="done_at_week" placeholder="MM" value="{{ form.done_at_week.value }}">
+                        </div>
+
+                        <div class="unit size2of3 pl">
+                            <input class="bl fld cntr" id="id_done_at_year" name="done_at_year" placeholder="YYYY" value="{{ form.done_at_year.value }}">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <input type="submit" value="{% trans "Uppdatera" %}" class="bl btn">
+    </form>
+{% endblock %}

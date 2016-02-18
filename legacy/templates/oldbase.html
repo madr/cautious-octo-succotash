@@ -1,0 +1,91 @@
+{% load staticfiles %}
+{% load account %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block sitetitle %}{% endblock %}</title>
+    <meta name="apple-mobile-web-app-title" content="Tajm.me">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="authors" href="/humans.txt">
+    <link rel="shortcut icon" href="{% static "icons/favicon.ico" %}">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static "icons/apple-touch-icon-57x57.png" %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static "icons/apple-touch-icon-114x114.png" %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static "icons/apple-touch-icon-72x72.png" %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static "icons/apple-touch-icon-144x144.png" %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static "icons/apple-touch-icon-60x60.png" %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static "icons/apple-touch-icon-120x120.png" %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static "icons/apple-touch-icon-76x76.png" %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static "icons/apple-touch-icon-152x152.png" %}">
+    <link rel="icon" type="image/png" href="{% static "icons/favicon-196x196.png" %}" sizes="196x196">
+    <link rel="icon" type="image/png" href="{% static "icons/favicon-160x160.png" %}" sizes="160x160">
+    <link rel="icon" type="image/png" href="{% static "icons/favicon-96x96.png" %}" sizes="96x96">
+    <link rel="icon" type="image/png" href="{% static "icons/favicon-16x16.png" %}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{% static "icons/favicon-32x32.png" %}" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#111111">
+    <meta name="msapplication-TileImage" content="{% static "icons/mstile-144x144.png" %}">
+    <meta name="msapplication-square70x70logo" content="{% static "icons/mstile-70x70.png" %}">
+    <meta name="msapplication-square144x144logo" content="{% static "icons/mstile-144x144.png" %}">
+    <meta name="msapplication-square150x150logo" content="{% static "icons/mstile-150x150.png" %}">
+    <meta name="msapplication-square310x310logo" content="{% static "icons/mstile-310x310.png" %}">
+    <meta name="msapplication-wide310x150logo" content="{% static "icons/mstile-310x150.png" %}">
+    <link rel="stylesheet" href="{% static "old/design.min.css" %}">
+</head>
+<body class="relpos">
+<div class="relpos smooth is-folded" id="area">
+    <div class="page">
+        <div class="wrap-nav">
+            <div class="wrap">
+                <div class="line">
+                    <a href="#nav" id="toggler" class="pull-left posrel wrap-toggle oh">
+                        <div title="Visa menyn" class="mainnav-toggle pull-left">{% trans "Till menyn" %}</div>
+                        {% if True == False %}
+                        <sup>4</sup>
+                        {% endif %}
+                    </a>
+
+                    <nav id="nav" class="nav mainnav">
+                        <ul class="mainav-section">
+                            {% if user.is_authenticated %}
+                                <li><a class="bl mainnav-item" href="{% url "home" %}">{% trans "Rapportera tid" %}</a></li>
+                                <li><a class="bl mainnav-item" href="{% url "account_logout" %}">{% trans "Logga ut" %}</a></li>
+                            {% else %}
+                                <li><a class="bl mainnav-item" href="{% url "account_login" %}">{% trans "Logga in" %}</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                    <div class="pull-right bl">
+                        {% if user.is_authenticated %}
+                            {% trans "Idag" %}: <a title="Rapportera tid för idag" href="/">{%  now "D j M" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+            {% block content %}{% endblock %}
+        <div class="wrap">
+            <div class="line foot small">
+                <ul class="line bl">
+                    <li class="unit"><a class="a footnav-item" href="http://help.tajm.me">{% trans "Hjälp &amp; support" %}</a></li>
+                    <li class="unit"><a class="a footnav-item" href="http://help.tajm.me/legal/terms-of-service/">{% trans "Avtal" %}</a></li>
+                    <li class="unit"><a class="a footnav-item" href="http://help.tajm.me/legal/privacy/">{% trans "Sekretess" %}</a></li>
+                    <li class="unit"><a class="a footnav-item" href="http://developer.tajm.me/">{% trans "API" %}</a></li>
+                </ul>
+
+                <footer role="contentinfo">
+                    <p>{%trans "Tajm.me, tidrapportering som inte suger." %} <a class="a" href="http://help.tajm.me/beta/">{% trans "Betaversion" %}</a>!<br>{% trans "Av" %} <a class="a" href="http://www.madr.se">Anders Ytterström</a> 2012-{% now "Y" %}. </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static "old/app.min.js" %}"></script>
+<script>tajmme.fire("init");</script>
+{% block customscripts %}{% endblock %}
+</body>
+</html>
