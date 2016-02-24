@@ -24,6 +24,9 @@ class Project(models.Model):
         ordering = ["name"]
         verbose_name_plural = "projects"
 
+    class JSONAPIMeta:
+        resource_name = "project"
+
 
 class Progress(models.Model):
     project = models.ForeignKey(Project)
@@ -40,3 +43,6 @@ class Progress(models.Model):
     class Meta:
         ordering = ["-done_at"]
         verbose_name_plural = "progresses"
+
+    class JSONAPIMeta:
+        resource_name = "progress"
