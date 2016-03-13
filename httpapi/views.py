@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
 from rest_framework.response import Response
@@ -49,6 +48,9 @@ class ProgressViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Progress.objects.all()
     serializer_class = ProgressSerializer
+
+    #def create(self, request, *args, **kwargs):
+    #    pass
 
 
 class UserViewSet(viewsets.ModelViewSet):
