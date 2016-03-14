@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="authors" href="/humans.txt">
     <link rel="shortcut icon" href="{% static "icons/favicon.ico" %}">
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <link rel="apple-touch-icon" sizes="57x57" href="{% static "icons/apple-touch-icon-57x57.png" %}">
     <link rel="apple-touch-icon" sizes="114x114" href="{% static "icons/apple-touch-icon-114x114.png" %}">
     <link rel="apple-touch-icon" sizes="72x72" href="{% static "icons/apple-touch-icon-72x72.png" %}">
@@ -59,7 +59,7 @@
 
                     <div class="pull-right bl">
                         {% if user.is_authenticated %}
-                            {% trans "Idag" %}: <a title="Rapportera tid för idag" href="/">{%  now "D j M" %}</a>
+                            {% trans "Idag" %}: <a title="Rapportera tid för idag" href="{% url "home" %}">{%  now "D j M" %}</a>
                         {% endif %}
                     </div>
                 </div>
