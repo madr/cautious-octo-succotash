@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
 from rest_framework.response import Response
+from rest_framework_json_api import relations
 
 from core.models import Progress, Project
 
@@ -38,20 +39,27 @@ class ProgressFilter(filters.FilterSet):
         model = Progress
 
 
-class ProgressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Progress
-
-
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
+        exclude = ['created_at']
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ('url', 'is_staff')
+        exclude = ('password', 'last_login', 'is_staff', 'date_joined', 'first_name',
+                   'last_name', 'groups', 'user_permissions')
+
+
+class ProgressSerializer(serializers.ModelSerializer):
+    included_serializers = {
+        'project': ProjectSerializer,
+        'user': UserSerializer,
+    }
+
+    class Meta:
+        model = Progress
 
 
 class WhoAmISerializer(serializers.Serializer):
@@ -104,5 +112,5 @@ class WhoAmIViewSet(viewsets.ViewSet):
 httpapi_router = routers.DefaultRouter()
 httpapi_router.register(r'projects', ProjectViewSet)
 httpapi_router.register(r'progresses', ProgressViewSet)
-httpapi_router.register(r'users', UserViewSet)
+#httpapi_router.register(r'users', UserViewSet)
 httpapi_router.register(r'whoami', WhoAmIViewSet)
