@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
 from rest_framework.response import Response
-from rest_framework_json_api import relations
 
 from core.models import Progress, Project
 
@@ -17,7 +16,7 @@ class WhoAmI(object):
 
 
 class ProjectFilter(filters.FilterSet):
-    name = filters.AllLookupsFilter()
+    name = filters.AllLookupsFilter(name='name')
 
     class Meta:
         model = Project
