@@ -46,7 +46,6 @@ class ProgressFilter(filters.FilterSet):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        exclude = ['created_at']
 
 
 class UserSerializer(serializers.ModelSerializer):
