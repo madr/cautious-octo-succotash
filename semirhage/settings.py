@@ -180,7 +180,7 @@ OAUTH2_PROVIDER = {
 # http://django-allauth.readthedocs.org
 
 SITE_ID = 1
-LOGIN_URL = '/login/login/'
+LOGIN_URL = '/id/login/'
 
 # JSONAPI
 # http://django-rest-framework-json-api.readthedocs.org/en/latest/
