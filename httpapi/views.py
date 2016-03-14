@@ -16,12 +16,22 @@ class WhoAmI(object):
 
 
 class ProjectFilter(filters.FilterSet):
-    name = filters.CharFilter(name='name')
+    name = filters.AllLookupsFilter()
+
+    class Meta:
+        model = Project
 
 
 class ProgressFilter(filters.FilterSet):
-    note = filters.CharFilter(name='note')
+    done_at = filters.DateFilter()
+    done_at__gt = filters.DateFilter(name='done_at', lookup_expr='gt')
+    done_at__lt = filters.DateFilter(name='done_at', lookup_expr='lt')
+
+    note = filters.AllLookupsFilter()
     project = filters.RelatedFilter(ProjectFilter, name='project')
+
+    class Meta:
+        model = Progress
 
 
 class ProgressSerializer(serializers.ModelSerializer):
@@ -51,7 +61,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    filter_class = ProjectFilter
 
 
 class ProgressViewSet(viewsets.ModelViewSet):
