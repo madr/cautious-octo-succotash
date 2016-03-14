@@ -16,12 +16,12 @@ class WhoAmI(object):
 
 
 class ProjectFilter(filters.FilterSet):
-    username = filters.CharFilter(name='username')
+    name = filters.CharFilter(name='name')
 
 
 class ProgressFilter(filters.FilterSet):
     note = filters.CharFilter(name='note')
-    author = filters.RelatedFilter(ProjectFilter, name='project')
+    project = filters.RelatedFilter(ProjectFilter, name='project')
 
 
 class ProgressSerializer(serializers.ModelSerializer):
@@ -51,6 +51,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    filter_class = ProjectFilter
 
 
 class ProgressViewSet(viewsets.ModelViewSet):
@@ -58,6 +59,7 @@ class ProgressViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Progress.objects.all()
     serializer_class = ProgressSerializer
+    filter_class = ProgressFilter
 
     #def create(self, request, *args, **kwargs):
     #    pass
