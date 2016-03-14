@@ -16,7 +16,13 @@ class WhoAmI(object):
 
 
 class ProjectFilter(filters.FilterSet):
-    name = filters.AllLookupsFilter(name='name')
+    name = filters.AllLookupsFilter()
+
+    created_at = filters.DateFilter()
+    created__gte = filters.DateFilter(name='created_at', lookup_expr='gte')
+    created__lte = filters.DateFilter(name='created_at', lookup_expr='lte')
+    created__gt = filters.DateFilter(name='created_at', lookup_expr='gt')
+    created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
 
     class Meta:
         model = Project
