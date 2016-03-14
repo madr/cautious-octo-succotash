@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^api/v1/', include(httpapi_router.urls)),
     url(r'^semirhage/', admin.site.urls),
     url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^login/', include('allauth.urls')),
+    url(r'^id/', include('allauth.urls')),
 ]
