@@ -1,3 +1,4 @@
+import rest_framework_filters as filters
 from django.contrib.auth.models import User
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
@@ -12,6 +13,15 @@ class WhoAmI(object):
         self.email = email
         self.login = login
         self.name = full_name
+
+
+class ProjectFilter(filters.FilterSet):
+    username = filters.CharFilter(name='username')
+
+
+class ProgressFilter(filters.FilterSet):
+    note = filters.CharFilter(name='note')
+    author = filters.RelatedFilter(ProjectFilter, name='project')
 
 
 class ProgressSerializer(serializers.ModelSerializer):
