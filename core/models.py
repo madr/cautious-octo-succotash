@@ -25,7 +25,7 @@ class Project(models.Model):
         verbose_name_plural = "projects"
 
     class JSONAPIMeta:
-        resource_name = "project"
+        resource_name = "projects"
 
 
 class Progress(models.Model):
@@ -45,4 +45,4 @@ class Progress(models.Model):
         verbose_name_plural = "progresses"
 
     class JSONAPIMeta:
-        resource_name = "progress"
+        resource_name = "progresses"
