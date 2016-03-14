@@ -25,10 +25,14 @@ class ProjectFilter(filters.FilterSet):
 
 class ProgressFilter(filters.FilterSet):
     done_at = filters.DateFilter()
+    done_at__gte = filters.DateFilter(name='done_at', lookup_expr='gte')
+    done_at__lte = filters.DateFilter(name='done_at', lookup_expr='lte')
     done_at__gt = filters.DateFilter(name='done_at', lookup_expr='gt')
     done_at__lt = filters.DateFilter(name='done_at', lookup_expr='lt')
 
     created_at = filters.DateFilter()
+    created__gte = filters.DateFilter(name='created_at', lookup_expr='gte')
+    created__lte = filters.DateFilter(name='created_at', lookup_expr='lte')
     created__gt = filters.DateFilter(name='created_at', lookup_expr='gt')
     created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
 
