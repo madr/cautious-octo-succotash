@@ -146,6 +146,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
     # jsonapi serializer settings
     'PAGE_SIZE': 10,
     'PAGINATE_BY_PARAM': 'page_size',
@@ -161,6 +162,7 @@ REST_FRAMEWORK = {
         'rest_framework_json_api.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
+    'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
 
 # OAuth2 provider
@@ -179,3 +181,9 @@ OAUTH2_PROVIDER = {
 
 SITE_ID = 1
 LOGIN_URL = '/login/login/'
+
+# JSONAPI
+# http://django-rest-framework-json-api.readthedocs.org/en/latest/
+
+JSON_API_FORMAT_KEYS = 'underscore'
+JSON_API_FORMAT_RELATION_KEYS = 'underscore'

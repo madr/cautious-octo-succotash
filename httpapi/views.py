@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, serializers, viewsets
 from rest_framework.response import Response
+from rest_framework_json_api import relations
 
 from core.models import Progress, Project
 
@@ -16,15 +17,24 @@ class WhoAmI(object):
 
 
 class ProjectFilter(filters.FilterSet):
-    name = filters.CharFilter(name='name')
+    name = filters.AllLookupsFilter()
+
+    class Meta:
+        model = Project
 
 
 class ProgressFilter(filters.FilterSet):
-    note = filters.CharFilter(name='note')
+    done_at = filters.DateFilter()
+    done_at__gt = filters.DateFilter(name='done_at', lookup_expr='gt')
+    done_at__lt = filters.DateFilter(name='done_at', lookup_expr='lt')
+
+    created_at = filters.DateFilter()
+    created__gt = filters.DateFilter(name='created_at', lookup_expr='gt')
+    created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
+
+    note = filters.AllLookupsFilter()
     project = filters.RelatedFilter(ProjectFilter, name='project')
 
-
-class ProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Progress
 
@@ -32,12 +42,24 @@ class ProgressSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
+        exclude = ['created_at']
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ('url', 'is_staff')
+        exclude = ('password', 'last_login', 'is_staff', 'date_joined', 'first_name',
+                   'last_name', 'groups', 'user_permissions')
+
+
+class ProgressSerializer(serializers.ModelSerializer):
+    included_serializers = {
+        'project': ProjectSerializer,
+        'user': UserSerializer,
+    }
+
+    class Meta:
+        model = Progress
 
 
 class WhoAmISerializer(serializers.Serializer):
@@ -51,7 +73,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    filter_class = ProjectFilter
 
 
 class ProgressViewSet(viewsets.ModelViewSet):
@@ -91,5 +112,5 @@ class WhoAmIViewSet(viewsets.ViewSet):
 httpapi_router = routers.DefaultRouter()
 httpapi_router.register(r'projects', ProjectViewSet)
 httpapi_router.register(r'progresses', ProgressViewSet)
-httpapi_router.register(r'users', UserViewSet)
+#httpapi_router.register(r'users', UserViewSet)
 httpapi_router.register(r'whoami', WhoAmIViewSet)
