@@ -27,6 +27,10 @@ class ProgressFilter(filters.FilterSet):
     done_at__gt = filters.DateFilter(name='done_at', lookup_expr='gt')
     done_at__lt = filters.DateFilter(name='done_at', lookup_expr='lt')
 
+    created_at = filters.DateFilter()
+    created__gt = filters.DateFilter(name='created_at', lookup_expr='gt')
+    created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
+
     note = filters.AllLookupsFilter()
     project = filters.RelatedFilter(ProjectFilter, name='project')
 
