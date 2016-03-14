@@ -24,6 +24,9 @@ class ProjectFilter(filters.FilterSet):
     created__gt = filters.DateFilter(name='created_at', lookup_expr='gt')
     created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
 
+    billable = filters.BooleanFilter()
+    active = filters.BooleanFilter()
+
     class Meta:
         model = Project
 
@@ -81,7 +84,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-
+    filter_class = ProjectFilter
 
 class ProgressViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
