@@ -28,7 +28,7 @@ class Project(models.Model):
         resource_name = "projects"
 
 
-class AbsenceReason(models.Model):
+class Absentia(models.Model):
     name = models.CharField(max_length=128)
     active = models.BooleanField(default=True)
     created_at = models.DateField(auto_now_add=True)
@@ -38,10 +38,9 @@ class AbsenceReason(models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = "reasons"
 
     class JSONAPIMeta:
-        resource_name = "reasons"
+        resource_name = "absentia"
 
 
 class Progress(models.Model):
@@ -50,6 +49,7 @@ class Progress(models.Model):
     note = models.TextField()
     done_at = models.DateField(default=datetime.date.today)
     created_at = models.DateField(auto_now_add=True)
+    started_at = models.TimeField(default='00:00:00')
 
     project = models.ForeignKey(Project, null=True)
 
@@ -57,7 +57,7 @@ class Progress(models.Model):
         return self.note
 
     class Meta:
-        ordering = ["-done_at"]
+        ordering = ["-done_at", 'created_at']
         verbose_name_plural = "progresses"
 
     class JSONAPIMeta:
@@ -66,15 +66,16 @@ class Progress(models.Model):
 
 class Absence(models.Model):
     user = models.ForeignKey(User)
-    duration = models.IntegerField(default=15, validators=[MinValueValidator(15), validate_duration])
-    note = models.TextField()
+    duration = models.IntegerField(default=480, validators=[MinValueValidator(15), validate_duration])
+    note = models.TextField(default='', blank=True)
     done_at = models.DateField(default=datetime.date.today)
+    started_at = models.TimeField(default='00:00:00')
     created_at = models.DateField(auto_now_add=True)
 
-    reason = models.ForeignKey(AbsenceReason, null=True)
+    absentia = models.ForeignKey(Absentia, null=True)
 
     def __str__(self):
-        return self.note
+        return self.absentia.name
 
     class Meta:
         ordering = ["-done_at"]
