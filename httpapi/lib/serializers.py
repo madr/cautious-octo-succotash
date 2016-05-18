@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import Project, Absentia, Progress
+from core.models import Project, AbsenceCategory, Progress
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AbsentiaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Absentia
+        model = AbsenceCategory
 
 
 class ProgressSerializer(serializers.ModelSerializer):

@@ -3,7 +3,7 @@ from oauth2_provider.ext.rest_framework import TokenHasScope
 from rest_framework import permissions, routers, viewsets
 from rest_framework.response import Response
 
-from core.models import Progress, Project, Absentia, Absence
+from core.models import Progress, Project, AbsenceCategory, Absence
 from httpapi.lib.filters import ProjectFilter, AbsentiaFilter, ProgressFilter, AbsenceFilter
 from httpapi.lib.serializers import ProjectSerializer, AbsentiaSerializer, ProgressSerializer, AbsenceSerializer, \
     WhoAmISerializer
@@ -44,7 +44,7 @@ class AbsenceViewSet(viewsets.ModelViewSet):
 class AbsentiaViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
     required_scopes = ['reporter']
-    queryset = Absentia.objects.all()
+    queryset = AbsenceCategory.objects.all()
     serializer_class = AbsentiaSerializer
     filter_class = AbsentiaFilter
 

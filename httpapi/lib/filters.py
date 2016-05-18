@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import rest_framework_filters as filters
-from core.models import Project, Absentia, Progress, Absence
+from core.models import Project, AbsenceCategory, Progress, Absence
 
 
 class AbsentiaFilter(filters.FilterSet):
@@ -17,7 +17,7 @@ class AbsentiaFilter(filters.FilterSet):
     active = filters.BooleanFilter()
 
     class Meta:
-        model = Absentia
+        model = AbsenceCategory
 
 
 class ProjectFilter(AbsentiaFilter):
