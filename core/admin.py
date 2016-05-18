@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Project, Progress, Absence, Absentia
+from core.models import Project, Progress, Absence, AbsenceCategory
 
 
 def make_active(modeladmin, request, queryset):
@@ -33,10 +33,9 @@ class ProgressAdmin(admin.ModelAdmin):
 
 
 @admin.register(Absence)
-class ProgressAdmin(admin.ModelAdmin):
-    list_display = ['absentia', 'duration', 'done_at']
+class AbsenceCategoryAdmin(admin.ModelAdmin):
+    list_display = ['category', 'duration', 'done_at']
     list_filter = ['user']
-    #search_fields = ['absentia']
 
 
 @admin.register(Project)
@@ -47,7 +46,7 @@ class ProjectAdmin(admin.ModelAdmin):
     actions = [make_active, make_not_active, make_billable, make_not_billable]
 
 
-@admin.register(Absentia)
+@admin.register(AbsenceCategory)
 class AbsentiaAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']
     list_filter = ['active']
