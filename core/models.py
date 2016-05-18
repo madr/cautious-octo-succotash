@@ -28,7 +28,7 @@ class Project(models.Model):
         resource_name = "projects"
 
 
-class Absentia(models.Model):
+class AbsenceCategory(models.Model):
     name = models.CharField(max_length=128)
     active = models.BooleanField(default=True)
     created_at = models.DateField(auto_now_add=True)
@@ -40,7 +40,7 @@ class Absentia(models.Model):
         ordering = ["name"]
 
     class JSONAPIMeta:
-        resource_name = "absentia"
+        resource_name = "absence_categories"
 
 
 class Progress(models.Model):
@@ -72,10 +72,10 @@ class Absence(models.Model):
     started_at = models.TimeField(default='00:00:00')
     created_at = models.DateField(auto_now_add=True)
 
-    absentia = models.ForeignKey(Absentia, null=True)
+    category = models.ForeignKey(AbsenceCategory, null=True)
 
     def __str__(self):
-        return self.absentia.name
+        return self.absence_category.name
 
     class Meta:
         ordering = ["-done_at"]
