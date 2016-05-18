@@ -33,6 +33,8 @@ class ProgressViewSet(viewsets.ModelViewSet):
     filter_class = ProgressFilter
 
 
+
+
 class AbsenceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
     required_scopes = ['reporter']
@@ -41,7 +43,7 @@ class AbsenceViewSet(viewsets.ModelViewSet):
     filter_class = AbsenceFilter
 
 
-class AbsentiaViewSet(viewsets.ModelViewSet):
+class AbsenceCategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
     required_scopes = ['reporter']
     queryset = AbsenceCategory.objects.all()
@@ -68,6 +70,6 @@ class WhoAmIViewSet(viewsets.ViewSet):
 httpapi_router = routers.DefaultRouter()
 httpapi_router.register(r'projects', ProjectViewSet)
 httpapi_router.register(r'progresses', ProgressViewSet)
-httpapi_router.register(r'absentias', AbsentiaViewSet)
+httpapi_router.register(r'absence_categories', AbsenceCategoryViewSet)
 httpapi_router.register(r'absences', AbsenceViewSet)
 httpapi_router.register(r'whoami', WhoAmIViewSet)
