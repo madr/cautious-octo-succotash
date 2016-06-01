@@ -47,6 +47,7 @@ class ProgressFilter(filters.FilterSet):
     created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
 
     note = filters.AllLookupsFilter()
+
     project = filters.RelatedFilter(ProjectFilter, name='project')
     user = filters.RelatedFilter(UserFilter, name='user')
 
