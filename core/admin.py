@@ -27,9 +27,9 @@ make_not_billable.short_description = "Mark selected as not billable"
 
 @admin.register(Progress)
 class ProgressAdmin(admin.ModelAdmin):
-    list_display = ['note', 'duration', 'done_at', 'project']
+    list_display = ['note', 'duration', 'done_at', 'user', 'project']
     list_filter = ['user']
-    search_fields = ['note']
+    search_fields = ['note', 'project__name']
 
 
 @admin.register(Absence)
