@@ -3,7 +3,8 @@ from datetime import datetime
 import hashlib
 from time import strptime
 from django import template
-from legacy.utils import TimeUtil, SumUtil
+from legacy.utils import SumUtil
+from core.lib import TimeUtil
 
 register = template.Library()
 
