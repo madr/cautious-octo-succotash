@@ -27,7 +27,7 @@ def report(request, year=None, week_label=None, day=None):
 @login_required
 @require_http_methods(["GET"])
 def delete_progress(request, year, week_label, day, progress_id):
-    _delete_progress(progress_id, site)
+    _delete_progress(progress_id)
 
     redirect_uri = "/year/%s/week/%s/day/%s" % (year, week_label, day)
 
