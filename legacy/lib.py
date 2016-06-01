@@ -4,7 +4,8 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 
-from legacy.utils import TimeUtil, SumUtil, records_to_dict
+from legacy.utils import SumUtil, records_to_dict
+from core.lib import TimeUtil
 from core.models import Progress, Project
 
 

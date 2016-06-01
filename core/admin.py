@@ -27,15 +27,15 @@ make_not_billable.short_description = "Mark selected as not billable"
 
 @admin.register(Progress)
 class ProgressAdmin(admin.ModelAdmin):
-    list_display = ['note', 'duration', 'done_at']
+    list_display = ['note', 'project', 'duration', 'done_at']
     list_filter = ['user']
-    search_fields = ['note']
+    search_fields = ['note', 'project']
 
 
 @admin.register(Absence)
-class AbsenceCategoryAdmin(admin.ModelAdmin):
+class AbsenceAdmin(admin.ModelAdmin):
     list_display = ['category', 'duration', 'done_at']
-    list_filter = ['user']
+    list_filter = ['category', 'user']
 
 
 @admin.register(Project)
@@ -47,7 +47,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 @admin.register(AbsenceCategory)
-class AbsentiaAdmin(admin.ModelAdmin):
+class AbsenceCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']
     list_filter = ['active']
     search_fields = ['name']
