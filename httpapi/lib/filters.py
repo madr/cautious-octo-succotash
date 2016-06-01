@@ -5,6 +5,11 @@ import rest_framework_filters as filters
 from core.models import Project, AbsenceCategory, Progress, Absence
 
 
+class UserFilter(filters.FilterSet):
+    class Meta:
+        model = User
+
+
 class AbsenceCategoryFilter(filters.FilterSet):
     name = filters.AllLookupsFilter()
 
@@ -26,11 +31,6 @@ class ProjectFilter(AbsenceCategoryFilter):
 
     class Meta:
         model = Project
-
-
-class UserFilter(filters.FilterSet):
-    class Meta:
-        model = User
 
 
 class ProgressFilter(filters.FilterSet):
