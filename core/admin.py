@@ -33,14 +33,7 @@ class ProgressAdmin(admin.ModelAdmin):
 
 
 @admin.register(Absence)
-class AbsenceCategoryAdmin(admin.ModelAdmin):
-    list_display = ['category', 'duration', 'done_at']
-    list_filter = ['user']
-    search_fields = ['note']
-
-
-@admin.register(Absence)
-class AbsenceCategoryAdmin(admin.ModelAdmin):
+class AbsenceAdmin(admin.ModelAdmin):
     list_display = ['category', 'duration', 'done_at']
     list_filter = ['category', 'user']
 
@@ -54,7 +47,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 @admin.register(AbsenceCategory)
-class AbsentiaAdmin(admin.ModelAdmin):
+class AbsenceCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']
     list_filter = ['active']
     search_fields = ['name']
