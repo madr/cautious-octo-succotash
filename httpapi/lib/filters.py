@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import User
 import rest_framework_filters as filters
 from core.models import Project, AbsenceCategory, Progress, Absence
 
 
-class AbsentiaFilter(filters.FilterSet):
+class AbsenceCategoryFilter(filters.FilterSet):
     name = filters.AllLookupsFilter()
 
     created_at = filters.DateFilter()
@@ -20,11 +21,16 @@ class AbsentiaFilter(filters.FilterSet):
         model = AbsenceCategory
 
 
-class ProjectFilter(AbsentiaFilter):
+class ProjectFilter(AbsenceCategoryFilter):
     billable = filters.BooleanFilter()
 
     class Meta:
         model = Project
+
+
+class UserFilter(filters.FilterSet):
+    class Meta:
+        model = User
 
 
 class ProgressFilter(filters.FilterSet):
@@ -42,6 +48,7 @@ class ProgressFilter(filters.FilterSet):
 
     note = filters.AllLookupsFilter()
     project = filters.RelatedFilter(ProjectFilter, name='project')
+    user = filters.RelatedFilter(UserFilter, name='user')
 
     class Meta:
         model = Progress

@@ -4,7 +4,7 @@ from rest_framework import permissions, routers, viewsets
 from rest_framework.response import Response
 
 from core.models import Progress, Project, AbsenceCategory, Absence
-from httpapi.lib.filters import ProjectFilter, AbsentiaFilter, ProgressFilter, AbsenceFilter
+from httpapi.lib.filters import ProjectFilter, AbsenceCategoryFilter, ProgressFilter, AbsenceFilter
 from httpapi.lib.serializers import ProjectSerializer, AbsentiaSerializer, ProgressSerializer, AbsenceSerializer, \
     WhoAmISerializer
 
@@ -48,7 +48,7 @@ class AbsenceCategoryViewSet(viewsets.ModelViewSet):
     required_scopes = ['reporter']
     queryset = AbsenceCategory.objects.all()
     serializer_class = AbsentiaSerializer
-    filter_class = AbsentiaFilter
+    filter_class = AbsenceCategoryFilter
 
 
 class WhoAmIViewSet(viewsets.ViewSet):
