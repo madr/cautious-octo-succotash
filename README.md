@@ -1,12 +1,12 @@
 # Semirhage reborn
 
-The API backend for Tajm.me time tracking, powered by Django and Python 3.5.
+The API backend for Tajm.me time tracking, powered by Django and Python 3.
 
 ## Setup
 
 Requirements:
 
-* Python 3.5
+* Python 3 (3.5 will work fine)
 * SQLite
 * Virtualenv
 
