@@ -52,7 +52,7 @@ class AbsenceAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'billable', 'active']
+    list_display = ['name', 'billable', 'active', 'created_at']
     list_filter = ['active', 'billable']
     search_fields = ['name']
     actions = [make_active, make_not_active, make_billable, make_not_billable, merge_projects]
