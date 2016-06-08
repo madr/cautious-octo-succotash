@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 import rest_framework_filters as filters
 from core.models import Project, AbsenceCategory, Progress, Absence
