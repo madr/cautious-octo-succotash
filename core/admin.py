@@ -1,10 +1,22 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 
 from core.models import Project, Progress, Absence, AbsenceCategory
 
 
 def make_active(modeladmin, request, queryset):
     queryset.update(active=True)
+
+
+def merge_projects(modeladmin, request, queryset):
+    new_project = Project(name='(merged %d projects)' % queryset.count())
+    new_project.save()
+
+    for project in queryset.all():
+        Progress.objects.filter(project=project).update(project=new_project)
+        project.delete()
+
+    return HttpResponseRedirect("%d/change/" % new_project.pk)
 
 
 def make_not_active(modeladmin, request, queryset):
@@ -43,7 +55,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'billable', 'active']
     list_filter = ['active', 'billable']
     search_fields = ['name']
-    actions = [make_active, make_not_active, make_billable, make_not_billable]
+    actions = [make_active, make_not_active, make_billable, make_not_billable, merge_projects]
 
 
 @admin.register(AbsenceCategory)

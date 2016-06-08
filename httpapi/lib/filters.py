@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 import rest_framework_filters as filters
 from core.models import Project, AbsenceCategory, Progress, Absence
@@ -47,6 +45,7 @@ class ProgressFilter(filters.FilterSet):
     created__lt = filters.DateFilter(name='created_at', lookup_expr='lt')
 
     note = filters.AllLookupsFilter()
+
     project = filters.RelatedFilter(ProjectFilter, name='project')
     user = filters.RelatedFilter(UserFilter, name='user')
 
