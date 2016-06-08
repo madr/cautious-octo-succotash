@@ -4,10 +4,6 @@ from django.http import HttpResponseRedirect
 from core.models import Project, Progress, Absence, AbsenceCategory
 
 
-def make_active(modeladmin, request, queryset):
-    queryset.update(active=True)
-
-
 def merge_projects(modeladmin, request, queryset):
     new_project = Project(name='(merged %d projects)' % queryset.count())
     new_project.save()
@@ -17,6 +13,21 @@ def merge_projects(modeladmin, request, queryset):
         project.delete()
 
     return HttpResponseRedirect("%d/change/" % new_project.pk)
+
+
+def merge_absence_categories(modeladmin, request, queryset):
+    new_ac = AbsenceCategory(name='(merged %d absence categories)' % queryset.count())
+    new_ac.save()
+
+    for ac in queryset.all():
+        Absence.objects.filter(category=ac).update(category=new_ac)
+        ac.delete()
+
+    return HttpResponseRedirect("%d/change/" % new_ac.pk)
+
+
+def make_active(modeladmin, request, queryset):
+    queryset.update(active=True)
 
 
 def make_not_active(modeladmin, request, queryset):
@@ -32,9 +43,11 @@ def make_not_billable(modeladmin, request, queryset):
 
 
 make_active.short_description = "Mark selected as active"
-make_not_active.short_description = "Mark selected as not active"
 make_billable.short_description = "Mark selected as billable"
+make_not_active.short_description = "Mark selected as not active"
 make_not_billable.short_description = "Mark selected as not billable"
+merge_absence_categories.short_description = "Merge selected to new absence category"
+merge_projects.short_description = "Merge selected to new project"
 
 
 @admin.register(Progress)
@@ -42,12 +55,6 @@ class ProgressAdmin(admin.ModelAdmin):
     list_display = ['note', 'duration', 'done_at', 'user', 'project']
     list_filter = ['user']
     search_fields = ['note', 'project__name']
-
-
-@admin.register(Absence)
-class AbsenceAdmin(admin.ModelAdmin):
-    list_display = ['category', 'duration', 'done_at']
-    list_filter = ['category', 'user']
 
 
 @admin.register(Project)
@@ -58,9 +65,15 @@ class ProjectAdmin(admin.ModelAdmin):
     actions = [make_active, make_not_active, make_billable, make_not_billable, merge_projects]
 
 
+@admin.register(Absence)
+class AbsenceAdmin(admin.ModelAdmin):
+    list_display = ['category', 'duration', 'done_at']
+    list_filter = ['category', 'user']
+
+
 @admin.register(AbsenceCategory)
 class AbsenceCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']
     list_filter = ['active']
     search_fields = ['name']
-    actions = [make_active, make_not_active]
+    actions = [make_active, make_not_active, merge_absence_categories]
