@@ -40,8 +40,8 @@
     </div>
     <form action="{{ request.path }}" method="post" class="wrap wrap-padded">
         {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form.done_at.as_hidden }}
+        {{ progress_form.non_field_errors }}
+        {{ progress_form.done_at.as_hidden }}
         {% include "_progressform.html" %}
         <input type="submit" value="{% trans "Rapportera" %}" class="bl btn">
     </form>
@@ -70,5 +70,39 @@
                 {% endfor %}
             {% endif %}
         </div>
+
+        <div class="wrap wrap-padded">
+            <h2>{% trans "Frånvaro" %}</h2>
+
+            {% if absences %}
+                {% for progress in absences %}
+                    <article class="oh progress">
+                        <span class="pull-right">
+                            <a class="bl btn btn-small btn-right" href="{% url "delete_absence" absence_id=progress.id %}">x</a>
+                        </span>
+                        <div class="pull-left progress--duration progress-noavatar">
+                            -{{ progress.duration|hhmm }}
+                        </div>
+                        <div class="oh">
+                            <p><a href="{% url "edit_absence" absence_id=progress.id %}">{{ progress.category.name }}</a></p>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+        <form action="{% url "add_absence" %}" method="post" class="wrap wrap-padded">
+
+            {% include '_absenceform.html' %}
+
+            {% csrf_token %}
+            {{ absence_form.non_field_errors }}
+            {{ progress_form.done_at.as_hidden }}
+            {{ absence_form.user.as_hidden }}
+
+            <input type="submit" value="{% trans "Rapportera" %}" class="bl btn">
+        </form>
     </div>
+
 {% endblock %}
