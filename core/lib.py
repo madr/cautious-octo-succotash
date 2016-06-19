@@ -12,7 +12,7 @@ days = [u"Sön", u"Mån", u"Tis",
         u'Lör', u"Sön"]
 
 class TimeUtil:
-    # TODO: städa upp, kolla vilka som fortfarande används!
+    # todo: move unit tests from old repo to core/tests.py
     ''' Class with a set of static methods to manage time and progresses. '''
     def __init__(self):
         pass
