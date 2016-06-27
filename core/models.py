@@ -28,21 +28,6 @@ class Project(models.Model):
         resource_name = "projects"
 
 
-class AbsenceCategory(models.Model):
-    name = models.CharField(max_length=128)
-    active = models.BooleanField(default=True)
-    created_at = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ["name"]
-
-    class JSONAPIMeta:
-        resource_name = "absence_categories"
-
-
 class Progress(models.Model):
     user = models.ForeignKey(User)
     duration = models.IntegerField(default=15, validators=[MinValueValidator(15), validate_duration])
@@ -64,6 +49,21 @@ class Progress(models.Model):
         resource_name = "progresses"
 
 
+class AbsenceCategory(models.Model):
+    name = models.CharField(max_length=128)
+    active = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+
+    class JSONAPIMeta:
+        resource_name = "absence_categories"
+
+
 class Absence(models.Model):
     user = models.ForeignKey(User)
     duration = models.IntegerField(default=480, validators=[MinValueValidator(15), validate_duration])
@@ -75,7 +75,7 @@ class Absence(models.Model):
     category = models.ForeignKey(AbsenceCategory, null=True)
 
     def __str__(self):
-        return self.absence_category.name
+        return self.category.name
 
     class Meta:
         ordering = ["-done_at"]

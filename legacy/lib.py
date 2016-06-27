@@ -6,7 +6,13 @@ from django.shortcuts import redirect
 
 from legacy.utils import SumUtil, records_to_dict
 from core.lib import TimeUtil
-from core.models import Progress, Project
+from core.models import Progress, Project, Absence
+
+
+class AbsenceForm(forms.ModelForm):
+    class Meta:
+        model = Absence
+        fields = ['category', 'duration', 'done_at', 'user']
 
 
 class ProgressForm(forms.Form):
@@ -32,13 +38,13 @@ def _delete_progress(progress_id):
 
 def _get_projects_context():
     context = {
-        "projects": Project.objects.filter(active=True)
+        'projects': Project.objects.filter(active=True)
     }
 
     return context
 
 
-def _save_progress(user, redir_path, form, existing_id=None):
+def _save_progress(user, form, existing_id=None):
     '''typical POST action for the _show_day method. It stores the
     submitted progress to db.
 
@@ -52,35 +58,33 @@ def _save_progress(user, redir_path, form, existing_id=None):
         existing_project = Project.objects.create(name=project_name)
         existing_project.save()
 
-    duration = TimeUtil.to_minutes(form.cleaned_data['duration'].strftime("%H:%M"))
+    duration = TimeUtil.to_minutes(form.cleaned_data['duration'].strftime('%H:%M'))
     note = form.cleaned_data['note']
 
     if existing_id is None:
-        done_at = form.cleaned_data["done_at"]
+        done_at = form.cleaned_data['done_at']
         progress = Progress.objects.create(project=existing_project,
                                            duration=duration,
                                            done_at=done_at,
                                            user=user,
                                            note=note)
 
-        redirect_uri = redir_path
+        year, week_label, day = TimeUtil.ywd(done_at).split('-')
 
     else:
         progress = Progress.objects.get(pk=existing_id)
 
-        year = form.cleaned_data["done_at_year"]
-        week_label = form.cleaned_data["done_at_week"]
-        day = form.cleaned_data["done_at_day"]
+        year = form.cleaned_data['done_at_year']
+        week_label = form.cleaned_data['done_at_week']
+        day = form.cleaned_data['done_at_day']
 
         progress.project = existing_project
         progress.duration = duration
         progress.done_at = TimeUtil.ywd_to_date(year, week_label, day)
         progress.note = note
 
-        redirect_uri = "/old/year/%s/week/%s/day/%s" % (year, week_label, day)
-
     progress.save()
-    return redirect(redirect_uri)
+    return redirect('anyday', year=year, week_label=week_label, day=day)
 
 
 def _year_week_day(year, week_label, day):
@@ -127,23 +131,23 @@ def _get_edit_progress_context(form, year, week_label, day, progress_id):
 
     if form is None:
         form = ProgressEditForm(initial={
-            "done_at_year": year,
-            "done_at_week": week_label,
-            "done_at_day": day,
-            "done_at": progress.done_at,
-            "note": progress.note,
-            "duration": TimeUtil.hhmm(progress.duration),
-            "project": progress.project.name
+            'done_at_year': year,
+            'done_at_week': week_label,
+            'done_at_day': day,
+            'done_at': progress.done_at,
+            'note': progress.note,
+            'duration': TimeUtil.hhmm(progress.duration),
+            'project': progress.project.name
         })
 
     context = {
-        "form": form
+        'progress_form': form
     }
 
     return context
 
 
-def _get_home_context(form, user, year, week_label, day):
+def _get_home_context(progress_form, user, year, week_label, day):
     ''' The most seen page of the reporter app which shows a given day
      of a given week, with current week and current weekday as default.
 
@@ -160,18 +164,18 @@ def _get_home_context(form, user, year, week_label, day):
     since that is what PEOPLE label it.
 
     In Python, however, it might be a bit confusing. Permalinks make
-    uses of the "week labels" instead of the actual week number.
+    uses of the 'week labels' instead of the actual week number.
 
      * The first week of a year according to datetime.strftime('%W') is week 0.
      * datetime.isocalendar() will return the spoken week number.
 
-    So Beware! The app uses the "week_label" wherever possible, and
+    So Beware! The app uses the 'week_label' wherever possible, and
     this decision make week number transformation to dates
     (ex 2013-01-01) a bit tricky since '%W' will result
     in 7 days mismatch.
 
     Yet, in particular years (ex 2012) when Jan 1 is on a Monday,
-    datetime.strftime("%W") and datetime.isocalendar() will show the same
+    datetime.strftime('%W') and datetime.isocalendar() will show the same
     week number. Thanks ...
 
     It is HIGHLY recommended to always use TimeUtil.ywd_to_date() when
@@ -186,26 +190,39 @@ def _get_home_context(form, user, year, week_label, day):
     the_date = TimeUtil.ywd_to_date(year, week_label, day)
     progresses = Progress.objects.filter(user=user, done_at=the_date)
     progresses_as_list = records_to_dict(progresses)
+    absences = Absence.objects.filter(user=user, done_at=the_date)
 
-    if form is None:
-        form = ProgressForm(initial={"done_at": the_date})
+    if progress_form is None:
+        progress_form = ProgressForm(initial={'done_at': the_date})
+
+    absence_form = AbsenceForm(initial={'user': user})
 
     context = {
-        "weekdays": weekdays,
-        "week": week_label,
-        "day": day,
-        "year": year,
-        "date": TimeUtil.ywd_to_date(year, week_label, day),
-        "form": form,
-        "progresses": progresses,
-        "minute_count": TimeUtil.duration(SumUtil.minutes(progresses_as_list)),
-        "project_count": SumUtil.projects(progresses_as_list),
+        'weekdays': weekdays,
+        'week': week_label,
+        'day': day,
+        'year': year,
+        'date': TimeUtil.ywd_to_date(year, week_label, day),
+        'progress_form': progress_form,
+        'absence_form': absence_form,
+        'absences': absences,
+        'progresses': progresses,
+        'minute_count': TimeUtil.duration(SumUtil.minutes(progresses_as_list)),
+        'project_count': SumUtil.projects(progresses_as_list),
         
-        "is_index": is_index > 0,
-        "is_today": is_index == 2,
-        "prev_week": TimeUtil.prevweek(year, week_label),
-        "next_week": TimeUtil.nextweek(year, week_label),
-        "spoken_week": TimeUtil.period(year, week_label)
+        'is_index': is_index > 0,
+        'is_today': is_index == 2,
+        'prev_week': TimeUtil.prevweek(year, week_label),
+        'next_week': TimeUtil.nextweek(year, week_label),
+        'spoken_week': TimeUtil.period(year, week_label)
     }
 
     return context
+
+
+def _delete_absence(absence_id):
+    absence = Absence.objects.get(pk=absence_id)
+    done_at = absence.done_at
+    absence.delete()
+
+    return TimeUtil.ywd(done_at).split('-')
