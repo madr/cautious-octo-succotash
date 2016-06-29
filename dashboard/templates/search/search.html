@@ -15,15 +15,34 @@
         </table>
 
         {% if query %}
-            <h3>Results</h3>
 
+            <h2>By Author</h2>
+            
+            <h3>{{ paginator.count }} Results</h3>
+
+            <table>
             {% for result in page.object_list %}
-                <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
-                </p>
+                <tr>
+                <td>
+                    {{ result.object.duration }}
+                </td>
+                <td>
+                    {{ result.object.done_at }}
+                </td>
+                <td>
+                    {{ result.object.project }}
+                </td>
+                <td>
+                    {{ result.object.note }}
+                </td>
+                <td>
+                    {{ result.object.user }}
+                </td>
+                </tr>
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
+            </table>
 
             {% if page.has_previous or page.has_next %}
                 <div>
@@ -33,7 +52,6 @@
                 </div>
             {% endif %}
         {% else %}
-            {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
 {% endblock %}

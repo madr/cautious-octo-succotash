@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import dj_database_url
+import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
+    'semirhage',
     'core',
     'httpapi',
     'legacy',
@@ -132,6 +134,50 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # CORS Headers
 # https://django-oauth-toolkit.readthedocs.org/en/latest/tutorial/tutorial_01.html
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Logging
+# https://docs.djangoproject.com/en/1.9/topics/logging/
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+        }
+    },
+    'loggers': {
+        'core': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'legacy': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'httpapi': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'dashboard': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'haystack': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'elasticsearch': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 
 # REST Framework
 # https://django-oauth-toolkit.readthedocs.org/en/latest/rest-framework/getting_started.html
