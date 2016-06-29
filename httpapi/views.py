@@ -33,8 +33,6 @@ class ProgressViewSet(viewsets.ModelViewSet):
     filter_class = ProgressFilter
 
 
-
-
 class AbsenceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
     required_scopes = ['reporter']

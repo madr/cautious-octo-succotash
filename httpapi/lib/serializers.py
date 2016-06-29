@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import Project, AbsenceCategory, Progress
+from core.models import Project, AbsenceCategory, Progress, Absence
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -34,12 +32,12 @@ class ProgressSerializer(serializers.ModelSerializer):
 
 class AbsenceSerializer(serializers.ModelSerializer):
     included_serializers = {
-        'absentia': AbsentiaSerializer,
+        'absence_category': AbsentiaSerializer,
         'user': UserSerializer,
     }
 
     class Meta:
-        model = Progress
+        model = Absence
 
 
 class WhoAmISerializer(serializers.Serializer):
