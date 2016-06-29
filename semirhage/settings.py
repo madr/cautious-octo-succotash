@@ -1,5 +1,5 @@
 """
-Django settings for semirhage project.
+Django settings for Tajm.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.9/topics/settings/
@@ -10,18 +10,19 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-0jr90^zs@lr(0ysg05vj6rm^@#d^)r_ybqt=$jq6itm#n0sm7'
+SECRET_KEY = os.environ.get('TAJM_SECRET_KEY', '-0jr90^zs@lr(0ysg05vj6rm^@#d^)r_ybqt=$jq6itm#n0sm7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('TAJM_DEBUG', True)
 
-ALLOWED_HOSTS = ['reborn.tajm.me']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Application definition
+ALLOWED_HOSTS = os.environ.get('TAJM_ALLOWED_HOSTS', 'reborn.tajm.me').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -31,16 +32,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'oauth2_provider',
-    'corsheaders',
-    'rest_framework',
-    'rest_framework_swagger',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'corsheaders',
+    'haystack',
+    'oauth2_provider',
+    'rest_framework',
+    'rest_framework_swagger',
+
     'core',
     'httpapi',
     'legacy',
+    'dashboard',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -90,6 +95,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -173,8 +181,18 @@ LOGIN_URL = '/id/login/'
 JSON_API_FORMAT_KEYS = 'underscore'
 JSON_API_FORMAT_RELATION_KEYS = 'underscore'
 
-# HTMLMIN
+# Htmlmin
 # https://pypi.python.org/pypi/django-htmlmin/
 # keeping HTML comments since they are useful for javascript templates.
 # more on that topic: https://www.nczonline.net/blog/2011/10/11/simple-maintainable-templating-with-javascript/
 KEEP_COMMENTS_ON_MINIFYING = True
+
+# Haystack
+# http://django-haystack.readthedocs.io/en/v2.4.1/tutorial.html
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_ENGINE', 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine'),
+        'URL': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_URL', 'http://127.0.0.1:9200/'),
+        'INDEX_NAME': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_INDEX_NAME', 'tajm'),
+    },
+}
