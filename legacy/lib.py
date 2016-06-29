@@ -141,7 +141,7 @@ def _get_edit_progress_context(form, year, week_label, day, progress_id):
         })
 
     context = {
-        'form': form
+        'progress_form': form
     }
 
     return context
