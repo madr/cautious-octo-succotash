@@ -7,6 +7,6 @@ django-allauth==0.24.1
 djangorestframework-filters==0.8.0
 django-rest-swagger==0.3.6
 django-htmlmin==0.9.1
-django-haystack==2.4.1
+django-haystack==2.5.dev1
 dj-database-url==0.4.1
 elasticsearch==2.3.0
