@@ -1,1 +1,1 @@
-web: gunicorn semirhage.wsgi --log-file -
+web: web: waitress-serve --port=$PORT semirhage.wsgi:application

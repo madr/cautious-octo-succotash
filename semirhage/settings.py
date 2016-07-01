@@ -235,6 +235,7 @@ KEEP_COMMENTS_ON_MINIFYING = True
 
 # Haystack
 # http://django-haystack.readthedocs.io/en/v2.4.1/tutorial.html
+# todo: make this heroku compatible
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_ENGINE', 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine'),
