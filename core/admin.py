@@ -93,7 +93,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Absence)
 class AbsenceAdmin(admin.ModelAdmin):
-    list_display = ['category', 'duration', 'done_at']
+    list_display = ['category', 'duration', 'user', 'done_at']
     list_filter = ['category', 'user']
 
 
