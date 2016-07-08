@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
 
     'semirhage',
+    'frontend',
     'core',
     'httpapi',
     'legacy',
