@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'corsheaders',
-    'django_gravatar',
     'haystack',
     'oauth2_provider',
     'rest_framework',
