@@ -1,28 +1,3 @@
-/*
-The Following folder structure is required:
-
-./
-  ./dist
-    app.js
-    app.min.js
-    app.min.zipped.js
-    design.css
-    design.min.css
-    design.min.zipped.css
-  ./src
-    ./src/js
-      .src/js/core
-      .src/js/modules
-      init.js
-    design.less
-  ./styleguide
-    ./styleguide/template
-    index.html
-    section-1.html
-    section-2.html
-    section-3.html
-    section-5.html
-*/
 module.exports = function(grunt) {
 
   // Project configuration.
