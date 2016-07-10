@@ -7,7 +7,8 @@ static/rest_framework
 static/old
 .DS_Store
 **/.DS_Store
-npm_modules
-npm_debug*
+frontend/node_modules
 Vagrantfile
 .vagrant
+static/frontend
+static/rest_framework_swagger/

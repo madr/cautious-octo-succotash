@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{{ date|date:"l"|capfirst }} {% trans "vecka" %} {{ week }}
+    {% if is_index == True %}{% if is_today == True %}({% trans "idag" %}){% else %}({% trans "nuv vecka" %}){% endif %}
+    {% endif %}{% endblock %}
+
+{% block customscripts %}
+    <script src="{% static 'vendor/awesomplete.min.js' %}"></script>
+    <script src="{% static 'vendor/Chart.bundle.min.js' %}"></script>
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+        tajmme.fire("progressform:init");
+        tajmme.fire("vendor:awesomplete:init");
+        tajmme.fire("vendor:chart:barchart");
+        tajmme.fire("vendor:chart:hbarchart");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="wrap wrap-top line line-bot">
+        <div class="line weeknav">
+            <a class="tar" title="{% trans 'Vecka' %} {{ prev_week.1 }}"
+               href="{% url "anyday" year=prev_week.0 week_label=prev_week.1 day=5 %}">← {{ prev_week.1 }}</a>
+
+            <h1 class="h" title="{{ year|pretty_period:week }}" data-tt>{% trans 'Vecka' %} {{ week }}</h1>
+
+            <a class="tal" title="{% trans 'Vecka' %} {{ next_week.1 }}"
+               href="{% url "anyday" year=next_week.0 week_label=next_week.1 day=1 %}">{{ next_week.1 }} →</a>
+        </div>
+
+
+        <ul class="line daynav bot tac">
+            {% for num, date in weekdays %}
+                {% if num == day or day == 0 and num == 7 %}
+                    <li><strong
+                            class="daynav-item daynav-current{% if forloop.first %} daynav-first{% endif %}{% if forloop.last %} daynav-last{% endif %}">{{ date|date:"D"|title }}
+                        <em>{{ date|date:"j" }}</em></strong></li>
+                {% else %}
+                    <li><a href="{% url "anyday" year=year week_label=week day=num %}"
+                           class="daynav-item{% if forloop.first %} daynav-first{% endif %}{% if forloop.last %} daynav-last{% endif %}">{{ date|date:"D"|title }}
+                        <em>{{ date|date:"j" }}</em></a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+    <div class="wrap wrap-dayreporter">
+        <form action="{{ request.path }}" method="post" class="line line-bot line-progress card">
+            {% csrf_token %}
+            {{ progress_form.non_field_errors }}
+            {{ progress_form.done_at.as_hidden }}
+
+
+            {% include "_progressform.html" %}
+
+
+            <input type="submit" value="{% trans "Rapportera" %}" class="btn">
+        </form>
+
+        {% if project_count == 0 and not absences %}
+            <h2 class="h">{% trans "Ingen tid rapporterad idag, njut av ledigheten!" %}<br>
+                <small>{% trans "eller se till att rapportera snart." %}</small>
+            </h2>
+        {% else %}
+            {% if project_count == 0 %}
+                <h2 class="h">{% trans "Ingen tid inrapporterad" %}
+                    {% if absences %}
+                        <small>{% trans "men" %} {{ absence_count }} {% trans "frånvaro" %}</small>
+                    {% endif %}
+                </h2>
+            {% else %}
+                <h2 class="h">{{ minute_count|pretty_minutes }} {% trans "i" %} {{ project_count }} {% trans "projekt" %}
+                    {% if absences %}
+                        <small>{% trans "med" %} {{ absence_count }} {% trans "frånvaro" %}</small>
+                    {% endif %}
+                </h2>
+            {% endif %}
+
+            <table>
+                <thead>
+                <tr>
+                    <th>{% trans "Tid" %}</th>
+                    <th>{% trans "Projekt" %}</th>
+                    <th>{% trans "Anteckning" %}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for progress in progresses %}
+                    <tr>
+                        <td>+{{ progress.duration|hhmm }}</td>
+                        <td>{{ progress.project.name }}</td>
+                        <td>
+                            <a href="{% url "edit_progress" year=year week_label=week day=day progress_id=progress.id %}">{{ progress.note }}</a>
+                        </td>
+                        <td><a class="btn"
+                               href="{% url "delete_progress" year=year week_label=week day=day progress_id=progress.id %}">x</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% for absence in absences %}
+                    <tr>
+                        <td>-{{ absence.duration|hhmm }}</td>
+                        <td>{{ absence.category.name }}</td>
+                        <td>{{ absence.note }}</td>
+                        <td><a class="btn" href="{% url "delete_absence" absence_id=absence.id %}">x</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+
+
+    <div class="wrap line">
+        <h2 class="h">{% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}</h2>
+        <p class="line">
+            <span>Spara all tid som: &nbsp; </span>
+            <a href="#" class="btn btn-first">CSV</a><a href="#" class="btn btn-ingroup">JSON</a><a href="#" class="btn btn-last">XML</a>
+        </p>
+    </div>
+    <div class="wrap wrap-dayreporter">
+        <div class="line line-justified tac">
+            <dl>
+                <dt>{% trans 'Projekt' %}</dt>
+                <dd>{{ ww_project_count }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Debiteringsgrad' %}</dt>
+                <dd>{{ ww_billable }}%</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Interntid' %}</dt>
+                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Frånvaro' %}</dt>
+                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
+            </dl>
+        </div>
+
+        <h2 class="h">{% trans 'Tid dag för dag' %} <small>debiterbart, internt och frånvaro</small></h2>
+        <canvas data-bar-chart-time data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="1200" height="500"></canvas>
+
+        <h2 class="h">{% trans 'Tid, fördelat över projekt' %}</h2>
+        <canvas data-bar-chart-projects data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="1200" height="500"></canvas>
+    </div>
+{% endblock %}
