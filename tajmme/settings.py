@@ -70,13 +70,13 @@ ROOT_URLCONF = 'tajmme.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        #'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'core/templates')],
+        'APP_DIRS': True,
         'OPTIONS': {
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ],
+            #'loaders': [
+            #    'django.template.loaders.filesystem.Loader',
+            #    'django.template.loaders.app_directories.Loader',
+            #],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
