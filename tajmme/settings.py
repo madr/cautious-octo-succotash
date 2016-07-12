@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'corsheaders',
-    'django_gravatar',
     'haystack',
     'oauth2_provider',
     'rest_framework',
@@ -71,7 +70,7 @@ ROOT_URLCONF = 'tajmme.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['tajmme/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'core/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -237,6 +236,7 @@ KEEP_COMMENTS_ON_MINIFYING = True
 
 # Haystack
 # http://django-haystack.readthedocs.io/en/v2.4.1/tutorial.html
+# todo: make this heroku compatible
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_ENGINE', 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine'),

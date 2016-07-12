@@ -230,6 +230,11 @@ def _get_home_context(progress_form, user, year, week_label, day):
     ww_minute_count = sum([p.duration for p in whole_week_progresses])
     ww_billable = sum([p.duration for p in whole_week_progresses.filter(project__billable=True)])
 
+    try:
+        ww_billable_pc = int((ww_billable  / float(ww_minute_count)) * 100)
+    except ZeroDivisionError:
+        ww_billable_pc = 0
+
     context = {
         'weekdays': TimeUtil.num_name_date(year, week_label),
         'week': week_label,
@@ -251,7 +256,7 @@ def _get_home_context(progress_form, user, year, week_label, day):
         'ww_absence_count': ww_absence_count,
         'ww_project_count': ww_project_count,
         'ww_minute_count': ww_minute_count,
-        'ww_billable': int((ww_billable  / float(ww_minute_count)) * 100),
+        'ww_billable': ww_billable_pc,
         'ww_nonbillable_count': ww_minute_count - ww_billable
     }
 
