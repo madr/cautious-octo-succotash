@@ -161,7 +161,7 @@ def _get_edit_progress_context(form, year, week_label, day, progress_id):
             'done_at': progress.done_at,
             'note': progress.note,
             'duration': TimeUtil.hhmm(progress.duration),
-            'project': progress.project.name
+            'project_or_absence_category': progress.project.name
         })
 
     context = {

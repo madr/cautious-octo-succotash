@@ -34,8 +34,8 @@
 </div>
 <div class="relpos">
     <label for="id_project">{% trans "Kund, projekt eller frånvaroskäl" %}</label>
-    <input data-project-autocomplete class="fld" id="id_project" {% if progress_form.project.value != None %}
-           value="{{ progress_form.project.value }}"{% endif %} name="project_or_absence_category"
+    <input data-project-autocomplete class="fld" id="id_project" {% if progress_form.project_or_absence_category.value != None %}
+           value="{{ progress_form.project_or_absence_category.value }}"{% endif %} name="project_or_absence_category"
            placeholder="{% trans 'Nya projekt skapas automatiskt' %}">
 </div>
 <div>
