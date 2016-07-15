@@ -73,13 +73,13 @@
             {% if project_count == 0 %}
                 <h2 class="h">{% trans "Ingen tid inrapporterad" %}
                     {% if absences %}
-                        <small>{% trans "men" %} {{ absence_count }} {% trans "frånvaro" %}</small>
+                        <small>{% trans "men" %} {{ absence_count|pretty_minutes }} {% trans "frånvaro" %}</small>
                     {% endif %}
                 </h2>
             {% else %}
                 <h2 class="h">{{ minute_count|pretty_minutes }} {% trans "i" %} {{ project_count }} {% trans "projekt" %}
                     {% if absences %}
-                        <small>{% trans "med" %} {{ absence_count }} {% trans "frånvaro" %}</small>
+                        <small>{% trans "med" %} {{ absence_count|pretty_minutes }} {% trans "frånvaro" %}</small>
                     {% endif %}
                 </h2>
             {% endif %}
