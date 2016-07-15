@@ -969,7 +969,7 @@
             from_date = cvs.dataset.startdate,
             to_date = cvs.dataset.enddate;
 
-        ajax.open('GET', '/chart-data/bar-chart.js?from=' + from_date + '&to=' + to_date, true);
+        ajax.open('GET', '/chartsjs/week_chart.js?from=' + from_date + '&to=' + to_date, true);
         ajax.onload = function () {
             var data = JSON.parse(ajax.responseText),
                 myBarChart = new Chart(cvs, {
@@ -990,7 +990,7 @@
             from_date = cvs.dataset.startdate,
             to_date = cvs.dataset.enddate;
 
-        ajax.open('GET', '/chart-data/horizontal-bar-chart.js?from=' + from_date + '&to=' + to_date, true);
+        ajax.open('GET', '/chartsjs/projects_chart.js?from=' + from_date + '&to=' + to_date, true);
         ajax.onload = function () {
             var data = JSON.parse(ajax.responseText),
                 myBarChart = new Chart(cvs, {

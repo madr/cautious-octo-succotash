@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from haystack.views import FacetedSearchView, SearchView
 
 from core.models import Progress, Absence
+from dashboard.lib import get_project_data, get_week_data
 
 
 @login_required
@@ -24,27 +25,7 @@ def time_comparison_bar_chart_data(request):
     else:
         end_date = datetime.date.today()
 
-    progresses = Progress.objects.filter(user=request.user, done_at__gte=start_date, done_at__lte=end_date)
-    absences = Absence.objects.filter(user=request.user, done_at__gte=start_date, done_at__lte=end_date)
-
-    td = datetime.timedelta(days=1)
-
-    ends_at = datetime.datetime.strptime(end_date, "%Y-%m-%d")
-
-    datasets = list()
-
-    for progs in [progresses.filter(project__billable=True), progresses.filter(project__billable=False), absences]:
-        d = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-        labels = list()
-        values = list()
-
-        while d <= ends_at:
-            values.append(sum([p.duration / 60.0 for p in progs.filter(done_at=d)]))
-            labels.append(d.strftime('%a'))
-
-            d += td
-
-        datasets.append(dict(data=values))
+    datasets, labels = get_project_data(start_date, end_date, request.user)
 
     data = dict(datasets=datasets, labels=labels)
 
@@ -63,15 +44,7 @@ def projects_bar_chart_data(request):
     else:
         end_date = datetime.date.today()
 
-    progresses = Progress.objects.filter(user=request.user, done_at__gte=start_date, done_at__lte=end_date)
-    projects = sorted(set([p.project.name for p in progresses]))
-
-    values = list()
-    labels = list()
-
-    for project in projects:
-        values.append(sum([p.duration / 60.0 for p in progresses.filter(project__name=project)]))
-        labels.append(project)
+    values, labels = get_week_data(start_date, end_date, request.user)
 
     data = dict(datasets=[dict(data=values)], labels=labels)
 

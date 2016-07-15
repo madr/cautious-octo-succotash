@@ -213,6 +213,10 @@ canvas {
     list-style: none;
 }
 
+.line-rev {
+    flex-direction: row-reverse;
+}
+
 .line-justified > * {
     flex: 1;
 }
@@ -359,13 +363,18 @@ a.btn {
 /* Headings
    =============================================================== */
 
-.h {
+.h2 {
     font-size: 1.66em;
     margin: 1em 0 .5em;
 }
 
-.h[data-tt] {
-    margin: 0;
+.h1 {
+    font-size: 2.33em;
+    margin: 1em 0 .5em;
+}
+
+.h2[data-tt] {
+    margin: 0 .5em;
 }
 
 
@@ -465,7 +474,7 @@ a.btn {
 .weeknav {
     width: 30%;
     padding-bottom: 10px;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
 @media all and (max-width: 900px) {
