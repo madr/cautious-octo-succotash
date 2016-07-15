@@ -227,6 +227,13 @@ canvas {
     align-items: flex-start;
     align-content: flex-start;
 }
+.grid-7525 > :first-child {
+    width: 74%;
+}
+
+.grid-7525 > :last-child {
+    width: 24%;
+}
 
 .s1of2 { width: calc(50% - 10px); }
 .s1of3 { width: calc(33% - 10px); }
@@ -241,6 +248,7 @@ canvas {
 .wrap {
     padding: 10px;
     min-width: 16em;
+    box-sizing: border-box;
 }
 
 .wrap-dayreporter {

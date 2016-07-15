@@ -120,13 +120,9 @@
 
     <div class="wrap line">
         <h2 class="h1">{% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}</h2>
-        <p class="line">
-            <span>Spara all tid som: &nbsp; </span>
-            <a href="#" class="btn btn-first">CSV</a><a href="#" class="btn btn-ingroup">JSON</a><a href="#" class="btn btn-last">XML</a>
-        </p>
     </div>
-    <div class="wrap wrap-dayreporter">
-        <div class="line line-justified tac">
+    <div class="wrap">
+        <div class="line tac wrap-dayreporter">
             <dl>
                 <dt>{% trans 'Projekt' %}</dt>
                 <dd>{{ ww_project_count }}</dd>
@@ -144,15 +140,15 @@
                 <dd>{{ ww_absence_count|pretty_minutes }}</dd>
             </dl>
         </div>
-
-        <div class="line line-justified tac">
-            <div>
-                <h2 class="h">{% trans 'Tid dag för dag' %} <small>debiterbart, internt och frånvaro</small></h2>
-                <canvas data-bar-chart-time data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="1200" height="500"></canvas>
+        <br>
+        <div class="line grid grid-7525">
+            <div class="wrap wrap-dayreporter">
+                <h2 class="h2">{% trans 'Tid, fördelat över projekt' %}</h2>
+                <canvas data-bar-chart-projects data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="600" height="300"></canvas>
             </div>
-            <div>
-                <h2 class="h">{% trans 'Tid, fördelat över projekt' %}</h2>
-                <canvas data-bar-chart-projects data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="1200" height="500"></canvas>
+            <div class="wrap wrap-dayreporter">
+                <h2 class="h2">{% trans 'Tid dag för dag' %} <small>debiterbart, internt och frånvaro</small></h2>
+                <canvas data-bar-chart-time data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="600" height="300"></canvas>
             </div>
         </div>
     </div>
