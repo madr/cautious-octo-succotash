@@ -34,48 +34,6 @@
         ajax.send();
     });
 
-    g.tajmme.add('vendor:chart:barchart', function () {
-        Chart.defaults.global.animation.duration = 0;
-        var ajax = new XMLHttpRequest(),
-            cvs = document.querySelector('[data-bar-chart-time]'),
-            from_date = cvs.dataset.startdate,
-            to_date = cvs.dataset.enddate;
-
-        ajax.open('GET', '/chartsjs/week_chart.js?from=' + from_date + '&to=' + to_date, true);
-        ajax.onload = function () {
-            var data = JSON.parse(ajax.responseText),
-                myBarChart = new Chart(cvs, {
-                type: 'bar',
-                data: data,
-                options: {
-                    responsive: false
-                }
-            });
-        };
-        ajax.send();
-    });
-
-    g.tajmme.add('vendor:chart:hbarchart', function () {
-        Chart.defaults.global.animation.duration = 0;
-        var ajax = new XMLHttpRequest(),
-            cvs = document.querySelector('[data-bar-chart-projects]'),
-            from_date = cvs.dataset.startdate,
-            to_date = cvs.dataset.enddate;
-
-        ajax.open('GET', '/chartsjs/projects_chart.js?from=' + from_date + '&to=' + to_date, true);
-        ajax.onload = function () {
-            var data = JSON.parse(ajax.responseText),
-                myBarChart = new Chart(cvs, {
-                type: 'horizontalBar',
-                data: data,
-                options: {
-                    responsive: false
-                }
-            });
-        };
-        ajax.send();
-    });
-
     g.tajmme.add('progressform:init', function () {
         var timespent;
 
