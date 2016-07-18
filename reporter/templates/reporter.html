@@ -121,35 +121,78 @@
     <div class="wrap line">
         <h2 class="h1">{% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}</h2>
     </div>
-    <div class="wrap">
-        <div class="line tac wrap-dayreporter">
-            <dl>
-                <dt>{% trans 'Projekt' %}</dt>
-                <dd>{{ ww_project_count }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Debiteringsgrad' %}</dt>
-                <dd>{{ ww_billable }}%</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Interntid' %}</dt>
-                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Frånvaro' %}</dt>
-                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
-            </dl>
+
+    <div class="line line-justified grid">
+        <dl class="wrap">
+            <dt>{% trans 'Projekt' %}</dt>
+            <dd>{{ ww_project_count }}</dd>
+        </dl>
+        <dl class="wrap">
+            <dt>{% trans 'Debiteringsgrad' %}</dt>
+            <dd>{{ ww_billable }}%</dd>
+        </dl>
+        <dl class="wrap">
+            <dt>{% trans 'Interntid' %}</dt>
+            <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
+        </dl>
+        <dl class="wrap">
+            <dt>{% trans 'Frånvaro' %}</dt>
+            <dd>{{ ww_absence_count|pretty_minutes }}</dd>
+        </dl>
+    </div>
+    <br>
+    <div class="line line-justified grid">
+        <div class="wrap wrap-dayreporter">
+            <h2 class="h2">{% trans 'Tid, fördelat över projekt' %}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Typ' %}</th>
+                        <th>{% trans 'Tid' %}</th>
+                        <th>{% trans 'Projekt' %}</th>
+                        <th>{% trans 'Rader' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in ww_project_toplist %}
+                        <tr {% if p.billable == False %}class="row-nonbillable"{% endif %}>
+                            <td>
+                                {% if p.billable == False %}
+                                    <i class="label label-nonbillable">{% trans 'Internt' %}</i>
+                                {% endif %}
+                            </td>
+                            <td>{{ p.sum|hhmm }}</td>
+                            <td>{{ p.name }}</td>
+                            <td>{{ p.count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <br>
-        <div class="line grid grid-7525">
-            <div class="wrap wrap-dayreporter">
-                <h2 class="h2">{% trans 'Tid, fördelat över projekt' %}</h2>
-                <canvas data-bar-chart-projects data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="600" height="300"></canvas>
-            </div>
-            <div class="wrap wrap-dayreporter">
-                <h2 class="h2">{% trans 'Tid dag för dag' %} <small>debiterbart, internt och frånvaro</small></h2>
-                <canvas data-bar-chart-time data-startdate='{{ week_start|date:'Y-m-d' }}' data-enddate='{{ week_end|date:'Y-m-d' }}' width="600" height="300"></canvas>
-            </div>
+        <div class="wrap wrap-dayreporter">
+            <h2 class="h2">{% trans 'Tid dag för dag' %} <small>debiterbart, internt och frånvaro</small></h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Dag' %}</th>
+                        <th>{% trans 'Tid' %}</th>
+                        <th>{% trans 'Frånvaro' %}</th>
+                        <th>{% trans 'Rader' %}</th>
+                        <th>{% trans 'Projekt' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in ww_summary %}
+                        <tr>
+                            <td>{{ s.day }}</td>
+                            <td>{% if s.sum == 0 %}-{% else %}{{ s.sum|hhmm }}{% endif %}</td>
+                            <td>{% if s.absences == 0 %}-{% else %}{{ s.absences|hhmm }}{% endif %}</td>
+                            <td>{% if s.progresses == 0 %}-{% else %}{{ s.progresses }}{% endif %}</td>
+                            <td>{% if s.projects == 0 %}-{% else %}{{ s.projects }}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

@@ -3,7 +3,7 @@ import datetime
 from core.models import Progress, Absence
 
 
-def get_project_data(start_date, end_date, user=None):
+def get_week_data(start_date, end_date, user=None):
     progresses = Progress.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
     absences = Absence.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
 
@@ -13,38 +13,42 @@ def get_project_data(start_date, end_date, user=None):
 
     td = datetime.timedelta(days=1)
 
-    ends_at = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+    d = start_date
+    values = list()
 
-    datasets = list()
+    while d <= end_date:
+        progs_day = progresses.filter(done_at=d)
 
-    for progs in [progresses.filter(project__billable=True), progresses.filter(project__billable=False), absences]:
-        d = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-        labels = list()
-        values = list()
+        values.append(dict(
+            day=d.strftime('%a'),
+            sum=sum([p.duration for p in progs_day]),
+            absences=sum([p.duration for p in absences.filter(done_at=d)]),
+            progresses=progs_day.count(),
+            projects=len(set([p.project.name for p in progs_day])),
+        ))
 
-        while d <= ends_at:
-            values.append(sum([p.duration / 60.0 for p in progs.filter(done_at=d)]))
-            labels.append(d.strftime('%a'))
+        d += td
 
-            d += td
+    return values
 
-        datasets.append(dict(data=values))
 
-    return datasets, labels
-
-def get_week_data(start_date, end_date, user=None):
+def get_project_data(start_date, end_date, user=None):
     progresses = Progress.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
 
     if user:
-        progresses = Progress.objects.filter(user=user)
+        progresses = progresses.filter(user=user)
 
     projects = sorted(set([p.project.name for p in progresses]))
 
     values = list()
-    labels = list()
 
     for project in projects:
-        values.append(sum([p.duration / 60.0 for p in progresses.filter(project__name=project)]))
-        labels.append(project)
+        project_progresses = progresses.filter(project__name=project)
+        values.append(dict(
+            billable=project_progresses.first().project.billable,
+            name=project,
+            sum=(sum([p.duration for p in project_progresses])),
+            count=len(project_progresses)
+        ))
 
-    return values, labels
+    return values

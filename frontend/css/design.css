@@ -709,47 +709,73 @@ div.awesomplete > ul:empty {
 	}
 }
 
-	/* Pointer */
-	div.awesomplete > ul:before {
-		content: "";
-		position: absolute;
-		top: -.43em;
-		left: 1em;
-		width: 0; height: 0;
-		padding: .4em;
-		background: white;
-		border: inherit;
-		border-right: 0;
-		border-bottom: 0;
-		-webkit-transform: rotate(45deg);
-		transform: rotate(45deg);
-	}
+/* Pointer */
+div.awesomplete > ul:before {
+    content: "";
+    position: absolute;
+    top: -.43em;
+    left: 1em;
+    width: 0; height: 0;
+    padding: .4em;
+    background: white;
+    border: inherit;
+    border-right: 0;
+    border-bottom: 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
 
-	div.awesomplete > ul > li {
-		position: relative;
-		padding: .2em .5em;
-		cursor: pointer;
-	}
+div.awesomplete > ul > li {
+    position: relative;
+    padding: .2em .5em;
+    cursor: pointer;
+}
 
-	div.awesomplete > ul > li:hover {
-		background: hsl(200, 40%, 80%);
-		color: black;
-	}
+div.awesomplete > ul > li:hover {
+    background: hsl(200, 40%, 80%);
+    color: black;
+}
 
-	div.awesomplete > ul > li[aria-selected="true"] {
-		background: hsl(205, 40%, 40%);
-		color: white;
-	}
+div.awesomplete > ul > li[aria-selected="true"] {
+    background: hsl(205, 40%, 40%);
+    color: white;
+}
 
-		div.awesomplete mark {
-			background: hsl(65, 100%, 50%);
-		}
+div.awesomplete mark {
+    background: hsl(65, 100%, 50%);
+}
 
-		div.awesomplete li:hover mark {
-			background: hsl(68, 100%, 41%);
-		}
+div.awesomplete li:hover mark {
+    background: hsl(68, 100%, 41%);
+}
 
-		div.awesomplete li[aria-selected="true"] mark {
-			background: hsl(86, 100%, 21%);
-			color: inherit;
-		}
+div.awesomplete li[aria-selected="true"] mark {
+    background: hsl(86, 100%, 21%);
+    color: inherit;
+}
+
+
+/* SVG graphs:
+   https://leaverou.github.io/awesomplete/
+   =============================================================== */
+
+.bar-single {
+    width: 100%;
+    height: .33em;
+}
+
+.bar-progress {
+    fill: #066;
+}
+
+.bar-nonbillable {
+    fill: #999;
+}
+
+.bar-billable {
+    fill: #066;
+}
+
+.bar-absence {
+    fill: #990;
+}

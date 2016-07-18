@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
 from core.models import Project, AbsenceCategory
-from reporter.lib import ProgressAbsenceEditForm, _delete_progress, _save_progress, _get_home_context, _get_edit_progress_context, \
+from reporter.lib import ProgressAbsenceEditForm, _delete_progress, _save_progress, _get_reporter_context, _get_edit_progress_context, \
     ProgressAbsenceForm, _save_absence, _delete_absence
 
 
@@ -18,11 +18,11 @@ def report(request, year=None, week_label=None, day=None):
 
             return absence_saved if absence_saved else _save_progress(request.user, form)
         else:
-            context = _get_home_context(form, request.user, year, week_label, day)
+            context = _get_reporter_context(form, request.user, year, week_label, day)
 
             return render(request, 'reporter.html', context)
     else:
-        context = _get_home_context(None, request.user, year, week_label, day)
+        context = _get_reporter_context(None, request.user, year, week_label, day)
 
         return render(request, 'reporter.html', context)
 
