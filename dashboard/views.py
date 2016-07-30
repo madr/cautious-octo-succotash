@@ -6,7 +6,7 @@ from haystack.views import FacetedSearchView, SearchView
 from core.lib import TimeUtil
 
 from core.models import Progress, Absence
-from dashboard.lib import get_project_data, get_week_data
+from dashboard.lib import get_project_data, get_week_data, get_absence_data
 
 
 @login_required
@@ -83,6 +83,7 @@ def week_summary(request, year, week_label):
     ww_billable = sum([p.duration for p in progresses.filter(project__billable=True)])
 
     ww_project_toplist = get_project_data(week_start, week_end, user)
+    ww_absence_toplist = get_absence_data(week_start, week_end, user)
     ww_summary = get_week_data(week_start, week_end, user)
 
     try:
@@ -134,6 +135,8 @@ def week_summary(request, year, week_label):
         'ww_billable': ww_billable_pc,
         'ww_nonbillable_count': ww_minute_count - ww_billable,
         'ww_project_toplist': ww_project_toplist,
+
+        'ww_absence_toplist': ww_absence_toplist,
 
         'ww_max_project_toplist_sum': ww_max_project_toplist_sum,
         'ww_max_project_toplist_count': ww_max_project_toplist_count,

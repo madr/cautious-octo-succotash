@@ -52,3 +52,24 @@ def get_project_data(start_date, end_date, user=None):
         ))
 
     return values
+
+
+def get_absence_data(start_date, end_date, user=None):
+    absences = Absence.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
+
+    if user:
+        absences = absences.filter(user=user)
+
+    absence_categories = sorted(set([p.category.name for p in absences]))
+
+    values = list()
+
+    for absence in absence_categories:
+        absences_by_this_category = absences.filter(category__name=absence)
+        values.append(dict(
+            name=absence,
+            sum=(sum([p.duration for p in absences_by_this_category])),
+            count=len(absences_by_this_category)
+        ))
+
+    return values
