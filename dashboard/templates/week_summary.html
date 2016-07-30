@@ -85,23 +85,11 @@
                                 <td>{{ p.name }}</td>
                                 <td>
                                     {{ p.sum|hhmm }}<br>
-                                    {% if ww_max_project_toplist_sum %}
-                                        {% if p.billable == False %}
-                                            {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum color='nonbillable' only %}
-                                        {% else %}
-                                            {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum only %}
-                                        {% endif %}
-                                    {% endif %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_absence_toplist_sum bar_value=p.sum color='absence' only %}
                                 </td>
                                 <td>
                                     {{ p.count }}<br>
-                                    {% if ww_max_project_toplist_count %}
-                                        {% if p.billable == False %}
-                                            {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count color='nonbillable' only %}
-                                        {% else %}
-                                            {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count only %}
-                                        {% endif %}
-                                    {% endif %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_absence_toplist_count bar_value=p.count color='absence' only %}
                                 </td>
                             </tr>
                         {% endfor %}

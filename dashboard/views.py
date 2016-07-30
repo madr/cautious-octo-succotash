@@ -97,6 +97,16 @@ def week_summary(request, year, week_label):
         ww_max_project_toplist_count = None
 
     try:
+        ww_max_absence_toplist_sum = max([v['sum'] for v in ww_absence_toplist])
+    except ValueError:
+        ww_max_absence_toplist_sum = None
+
+    try:
+        ww_max_absence_toplist_count = max([v['count'] for v in ww_absence_toplist])
+    except ValueError:
+        ww_max_absence_toplist_count = None
+
+    try:
         ww_max_summary_progresses = max([v['progresses'] for v in ww_summary])
     except ValueError:
         ww_max_summary_progresses = None
@@ -138,6 +148,8 @@ def week_summary(request, year, week_label):
 
         'ww_absence_toplist': ww_absence_toplist,
 
+        'ww_max_absence_toplist_sum': ww_max_absence_toplist_sum,
+        'ww_max_absence_toplist_count': ww_max_absence_toplist_count,
         'ww_max_project_toplist_sum': ww_max_project_toplist_sum,
         'ww_max_project_toplist_count': ww_max_project_toplist_count,
         'ww_max_summary_progresses': ww_max_summary_progresses,
