@@ -15,20 +15,39 @@
 <body>
 {% if user.is_authenticated %}
     <div class="wrap wrap-nav">
-        <ul class="line nav">
-            <li class="tal">
-                <a href="{% url 'dashboard' %}" class="btn">{% trans 'Dashboard' %}</a>
-            </li>
-            <li class="tac">
-                <a class="a" href="#"><img src="https://secure.gravatar.com/avatar/{{ user.email|gravatar }}.jpg?r=g&s=64&d=mm" alt="{{ user }}" class="gravatar"></a>
-            </li>
-            <li class="tar">
-                <a href="{% url 'today' %}" class="btn">{% trans 'Rapportera tid' %}</a>
-            </li>
-        </ul>
+        <div class="line">
+            <ul class="line nav tal">
+                <li>
+                    <a href="{% url 'dashboard' %}">{% trans 'Rapporter' %}</a>
+                </li>
+                <li>
+                    <a href="#">Projekt</a>
+                </li>
+                <li>
+                    <a href="#">Personer</a>
+                </li>
+                <li>
+                    <a href="#">Händelser</a>
+                </li>
+            </ul>
+            <div class="tar">
+            <a class="tac a" href="#"><img src="https://secure.gravatar.com/avatar/{{ user.email|gravatar }}.jpg?r=g&s=64&d=mm" alt="{{ user }}" class="gravatar"></a>
+            <a href="{% url 'today' %}" class="btn">{% trans 'Rapportera tid' %}</a>
+            </div>
+        </div>
     </div>
 {% endif %}
 {% block content %}{% endblock %}
+<footer>
+    <div class="line wrap">
+        <p>Drivs av <a class="a" href="https://tidrapporteringsuger.se">Tajm</a>, för att tidrapportering suger.</p>
+        <ul class="line nav">
+            <li><a class="a" href="https://help.tajm.me">Dokumentation</a></li>
+            <li><a class="a" href="https://developer.tajm.me">API och utvecklarinfo</a></li>
+            <li><a class="a" href="https://tajmme.tumblr.com">Changelog</a></li>
+        </ul>
+    </div>
+</footer>
 <script src="{% static "app.min.js" %}"></script>
 <script>tajmme.fire("init");</script>
 {% block customscripts %}{% endblock %}
