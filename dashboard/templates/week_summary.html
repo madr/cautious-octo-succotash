@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{{ date|date:"l"|capfirst }} {% trans "vecka" %} {{ week }}
+    {% if is_index == True %}{% if is_today == True %}({% trans "idag" %}){% else %}({% trans "nuv vecka" %}){% endif %}
+    {% endif %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrap line">
+            <a class="tar" title="{% trans 'Vecka' %} {{ prev_week.1 }}"
+               href="{% url "week_summary" year=prev_week.0 week_label=prev_week.1 %}">← {{ prev_week.1 }}</a>
+
+            <h1 class="h2" title="{{ year|pretty_period:week }}" data-tt>{% trans 'Vecka' %} {{ week }}</h1>
+
+            <a class="tal" title="{% trans 'Vecka' %} {{ next_week.1 }}"
+               href="{% url "week_summary" year=next_week.0 week_label=next_week.1 %}">{{ next_week.1 }} →</a>
+    </div>
+
+    <div class="wrap wrap-card">
+        <h2 class="wrap wrap-card-hd line">
+            {% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}
+        </h2>
+        <div class="line line-justified grid">
+            <dl>
+                <dt>{% trans 'Projekt' %}</dt>
+                <dd>{{ ww_project_count }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Debiteringsgrad' %}</dt>
+                <dd>{{ ww_billable }}%</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Rader' %}</dt>
+                <dd>{{ ww_progresses_count }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Interntid' %}</dt>
+                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Frånvaro' %}</dt>
+                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
+            </dl>
+        </div>
+    </div>
+
+
+    <div class="line line-justified grid">
+        <div class="wrap wrap-card">
+            <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th class="col-50">{% trans 'Projekt' %}</th>
+                    <th class="col-25">{% trans 'Tid' %}</th>
+                    <th class="col-25">{% trans 'Rader' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in ww_project_toplist %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td>
+                            {{ p.sum|hhmm }}<br>
+                            {% if ww_max_project_toplist_sum %}
+                                {% if p.billable == False %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum color='nonbillable' only %}
+                                {% else %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum only %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ p.count }}<br>
+                            {% if ww_max_project_toplist_count %}
+                                {% if p.billable == False %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count color='nonbillable' only %}
+                                {% else %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count only %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="wrap wrap-card">
+            <h2 class="wrap wrap-card-hd">{% trans 'Tid dag för dag' %}
+                <small>{% trans 'debiterbart, internt och frånvaro' %}</small>
+            </h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>{% trans 'Dag' %}</th>
+                    <th>{% trans 'Tid' %}</th>
+                    <th class="absence">{% trans 'Frånvaro' %}</th>
+                    <th>{% trans 'Rader' %}</th>
+                    <th>{% trans 'Projekt' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in ww_summary %}
+                    <tr>
+                        <td>{{ s.day }}</td>
+                        <td>
+                            {% if s.sum == 0 %}-{% else %}
+                                {{ s.sum|hhmm }}<br>
+                                {% if ww_max_summary_sum %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_summary_sum bar_value=s.sum only %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if s.absences == 0 %}-{% else %}{{ s.absences|hhmm }}{% endif %}
+                        </td>
+                        <td>
+                            {% if s.progresses == 0 %}-{% else %}
+                                {{ s.progresses }}<br>
+                                {% if ww_max_summary_progresses %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_summary_progresses bar_value=s.progresses only %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if s.projects == 0 %}-{% else %}
+                                {{ s.projects }}<br>
+                                {% if ww_max_summary_projects %}
+                                    {% include 'charts/bar.html' with bar_max=ww_max_summary_projects bar_value=s.projects only %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+{% endblock %}
