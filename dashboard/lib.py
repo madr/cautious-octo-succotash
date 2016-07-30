@@ -20,7 +20,7 @@ def get_week_data(start_date, end_date, user=None):
         progs_day = progresses.filter(done_at=d)
 
         values.append(dict(
-            day=d.strftime('%a'),
+            day=d,
             sum=sum([p.duration for p in progs_day]),
             absences=sum([p.duration for p in absences.filter(done_at=d)]),
             progresses=progs_day.count(),

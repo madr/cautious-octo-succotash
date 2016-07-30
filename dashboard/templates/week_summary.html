@@ -84,7 +84,7 @@
                 <tbody>
                 {% for s in ww_summary %}
                     <tr>
-                        <td>{{ s.day }}</td>
+                        <td>{{ s.day|date:'D'|capfirst }}</td>
                         <td>
                             {% if s.sum == 0 %}-{% else %}
                                 {{ s.sum|hhmm }}<br>
