@@ -18,43 +18,14 @@
 {% block content %}
 
     <div class="wrap line">
-            <a class="tar" title="{% trans 'Vecka' %} {{ prev_week.1 }}"
-               href="{% url "week_summary" year=prev_week.0 week_label=prev_week.1 %}">← {{ prev_week.1 }}</a>
+        <a class="tar" title="{% trans 'Vecka' %} {{ prev_week.1 }}"
+           href="{% url "week_summary" year=prev_week.0 week_label=prev_week.1 %}">← {{ prev_week.1 }}</a>
 
-            <h1 class="h2" title="{{ year|pretty_period:week }}" data-tt>{% trans 'Vecka' %} {{ week }}</h1>
+        <h1 class="h2" title="{{ year|pretty_period:week }}" data-tt>{% trans 'Vecka' %} {{ week }}</h1>
 
-            <a class="tal" title="{% trans 'Vecka' %} {{ next_week.1 }}"
-               href="{% url "week_summary" year=next_week.0 week_label=next_week.1 %}">{{ next_week.1 }} →</a>
+        <a class="tal" title="{% trans 'Vecka' %} {{ next_week.1 }}"
+           href="{% url "week_summary" year=next_week.0 week_label=next_week.1 %}">{{ next_week.1 }} →</a>
     </div>
-
-    <div class="wrap wrap-card">
-        <h2 class="wrap wrap-card-hd line">
-            {% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}
-        </h2>
-        <div class="line line-justified grid">
-            <dl>
-                <dt>{% trans 'Projekt' %}</dt>
-                <dd>{{ ww_project_count }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Debiteringsgrad' %}</dt>
-                <dd>{{ ww_billable }}%</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Rader' %}</dt>
-                <dd>{{ ww_progresses_count }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Interntid' %}</dt>
-                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Frånvaro' %}</dt>
-                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
-            </dl>
-        </div>
-    </div>
-
 
     <div class="line line-justified grid">
         <div class="wrap wrap-card">
@@ -149,4 +120,65 @@
 
 
     </div>
+
+    <div class="wrap wrap-card">
+        <h2 class="wrap wrap-card-hd line">
+            {% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}
+        </h2>
+        <div class="line line-justified grid card">
+            <dl>
+                <dt>{% trans 'Projekt' %}</dt>
+                <dd>{{ ww_project_count }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Debiteringsgrad' %}</dt>
+                <dd>{{ ww_billable }}%</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Rader' %}</dt>
+                <dd>{{ ww_progresses_count }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Interntid' %}</dt>
+                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Frånvaro' %}</dt>
+                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
+            </dl>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th class="col-duration">{% trans "Tid" %}</th>
+                <th class="col-25">{% trans "Projekt" %}</th>
+                <th>{% trans "Anteckning" %}</th>
+                <th class="col-delete">{% trans "Datum" %}</th>
+            </tr>
+            </thead>
+            {% for progress in progresses %}
+                <tr>
+                    <td class="col-duration">+{{ progress.duration|hhmm }}</td>
+                    <td>{{ progress.project.name }}</td>
+                    <td>
+                    <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
+                    </td>
+                    <td>{{ progress.done_at|date:'d/m' }}</td>
+                </tr>
+            {% endfor %}
+            {% for absence in absences %}
+                <tr>
+                    <td class="col-duration">-{{ absence.duration|hhmm }}</td>
+                    <td>{{ absence.category.name }}</td>
+                    <td>{{ absence.note }}</td>
+                    <td>{{ absence.done_at|date:'d/m' }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+
+
 {% endblock %}

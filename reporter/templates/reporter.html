@@ -96,11 +96,11 @@
                         <td class="col-duration">+{{ progress.duration|hhmm }}</td>
                         <td>{{ progress.project.name }}</td>
                         <td>
-                            <a href="{% url "edit_progress" year=year week_label=week day=day progress_id=progress.id %}">{{ progress.note }}</a>
+                            <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
                         </td>
                         <td class="tar">
                             <a class="btn"
-                               href="{% url "delete_progress" year=year week_label=week day=day progress_id=progress.id %}">x</a>
+                               href="{% url "delete_progress" progress_id=progress.id %}">x</a>
                         </td>
                     </tr>
                 {% endfor %}

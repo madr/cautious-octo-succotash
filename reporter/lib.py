@@ -33,7 +33,12 @@ class ProgressAbsenceEditForm(ProgressAbsenceForm):
 
 def _delete_progress(progress_id):
     progress = Progress.objects.get(pk=progress_id)
+
+    year, week_label, day = TimeUtil.ywd(progress.done_at).split('-')
+
     progress.delete()
+
+    return redirect('anyday', year=year, week_label=week_label, day=day)
 
 
 def _save_progress(user, form, existing_id=None):
@@ -151,8 +156,10 @@ def _year_week_day(year, week_label, day):
     return int(year), int(week_label), int(day), is_index
 
 
-def _get_edit_progress_context(form, year, week_label, day, progress_id):
+def _get_edit_progress_context(form, progress_id):
     progress = Progress.objects.get(pk=progress_id)
+
+    year, week_label, day = TimeUtil.ywd(progress.done_at).split('-')
 
     if form is None:
         form = ProgressAbsenceEditForm(initial={
@@ -236,31 +243,6 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
     ww_summary = get_week_data(week_start, week_end, user)
 
     try:
-        ww_max_project_toplist_sum = max([v['sum'] for v in ww_project_toplist])
-    except ValueError:
-        ww_max_project_toplist_sum = None
-
-    try:
-        ww_max_project_toplist_count = max([v['count'] for v in ww_project_toplist])
-    except ValueError:
-        ww_max_project_toplist_count = None
-
-    try:
-        ww_max_summary_progresses = max([v['progresses'] for v in ww_summary])
-    except ValueError:
-        ww_max_summary_progresses = None
-
-    try:
-        ww_max_summary_projects = max([v['projects'] for v in ww_summary])
-    except ValueError:
-        ww_max_summary_projects = None
-
-    try:
-        ww_max_summary_sum = max([v['sum'] for v in ww_summary])
-    except ValueError:
-        ww_max_summary_sum = None
-
-    try:
         ww_billable_pc = int((ww_billable  / float(ww_minute_count)) * 100)
     except ZeroDivisionError:
         ww_billable_pc = 0
@@ -291,12 +273,6 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
         'ww_billable': ww_billable_pc,
         'ww_nonbillable_count': ww_minute_count - ww_billable,
         'ww_project_toplist': ww_project_toplist,
-
-        'ww_max_project_toplist_sum': ww_max_project_toplist_sum,
-        'ww_max_project_toplist_count': ww_max_project_toplist_count,
-        'ww_max_summary_progresses': ww_max_summary_progresses,
-        'ww_max_summary_sum': ww_max_summary_sum,
-        'ww_max_summary_projects': ww_max_summary_projects,
 
         'ww_summary': ww_summary,
     }

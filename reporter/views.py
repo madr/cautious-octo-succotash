@@ -29,11 +29,8 @@ def report(request, year=None, week_label=None, day=None):
 
 @login_required
 @require_http_methods(['GET'])
-def delete_progress(request, year, week_label, day, progress_id):
-    _delete_progress(progress_id)
-
-    return redirect('anyday', year=year, week_label=week_label, day=day)
-
+def delete_progress(request, progress_id):
+    return _delete_progress(progress_id)
 
 @login_required
 @require_http_methods(['GET'])
@@ -45,17 +42,17 @@ def projects(request):
 
 
 @login_required
-def edit_progress(request, year, week_label, day, progress_id):
+def edit_progress(request, progress_id):
     if request.method == 'POST':
         form = ProgressAbsenceEditForm(request.POST)
 
         if form.is_valid():
             return _save_progress(request.user, form, progress_id)
         else:
-            context = _get_edit_progress_context(form, year, week_label, day, progress_id)
+            context = _get_edit_progress_context(form, progress_id)
             return render(request, 'edit-progress.html', context)
     else:
-        context = _get_edit_progress_context(None, year, week_label, day, progress_id)
+        context = _get_edit_progress_context(None, progress_id)
         return render(request, 'edit-progress.html', context)
 
 

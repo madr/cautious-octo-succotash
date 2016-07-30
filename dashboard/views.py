@@ -73,14 +73,14 @@ def week_summary(request, year, week_label):
 
     week_start, week_end = TimeUtil.week_start_end(year, week_label)
 
-    whole_week_absences = Absence.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
-    whole_week_progresses = Progress.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
+    absences = Absence.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
+    progresses = Progress.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
 
-    ww_absence_count = sum([a.duration for a in whole_week_absences])
-    ww_project_count = len(set([p.project.name for p in whole_week_progresses]))
-    ww_progresses_count = whole_week_progresses.count()
-    ww_minute_count = sum([p.duration for p in whole_week_progresses])
-    ww_billable = sum([p.duration for p in whole_week_progresses.filter(project__billable=True)])
+    ww_absence_count = sum([a.duration for a in absences])
+    ww_project_count = len(set([p.project.name for p in progresses]))
+    ww_progresses_count = progresses.count()
+    ww_minute_count = sum([p.duration for p in progresses])
+    ww_billable = sum([p.duration for p in progresses.filter(project__billable=True)])
 
     ww_project_toplist = get_project_data(week_start, week_end, user)
     ww_summary = get_week_data(week_start, week_end, user)
@@ -123,6 +123,9 @@ def week_summary(request, year, week_label):
         'prev_week': TimeUtil.prevweek(year, week_label),
         'next_week': TimeUtil.nextweek(year, week_label),
         'spoken_week': TimeUtil.period(year, week_label),
+
+        'progresses': progresses,
+        'absences': absences,
 
         'ww_absence_count': ww_absence_count,
         'ww_project_count': ww_project_count,
