@@ -4,7 +4,7 @@
 {% load staticfiles %}
 {% load reporter_extras %}
 
-{% block sitetitle %}{{ profile.first_name }} {{ profile.last_name }}{% endblock %}
+{% block sitetitle %}{{ profile.username }} - {{ profile.first_name }} {{ profile.last_name }}{% endblock %}
 
 {% block customscripts %}
     <script>
@@ -21,7 +21,13 @@
          alt="{{ profile.username }}" class="gravatar-big pl">
 
     <div class="wrap wrap-card">
-        <h1 class="wrap-card-hd">{{ profile.first_name }} {{ profile.last_name }} ({{ profile.username }})</h1>
+        <h1 class="line wrap-card-hd">
+            <span>
+                {{ profile.first_name }} {{ profile.last_name }} ({{ profile.username }})</span>
+                {% if profile.username == request.user.username %}
+                    <a href="{% url 'account_logout' %}" class="btn">Logga ut</a>
+                {% endif %}
+            </h1>
 
         <div class="card">
             <ul class="line nav">
