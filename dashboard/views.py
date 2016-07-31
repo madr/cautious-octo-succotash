@@ -36,7 +36,10 @@ def profile(request, user_id=None):
     total_time = sum([p.duration for p in all_progresses])
     total_projects = len(set([p.project.name for p in all_progresses]))
 
-    billable_rank = int((sum([p.duration for p in all_progresses.filter(project__billable=True)]) / total_time) * 100)
+    try:
+        billable_rank = int((sum([p.duration for p in all_progresses.filter(project__billable=True)]) / total_time) * 100)
+    except ZeroDivisionError:
+        billable_rank = None
 
     projects = sorted(get_project_data(all_progresses), key=lambda p: p['sum'], reverse=True)
 

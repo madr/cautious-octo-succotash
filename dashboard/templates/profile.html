@@ -73,7 +73,13 @@
                     </dl>
                     <dl class="s1of3">
                         <dt>{% trans 'Debiteringsgrad' %}</dt>
-                        <dd>{{ billable_rank }}%</dd>
+                        <dd>
+                            {% if billable_rank %}
+                                {{ billable_rank }}%
+                            {% else %}
+                                {% trans 'okänd' %}
+                            {% endif %}
+                        </dd>
                     </dl>
                 </div>
             </div>
