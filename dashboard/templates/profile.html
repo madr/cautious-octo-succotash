@@ -59,11 +59,17 @@
                 <div class="line grid">
                     <dl class="s2of3">
                         <dt>{% trans 'Rapporterad tid' %}</dt>
-                        <dd>{{ total_time|pretty_minutes }}</dd>
+                        <dd>{{ total_time|pretty_minutes|capfirst }}</dd>
                     </dl>
                     <dl class="s1of3">
                         <dt>{% trans 'Projekt' %}</dt>
-                        <dd>{{ total_projects }}</dd>
+                        <dd>
+                            {% if total_projects %}
+                                {{ total_projects }}
+                            {% else %}
+                                {% trans 'Inga' %}
+                            {% endif %}
+                        </dd>
                     </dl>
                 </div>
                 <div class="line grid">
