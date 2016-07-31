@@ -36,7 +36,7 @@ def profile(request, user_id=None):
 
     try:
         max_count = max([p['count'] for p in projects])
-    except ValueError
+    except ValueError:
         max_count = 0
 
     most_recent_progresses = all_progresses[0:10]
