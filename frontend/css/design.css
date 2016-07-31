@@ -349,12 +349,8 @@ canvas {
     align-items: flex-end;
 }
 
-.login-form {
-    margin: 20px 0;
-}
-
-.login-form > * {
-    padding: 10px;
+.login {
+    width: 666px;
 }
 
 

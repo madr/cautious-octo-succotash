@@ -34,24 +34,29 @@
             {% else %}
             {% endif %}
 
-            <form class="login" method="POST" action="{% url 'account_login' %}">
+            <form class="wrap wrap-card login" method="POST" action="{% url 'account_login' %}">
+                <h1 class="wrap-card-hd">{% trans "Tajm inloggning" %}</h1>
                 {% csrf_token %}
-                <fieldset class="grid card">
-                    <p class="s1of2">
+                <div class="card line line-justified">
+                    <p>
                         {{ form.login.label }}
                         {{ form.login|add_class:'fld' }}
                     </p>
-                    <p class="s1of2">
+
+                    <p>
                         {{ form.password.label }}
                         {{ form.password|add_class:'fld' }}
                     </p>
-                </fieldset>
+                </div>
                 <div class="tar">
-                    <a class="btn btn-secondary" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                    <a class="a"
+                       href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                    &nbsp;
                     <button class="btn" type="submit">{% trans "Sign In" %}</button>
                     {% if redirect_field_value %}
                         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                     {% endif %}
+                </div>
             </form>
         </div>
     </div>
