@@ -11,6 +11,15 @@ from dashboard.lib import get_project_data, get_week_data, get_absence_data
 
 
 @login_required
+def list_users(request):
+    context = dict(
+        users=User.objects.filter(is_active=True, is_superuser=False).order_by('last_name')
+    )
+
+    return render(request, 'list_users.html', context)
+
+
+@login_required
 def dashboard(request):
     return redirect('today')
 
@@ -26,6 +35,8 @@ def profile(request, user_id=None):
 
     total_time = sum([p.duration for p in all_progresses])
     total_projects = len(set([p.project.name for p in all_progresses]))
+
+    billable_rank = int((sum([p.duration for p in all_progresses.filter(project__billable=True)]) / total_time) * 100)
 
     projects = sorted(get_project_data(all_progresses), key=lambda p: p['sum'], reverse=True)
 
@@ -49,6 +60,7 @@ def profile(request, user_id=None):
         max_sum=max_sum,
         max_count=max_count,
         most_recent_progresses=most_recent_progresses,
+        billable_rank=billable_rank,
     )
 
     return render(request, 'profile.html', context=context)

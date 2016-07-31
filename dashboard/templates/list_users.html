@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{% trans 'Personer' %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <br>
+
+    <div class="wrap wrap-card">
+        <h1 class="wrap-card-hd">{{ users.count }} {% trans 'Personer' %}</h1>
+        <div class="card">
+            <input type="text" placeholder="{% trans 'Filtrera ...' %}" class="fld">
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>{% trans 'Login' %}</th>
+                <th>{% trans 'Namn' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td>
+                            <a class="a" href="{% url 'profile' user_id=u.id %}">
+                                <img src="https://secure.gravatar.com/avatar/{{ u.email|gravatar }}.jpg?r=g&s=64&d=mm" alt="{{ user }}" class="gravatar">
+                                {{ u.username }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ u.first_name }} {{ u.last_name }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

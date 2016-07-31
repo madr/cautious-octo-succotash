@@ -209,6 +209,11 @@ canvas {
 /* Grid
    ================================================================ */
 
+.pl {
+    float: left;
+    margin: 0 10px;
+}
+
 .relpos {
     position: relative;
 }
@@ -259,6 +264,7 @@ canvas {
 .s3of4 { width: 75%; }
 
 .nav {
+    justify-content: flex-start;
     align-items: flex-start;
 }
 
@@ -401,6 +407,10 @@ a.btn {
     padding: 15px;
     background: #00494f;
     margin: -10px -10px 10px;
+}
+
+.card:last-child {
+    margin-bottom: -10px;
 }
 
 
@@ -700,8 +710,8 @@ a.btn {
 }
 
 .gravatar-big {
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
     border-radius: 6px;
 }
 

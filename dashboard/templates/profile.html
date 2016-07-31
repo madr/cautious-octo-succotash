@@ -4,7 +4,7 @@
 {% load staticfiles %}
 {% load reporter_extras %}
 
-{% block sitetitle %}{{ profile.username }}{% endblock %}
+{% block sitetitle %}{{ profile.first_name }} {{ profile.last_name }}{% endblock %}
 
 {% block customscripts %}
     <script>
@@ -17,28 +17,21 @@
 
     <br>
 
-    <div class="wrap wrap-card">
-        <h1 class="wrap-card-hd">{{ profile.username }}</h1>
+    <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
+         alt="{{ profile.username }}" class="gravatar-big pl">
 
-        <div class="line">
-            <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=128&d=mm"
-                 alt="{{ profile.username }}" class="gravatar-big">
-            <dl>
-                <dt>{% trans 'Namn' %}</dt>
-                <dd>{{ profile.first_name }} {{ profile.last_name }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Rapporterad tid' %}</dt>
-                <dd>{{ total_time|pretty_minutes }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Projekt' %}</dt>
-                <dd>{{ total_projects }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Startdatum' %}</dt>
-                <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
-            </dl>
+    <div class="wrap wrap-card">
+        <h1 class="wrap-card-hd">{{ profile.first_name }} {{ profile.last_name }} ({{ profile.username }})</h1>
+
+        <div class="card">
+            <ul class="line nav">
+                <li><a href="#">{% trans 'Översikt' %}</a></li>
+                <li><a href="#">{% trans 'Projekt' %}</a></li>
+                <li><a href="#">{% trans 'Grupper' %}</a></li>
+                <li><a href="#">{% trans 'Tid' %}</a></li>
+                <li><a href="#">{% trans 'Frånvaro' %}</a></li>
+                <li><a href="#">{% trans 'Debiteringsgrad' %}</a></li>
+            </ul>
         </div>
     </div>
 
@@ -62,9 +55,33 @@
 
         <div class="s1of3">
             <div class="wrap wrap-card">
+                <h2 class="wrap-card-hd">{% trans 'Nyckeltal' %}</h2>
+                <div class="line grid">
+                    <dl class="s2of3">
+                        <dt>{% trans 'Rapporterad tid' %}</dt>
+                        <dd>{{ total_time|pretty_minutes }}</dd>
+                    </dl>
+                    <dl class="s1of3">
+                        <dt>{% trans 'Projekt' %}</dt>
+                        <dd>{{ total_projects }}</dd>
+                    </dl>
+                </div>
+                <div class="line grid">
+                    <dl class="s2of3">
+                        <dt>{% trans 'Startdatum' %}</dt>
+                        <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
+                    </dl>
+                    <dl class="s1of3">
+                        <dt>{% trans 'Debiteringsgrad' %}</dt>
+                        <dd>{{ billable_rank }}%</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="wrap wrap-card">
                 <h2 class="wrap-card-hd">{% trans 'Arbetssätt' %}</h2>
                 <br><br><br><br><br>-<br><br><br><br><br><br>
             </div>
+
             <div class="wrap wrap-card">
                 <h2 class="wrap-card-hd">{% trans 'Kollegor' %}</h2>
                 -
