@@ -29,8 +29,15 @@ def profile(request, user_id=None):
 
     projects = sorted(get_project_data(all_progresses), key=lambda p: p['sum'], reverse=True)
 
-    max_sum = max([p['sum'] for p in projects])
-    max_count = max([p['count'] for p in projects])
+    try:
+        max_sum = max([p['sum'] for p in projects])
+    except ValueError:
+        max_sum = 0
+
+    try:
+        max_count = max([p['count'] for p in projects])
+    except ValueError
+        max_count = 0
 
     most_recent_progresses = all_progresses[0:10]
 
@@ -38,7 +45,7 @@ def profile(request, user_id=None):
         profile=profile,
         total_time=total_time,
         total_projects=total_projects,
-        projects=projects,
+        projects=projects[0:10],
         max_sum=max_sum,
         max_count=max_count,
         most_recent_progresses=most_recent_progresses,
