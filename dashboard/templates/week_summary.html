@@ -30,42 +30,7 @@
     <div class="line line-justified grid">
         <div class="wrap wrap-card">
             <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th class="col-50">{% trans 'Projekt' %}</th>
-                    <th class="col-25">{% trans 'Tid' %}</th>
-                    <th class="col-25">{% trans 'Rader' %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for p in ww_project_toplist %}
-                    <tr>
-                        <td>{{ p.name }}</td>
-                        <td>
-                            {{ p.sum|hhmm }}<br>
-                            {% if ww_max_project_toplist_sum %}
-                                {% if p.billable == False %}
-                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum color='nonbillable' only %}
-                                {% else %}
-                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_sum bar_value=p.sum only %}
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ p.count }}<br>
-                            {% if ww_max_project_toplist_count %}
-                                {% if p.billable == False %}
-                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count color='nonbillable' only %}
-                                {% else %}
-                                    {% include 'charts/bar.html' with bar_max=ww_max_project_toplist_count bar_value=p.count only %}
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% include '_projects_toplist.html' with projects=ww_project_toplist max_sum=ww_max_project_toplist_sum max_count=ww_max_project_toplist_count only %}
         </div>
         <div>
             <div class="wrap wrap-card">
@@ -123,7 +88,7 @@
                                 {% if s.sum == 0 %}-{% else %}
                                     {{ s.sum|hhmm }}<br>
                                     {% if ww_max_summary_sum %}
-                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_sum bar_value=s.sum only %}
+                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_sum bar_value=s.sum color='progress' only %}
                                     {% endif %}
                                 {% endif %}
                             </td>
@@ -134,7 +99,7 @@
                                 {% if s.progresses == 0 %}-{% else %}
                                     {{ s.progresses }}<br>
                                     {% if ww_max_summary_progresses %}
-                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_progresses bar_value=s.progresses only %}
+                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_progresses bar_value=s.progresses color='progress' only %}
                                     {% endif %}
                                 {% endif %}
                             </td>
@@ -142,7 +107,7 @@
                                 {% if s.projects == 0 %}-{% else %}
                                     {{ s.projects }}<br>
                                     {% if ww_max_summary_projects %}
-                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_projects bar_value=s.projects only %}
+                                        {% include 'charts/bar.html' with bar_max=ww_max_summary_projects bar_value=s.projects color='progress' only %}
                                     {% endif %}
                                 {% endif %}
                             </td>
@@ -184,37 +149,9 @@
             </dl>
         </div>
 
-        <table>
-            <thead>
-            <tr>
-                <th class="col-duration">{% trans "Tid" %}</th>
-                <th class="col-25">{% trans "Projekt" %}</th>
-                <th>{% trans "Anteckning" %}</th>
-                <th class="col-delete">{% trans "Datum" %}</th>
-            </tr>
-            </thead>
-            {% for progress in progresses %}
-                <tr>
-                    <td class="col-duration">+{{ progress.duration|hhmm }}</td>
-                    <td>{{ progress.project.name }}</td>
-                    <td>
-                        <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
-                    </td>
-                    <td>{{ progress.done_at|date:'d/m' }}</td>
-                </tr>
-            {% endfor %}
-            {% for absence in absences %}
-                <tr>
-                    <td class="col-duration">-{{ absence.duration|hhmm }}</td>
-                    <td>{{ absence.category.name }}</td>
-                    <td>{{ absence.note }}</td>
-                    <td>{{ absence.done_at|date:'d/m' }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-
+        <div class="wrap wrap-card">
+            <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
+            {% include '_progresses.html' with progresses=progresses only %}
+        </div>
     </div>
-
-
-
 {% endblock %}

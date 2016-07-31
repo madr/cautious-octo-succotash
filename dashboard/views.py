@@ -1,5 +1,6 @@
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from haystack.views import FacetedSearchView, SearchView
@@ -12,6 +13,38 @@ from dashboard.lib import get_project_data, get_week_data, get_absence_data
 @login_required
 def dashboard(request):
     return redirect('today')
+
+
+@login_required
+def profile(request, user_id=None):
+    if user_id:
+        profile = User.objects.get(id=user_id)
+    else:
+        profile = request.user
+
+    all_progresses = Progress.objects.filter(user=profile)
+
+    total_time = sum([p.duration for p in all_progresses])
+    total_projects = len(set([p.project.name for p in all_progresses]))
+
+    projects = sorted(get_project_data(all_progresses), key=lambda p: p['sum'], reverse=True)
+
+    max_sum = max([p['sum'] for p in projects])
+    max_count = max([p['count'] for p in projects])
+
+    most_recent_progresses = all_progresses[0:10]
+
+    context = dict(
+        profile=profile,
+        total_time=total_time,
+        total_projects=total_projects,
+        projects=projects,
+        max_sum=max_sum,
+        max_count=max_count,
+        most_recent_progresses=most_recent_progresses,
+    )
+
+    return render(request, 'profile.html', context=context)
 
 
 @login_required
@@ -82,8 +115,8 @@ def week_summary(request, year, week_label):
     ww_minute_count = sum([p.duration for p in progresses])
     ww_billable = sum([p.duration for p in progresses.filter(project__billable=True)])
 
-    ww_project_toplist = get_project_data(week_start, week_end, user)
-    ww_absence_toplist = get_absence_data(week_start, week_end, user)
+    ww_project_toplist = get_project_data(progresses)
+    ww_absence_toplist = get_absence_data(absences)
     ww_summary = get_week_data(week_start, week_end, user)
 
     try:

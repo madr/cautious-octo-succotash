@@ -32,18 +32,14 @@ def get_week_data(start_date, end_date, user=None):
     return values
 
 
-def get_project_data(start_date, end_date, user=None):
-    progresses = Progress.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
-
-    if user:
-        progresses = progresses.filter(user=user)
-
+def get_project_data(progresses):
     projects = sorted(set([p.project.name for p in progresses]))
 
     values = list()
 
     for project in projects:
         project_progresses = progresses.filter(project__name=project)
+
         values.append(dict(
             billable=project_progresses.first().project.billable,
             name=project,
@@ -54,12 +50,7 @@ def get_project_data(start_date, end_date, user=None):
     return values
 
 
-def get_absence_data(start_date, end_date, user=None):
-    absences = Absence.objects.filter(done_at__gte=start_date, done_at__lte=end_date)
-
-    if user:
-        absences = absences.filter(user=user)
-
+def get_absence_data(absences):
     absence_categories = sorted(set([p.category.name for p in absences]))
 
     values = list()

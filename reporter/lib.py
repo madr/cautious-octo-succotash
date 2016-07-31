@@ -239,7 +239,7 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
     ww_minute_count = sum([p.duration for p in whole_week_progresses])
     ww_billable = sum([p.duration for p in whole_week_progresses.filter(project__billable=True)])
 
-    ww_project_toplist = get_project_data(week_start, week_end, user)
+    ww_project_toplist = get_project_data(whole_week_progresses)
     ww_summary = get_week_data(week_start, week_end, user)
 
     try:

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{{ profile.username }}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <br>
+
+    <div class="wrap wrap-card">
+        <h1 class="wrap-card-hd">{{ profile.username }}</h1>
+
+        <div class="line">
+            <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=128&d=mm"
+                 alt="{{ profile.username }}" class="gravatar-big">
+            <dl>
+                <dt>{% trans 'Namn' %}</dt>
+                <dd>{{ profile.first_name }} {{ profile.last_name }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Rapporterad tid' %}</dt>
+                <dd>{{ total_time|pretty_minutes }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Projekt' %}</dt>
+                <dd>{{ total_projects }}</dd>
+            </dl>
+            <dl>
+                <dt>{% trans 'Startdatum' %}</dt>
+                <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="line grid">
+        <div class="s2of3">
+            <div class="wrap wrap-card collapsed">
+                <h2 class="wrap-card-hd line">
+                    {% trans 'Projekt, all tid' %}
+                    <button onclick="this.parentNode.parentNode.classList.toggle('collapsed');"
+                            class="btn">{% trans "Visa alla" %}</button>
+                </h2>
+
+                {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
+            </div>
+
+            <div class="wrap wrap-card">
+                <h2 class="wrap-card-hd">{% trans 'Senast tidrapporterat' %}</h2>
+                {% include '_progresses.html' with progresses=most_recent_progresses only %}
+            </div>
+        </div>
+
+        <div class="s1of3">
+            <div class="wrap wrap-card">
+                <h2 class="wrap-card-hd">{% trans 'Arbetssätt' %}</h2>
+                <br><br><br><br><br>-<br><br><br><br><br><br>
+            </div>
+            <div class="wrap wrap-card">
+                <h2 class="wrap-card-hd">{% trans 'Kollegor' %}</h2>
+                -
+            </div>
+        </div>
+    </div>
+{% endblock %}
