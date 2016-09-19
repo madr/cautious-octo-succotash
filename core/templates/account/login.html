@@ -37,7 +37,7 @@
             <form class="wrap wrap-card login" method="POST" action="{% url 'account_login' %}">
                 <h1 class="wrap-card-hd">{% trans "Tajm inloggning" %}</h1>
                 {% csrf_token %}
-                <div class="card line line-justified">
+                <div class="card line line-justified row">
                     <p>
                         {{ form.login.label }}
                         {{ form.login|add_class:'fld' }}

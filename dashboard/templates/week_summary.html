@@ -27,12 +27,12 @@
            href="{% url "week_summary" year=next_week.0 week_label=next_week.1 %}">{{ next_week.1 }} →</a>
     </div>
 
-    <div class="line line-justified grid">
-        <div class="wrap wrap-card">
+    <div class="line grid">
+        <div class="s1of2 wrap wrap-card">
             <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
             {% include '_projects_toplist.html' with projects=ww_project_toplist max_sum=ww_max_project_toplist_sum max_count=ww_max_project_toplist_count only %}
         </div>
-        <div>
+        <div class="s1of2">
             <div class="wrap wrap-card">
                 <h2 class="wrap-card-hd">{% trans 'Frånvaro' %}</h2>
                 {% if ww_absence_toplist %}
