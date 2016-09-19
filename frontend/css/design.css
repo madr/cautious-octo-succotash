@@ -591,9 +591,6 @@ a.btn {
     height: 4px;
     background: #fff;
     display: block;
-    box-shadow: 0 1px 12px #fff;
-    border-radius: 2px;
-    opacity: .5;
 }
 
 
