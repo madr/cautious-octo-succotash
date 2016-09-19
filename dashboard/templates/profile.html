@@ -14,9 +14,6 @@
 {% endblock %}
 
 {% block content %}
-
-    <br>
-
     <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
          alt="{{ profile.username }}" class="gravatar-big pl">
 
@@ -46,8 +43,6 @@
             <div class="wrap wrap-card collapsed">
                 <h2 class="wrap-card-hd line">
                     {% trans 'Projekt, all tid' %}
-                    <button onclick="this.parentNode.parentNode.classList.toggle('collapsed');"
-                            class="btn">{% trans "Visa alla" %}</button>
                 </h2>
 
                 {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
