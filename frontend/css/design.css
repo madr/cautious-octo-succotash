@@ -389,7 +389,7 @@ canvas {
     text-decoration: underline;
     padding: 0;
     background: transparent;
-    color: #ffad00;
+    color: #fff;
 }
 
 button.a {
@@ -478,22 +478,22 @@ a.btn {
    =============================================================== */
 
 .btn {
-    background: #ffad00;
+    background: #222;
     background: linear-gradient(135deg,
-    #ffad00 20%,
-    #da9400);
-    color: #fff;
+    #333 20%,
+    #161616);
+    color: #ffad00;
     padding-left: .9em;
     padding-right: .9em;
-    border-radius: 5px;
-    border: 1px solid #da9400;
-    box-shadow: 0 0 2px #4c3400;
+    border-radius: 10px;
+    padding-bottom: 4px;
+    border: 2px solid #ffad00;
     font-weight: normal;
 }
 
 .btn:hover,
 .btn:focus {
-    background: #ffad00;
+    background: #000;
 }
 
 .btn:active {
@@ -646,7 +646,7 @@ a.btn {
 }
 
 .col-delete {
-    width: 30px;
+    width: 3.33em;
 }
 
 .col-50 {
@@ -716,7 +716,6 @@ a.btn {
 .gravatar {
     vertical-align: middle;
     margin: 0 10px;
-    border-radius: 6px;
     width: 32px;
     height: 32px;
 }
@@ -724,7 +723,11 @@ a.btn {
 .gravatar-big {
     width: 96px;
     height: 96px;
-    border-radius: 6px;
+    transition: transform .5s ease-out;
+}
+
+.gravatar-big:hover {
+    transform: scale(1.2) rotate(-4deg) translateX(-3px) translateY(-2px);
 }
 
 /* Awesomplete:
