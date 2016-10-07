@@ -233,14 +233,3 @@ JSON_API_FORMAT_RELATION_KEYS = 'underscore'
 # keeping HTML comments since they are useful for javascript templates.
 # more on that topic: https://www.nczonline.net/blog/2011/10/11/simple-maintainable-templating-with-javascript/
 KEEP_COMMENTS_ON_MINIFYING = True
-
-# Haystack
-# http://django-haystack.readthedocs.io/en/v2.4.1/tutorial.html
-# todo: make this heroku compatible
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_ENGINE', 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine'),
-        'URL': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_URL', 'http://127.0.0.1:9200/'),
-        'INDEX_NAME': os.environ.get('TAJM_HAYSTACK_CONNECTIONS_INDEX_NAME', 'tajm'),
-    },
-}
