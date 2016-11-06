@@ -38,10 +38,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'corsheaders',
-    'haystack',
     'oauth2_provider',
     'rest_framework',
-    'rest_framework_swagger',
     'widget_tweaks',
 
     'frontend',
@@ -190,7 +188,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
-    # jsonapi serializer settings
     'PAGE_SIZE': 10,
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100,

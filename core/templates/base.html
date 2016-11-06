@@ -10,42 +10,68 @@
     <meta name="apple-mobile-web-app-title" content="Tajm">
     <meta name="viewport" content="width=device-width">
     <link rel="authors" href="/humans.txt">
-    <link rel="stylesheet" href="{% static "design.css" %}">
+    <link rel="stylesheet" href="{% static "bootstrap/bootstrap.min.css" %}">
 </head>
 <body>
-{% if user.is_authenticated %}
-    <div class="wrap wrap-nav">
-        <div class="line">
-            <ul class="line nav tal">
-                <li>
-                    <a href="{% url 'dashboard' %}">{% trans 'Rapporter' %}</a>
-                </li>
-                <li>
-                    <a href="#">Projekt</a>
-                </li>
-                <li>
-                    <a href="{% url 'list_users' %}">Personer</a>
-                </li>
-            </ul>
-            <div class="tar">
-            <a class="tac a" href="{% url 'my_profile' %}"><img src="https://secure.gravatar.com/avatar/{{ user.email|gravatar }}.jpg?r=g&s=64&d=mm" alt="{{ user }}" class="gravatar"></a>
-            <a href="{% url 'today' %}" class="btn">{% trans 'Rapportera tid' %}</a>
-            </div>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">{% trans 'Toggle navigation' %}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">{% trans 'Adeprimo' %}</a>
         </div>
+        {% if user.is_authenticated %}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'dashboard' %}">{% trans 'Rapporter' %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'list_users' %}">{% trans 'Personer' %}</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ user }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'today' %}">{% trans 'Rapportera tid' %} <span
+                                class="sr-only">({% trans 'current' %})</span></a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
     </div>
-{% endif %}
+</nav>
 {% block content %}{% endblock %}
-<footer>
-    <div class="line wrap">
-        <p>Drivs av <a class="a" href="http://tidrapporteringsuger.se">Tajm</a>.</p>
-        <ul class="line nav">
-            {%  if request.user.is_staff %}
-                <li><a class="a" href="/admin">Admin</a></li>
-            {% endif %}
-            <li><a class="a" href="http://help.tajm.me">Dokumentation</a></li>
-            <li><a class="a" href="http://developer.tajm.me">API</a></li>
-            <li><a class="a" href="https://tajmme.tumblr.com">Blogg</a></li>
-        </ul>
+<hr>
+<footer class="container">
+    <div class="row">
+        <p class="lead col-sm-4">Drivs av <a href="http://tidrapporteringsuger.se">Tajm</a>.</p>
+
+        <div class="col-sm-8">
+            <ul class="pull-right nav nav-pills">
+                {% if request.user.is_staff %}
+                    <li role="presentation"><a href="/admin">Admin</a></li>
+                {% endif %}
+                <li role="presentation"><a href="http://help.tajm.me">Dokumentation</a></li>
+                <li role="presentation"><a href="http://developer.tajm.me">API</a></li>
+                <li role="presentation"><a href="https://tajmme.tumblr.com">Blogg</a></li>
+            </ul>
+        </div>
     </div>
 </footer>
 <script src="{% static "app.min.js" %}"></script>

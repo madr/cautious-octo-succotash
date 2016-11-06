@@ -54,6 +54,7 @@
     });
 
     g.tajmme.add('tablesort:init', function () {
+
         var tables, ti, i, o;
 
         tables = document.getElementsByTagName('table');

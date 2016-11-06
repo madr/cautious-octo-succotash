@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
 from rest_framework.compat import MinValueValidator
@@ -27,9 +27,24 @@ class Project(models.Model):
     class JSONAPIMeta:
         resource_name = "projects"
 
+    def user_set(self):
+        users = list(set([p.user_id for p in self.progress_set.all()]))
+        user_set = TajmUser.objects.filter(pk__in=users)
+        return user_set
+
+
+class TajmUser(User):
+    class Meta:
+        proxy = True
+
+    def project_set(self):
+        projects = list(set([p.project_id for p in self.progress_set.all()]))
+        project_set = Project.objects.filter(pk__in=projects)
+        return project_set
+
 
 class Progress(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(TajmUser)
     duration = models.IntegerField(default=15, validators=[MinValueValidator(15), validate_duration])
     note = models.TextField()
     done_at = models.DateField(default=datetime.date.today)
@@ -65,7 +80,7 @@ class AbsenceCategory(models.Model):
 
 
 class Absence(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(TajmUser)
     duration = models.IntegerField(default=480, validators=[MinValueValidator(15), validate_duration])
     note = models.TextField(default='', blank=True)
     done_at = models.DateField(default=datetime.date.today)

@@ -45,8 +45,9 @@
             for (i = 0; i < max; i += 1) {
                 headings[i].cIdx = i;
 
-                b = document.createElement("button");
+                b = document.createElement("a");
                 b.className = "a";
+                b.href = '#';
                 b.innerHTML = headings[i].innerHTML;
                 b.onclick = c;
 
@@ -76,9 +77,9 @@
             for (i = 0; i < max; i += 1) {
                 cell = rows[i].cells[cellIndex];
                 content = cell.textContent || cell.innerText;
-                num = content.replace(/(\$|\,|\s)/g, "");
+                num = content.replace(/(\$|\,|\%|\s)/g, "");
 
-                if (parseFloat(num, 10) === num) {
+                if (parseFloat(num, 10) == num) {
                     numeric[nIdx] = {
                         value: Number(num),
                         row: rows[i]

@@ -2,3 +2,4 @@
 waitress==0.9.0
 psycopg2==2.6.1
 numpy==1.11.1
+slackclient==1.0.2

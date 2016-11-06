@@ -15,35 +15,58 @@
 
 {% block content %}
 
-    <br>
+    <div class="container">
+        <div class="row">
+            <h1 class="col-md-6">{{ users.count }} {% trans 'Personer' %}</h1>
 
-    <div class="wrap wrap-card">
-        <h1 class="wrap-card-hd">{{ users.count }} {% trans 'Personer' %}</h1>
-        <div class="card">
-            <input type="text" placeholder="{% trans 'Filtrera ...' %}" class="fld">
+            <div class="card col-md-6"><br>
+                <input type="text" placeholder="{% trans 'Filtrera ...' %}" class="form-control">
+            </div>
         </div>
-        <table>
-            <thead>
-            <tr>
-                <th>{% trans 'Login' %}</th>
-                <th>{% trans 'Namn' %}</th>
-            </tr>
-            </thead>
-            <tbody>
+
+        <hr>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>{% trans 'Login' %}</th>
+                    <th>{% trans 'Namn' %}</th>
+                    <th><abbr title='{% trans 'Debiteringsgrad' %}'>{% trans 'DB' %}</abbr></th>
+                    <th>{% trans 'Projekt' %}</th>
+                    <th>{% trans 'Tid' %}</th>
+                    <th>{% trans 'Rader' %}</th>
+                </tr>
+                </thead>
+                <tbody>
                 {% for u in users %}
                     <tr>
                         <td>
                             <a class="a" href="{% url 'profile' user_id=u.id %}">
-                                <img src="https://secure.gravatar.com/avatar/{{ u.email|gravatar }}.jpg?r=g&s=64&d=mm" alt="{{ user }}" class="gravatar">
+                                <img src="https://secure.gravatar.com/avatar/{{ u.email|gravatar }}.jpg?r=g&s=64&d=mm"
+                                     alt="{{ user }}" class="gravatar">
                                 {{ u.username }}
                             </a>
                         </td>
                         <td>
                             {{ u.first_name }} {{ u.last_name }}
                         </td>
+                        <td>
+                            {{ u.progress_set|billable }}%
+                        </td>
+                        <td>
+                            {{ u.project_set.count }}
+                        </td>
+                        <td>
+                            {{ u.progress_set|sumtime|pretty_minutes }}
+                        </td>
+                        <td>
+                            {{ u.progress_set.count }}
+                        </td>
                     </tr>
                 {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

@@ -3,17 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from haystack.views import FacetedSearchView, SearchView
 from core.lib import TimeUtil
 
-from core.models import Progress, Absence
+from core.models import Progress, Absence, TajmUser
 from dashboard.lib import get_project_data, get_week_data, get_absence_data
 
 
 @login_required
 def list_users(request):
     context = dict(
-        users=User.objects.filter(is_active=True, is_superuser=False).order_by('last_name')
+        users=TajmUser.objects.filter(is_active=True, is_superuser=False).order_by('username')
     )
 
     return render(request, 'list_users.html', context)
@@ -27,11 +26,11 @@ def dashboard(request):
 @login_required
 def profile(request, user_id=None):
     if user_id:
-        profile = User.objects.get(id=user_id)
+        profile = TajmUser.objects.get(id=user_id)
     else:
         profile = request.user
 
-    all_progresses = Progress.objects.filter(user=profile)
+    all_progresses = profile.progress_set.all()
 
     total_time = sum([p.duration for p in all_progresses])
     total_projects = len(set([p.project.name for p in all_progresses]))
@@ -107,18 +106,6 @@ def projects_bar_chart_data(request):
     return JsonResponse(data, safe=False)
 
 
-# todo: wait until Elastic Search 2 is supported by haystack
-# class ProgressSearchView(FacetedSearchView):
-class ProgressSearchView(SearchView):
-    def get_queryset(self):
-        queryset = super(ProgressSearchView, self).get_queryset()
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProgressSearchView, self).get_context_data(*args, **kwargs)
-        return context
-
-
 @login_required
 def week_summary(request, year, week_label):
     user = request.user
@@ -128,10 +115,10 @@ def week_summary(request, year, week_label):
 
     week_start, week_end = TimeUtil.week_start_end(year, week_label)
 
-    absences = Absence.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
-    progresses = Progress.objects.filter(user=user, done_at__gte=week_start, done_at__lte=week_end)
+    absences = user.absence_set.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
+    progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
 
-    ww_absence_count = sum([a.duration for a in absences])
+    ww_absence_count = sum(absences.values('duration'))
     ww_project_count = len(set([p.project.name for p in progresses]))
     ww_progresses_count = progresses.count()
     ww_minute_count = sum([p.duration for p in progresses])
