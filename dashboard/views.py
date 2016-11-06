@@ -50,7 +50,7 @@ def profile(request, user_id=None):
     except ZeroDivisionError:
         billable_rank = None
 
-    projects = sorted(get_project_data(all_progresses), key=lambda p: p['sum'], reverse=True)
+    projects = sorted(get_project_data(all_progresses, user=profile), key=lambda p: p['sum'], reverse=True)
 
     try:
         max_sum = max([p['sum'] for p in projects])
@@ -118,24 +118,24 @@ def projects_bar_chart_data(request):
 
 @login_required
 def week_summary(request, year, week_label):
-    user = request.user
+    user = TajmUser.objects.get(pk=request.user.pk)
 
     year = int(year)
     week_label = int(week_label)
 
     week_start, week_end = TimeUtil.week_start_end(year, week_label)
 
-    absences = user.absence_set.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
+    absences = user.absence_set.filter(done_at__gte=week_start, done_at__lte=week_end)
     progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
 
-    ww_absence_count = sum(absences.values('duration'))
+    ww_absence_count = sum([a.duration for a in absences])
     ww_project_count = len(set([p.project.name for p in progresses]))
     ww_progresses_count = progresses.count()
     ww_minute_count = sum([p.duration for p in progresses])
     ww_billable = sum([p.duration for p in progresses.filter(project__billable=True)])
 
-    ww_project_toplist = get_project_data(progresses)
-    ww_absence_toplist = get_absence_data(absences)
+    ww_project_toplist = get_project_data(progresses, done_at__gte=week_start, done_at__lte=week_end, user=user)
+    ww_absence_toplist = get_absence_data(absences, done_at__gte=week_start, done_at__lte=week_end, user=user)
     ww_summary = get_week_data(week_start, week_end, user)
 
     try:

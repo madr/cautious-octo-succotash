@@ -32,35 +32,32 @@ def get_week_data(start_date, end_date, user=None):
     return values
 
 
-def get_project_data(progresses):
-    projects = sorted(set([p.project.name for p in progresses]))
+def get_project_data(progresses, **kwargs):
+    projects = set([p.project for p in progresses])
 
     values = list()
 
     for project in projects:
-        project_progresses = progresses.filter(project__name=project)
-
         values.append(dict(
-            billable=project_progresses.first().project.billable,
-            name=project,
-            sum=(sum([p.duration for p in project_progresses])),
-            count=len(project_progresses)
+            billable=project.billable,
+            name=project.name,
+            sum=(sum([p.duration for p in project.progress_set.filter(**kwargs)])),
+            count=project.progress_set.filter(**kwargs).count()
         ))
 
-    return values
+    return sorted(values, key=lambda x: x['sum'], reverse=True)
 
 
-def get_absence_data(absences):
-    absence_categories = sorted(set([p.category.name for p in absences]))
+def get_absence_data(absences, **kwargs):
+    absence_categories = set([p.category for p in absences])
 
     values = list()
 
-    for absence in absence_categories:
-        absences_by_this_category = absences.filter(category__name=absence)
+    for category in absence_categories:
         values.append(dict(
-            name=absence,
-            sum=(sum([p.duration for p in absences_by_this_category])),
-            count=len(absences_by_this_category)
+            name=category.name,
+            sum=(sum([p.duration for p in category.absence_set.filter(**kwargs)])),
+            count=category.absence_set.filter(**kwargs).count()
         ))
 
-    return values
+    return sorted(values, key=lambda x: x['sum'], reverse=True)

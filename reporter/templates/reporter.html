@@ -48,7 +48,7 @@
                 </li>
             {% endfor %}
             <li role="presentation" class="pull-right dropdown">
-                <a href="#">
+                <a href="{% url 'week_summary' year=year week_label=week %}">
                     {{ ww_minute_count|pretty_minutes }}
                     <span class="caret"></span>
                 </a>
