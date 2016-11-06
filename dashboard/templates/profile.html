@@ -14,91 +14,74 @@
 {% endblock %}
 
 {% block content %}
-    <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
-         alt="{{ profile.username }}" class="gravatar-big pl">
+    <div class="container">
+        <div class="col-md-3">
+            <div class="well">
+                <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
+                     alt="{{ profile.username }}" class="pull-left">
 
-    <div class="wrap wrap-card">
-        <h1 class="line wrap-card-hd">
-            <span>
-                {{ profile.first_name }} {{ profile.last_name }} ({{ profile.username }})</span>
+
+                <h1>
+                    {{ profile.first_name }} {{ profile.last_name }}
+                </h1>
+
                 {% if profile.username == request.user.username %}
-                    <a href="{% url 'account_logout' %}" class="btn">Logga ut</a>
+                    <a href="{% url 'account_logout' %}" class="pull-right btn btn-primary btn-sm">Logga ut</a>
                 {% endif %}
-            </h1>
 
-        <div class="card">
-            <ul class="line nav">
-                <li><a href="#">{% trans 'Översikt' %}</a></li>
-                <li><a href="#">{% trans 'Projekt' %}</a></li>
-                <li><a href="#">{% trans 'Kollegor' %}</a></li>
-                <li><a href="#">{% trans 'Veckohistorik' %}</a></li>
-                <li><a href="#">{% trans 'Frånvaro' %}</a></li>
-                <li><a href="#">{% trans 'Debiteringsgrad' %}</a></li>
-            </ul>
-        </div>
-    </div>
+                {{ profile.username }}
 
-    <div class="line grid">
-        <div class="s2of3">
-            <div class="wrap wrap-card collapsed">
-                <h2 class="wrap-card-hd line">
-                    {% trans 'Projekt, all tid' %}
-                </h2>
+                <br><br><br>
 
-                {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
-            </div>
-
-            <div class="wrap wrap-card">
-                <h2 class="wrap-card-hd">{% trans 'Senast tidrapporterat' %}</h2>
-                {% include '_progresses.html' with progresses=most_recent_progresses only %}
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="#">{% trans 'Översikt' %}</a></li>
+                    <li><a href="#">{% trans 'Projekt' %}</a></li>
+                    <li><a href="#">{% trans 'Kollegor' %}</a></li>
+                    <li><a href="#">{% trans 'Historik' %}</a></li>
+                    <li><a href="#">{% trans 'Frånvaro' %}</a></li>
+                    <li><a href="#">{% trans 'Debiteringsgrad' %}</a></li>
+                </ul>
             </div>
         </div>
+        <div class="col-md-3">
+            <h2>{% trans 'Nyckeltal' %}</h2>
 
-        <div class="s1of3">
-            <div class="wrap wrap-card">
-                <h2 class="wrap-card-hd">{% trans 'Nyckeltal' %}</h2>
-                <div class="line grid">
-                    <dl class="s2of3">
-                        <dt>{% trans 'Rapporterad tid' %}</dt>
-                        <dd>{{ total_time|pretty_minutes|capfirst }}</dd>
-                    </dl>
-                    <dl class="s1of3">
-                        <dt>{% trans 'Projekt' %}</dt>
-                        <dd>
-                            {% if total_projects %}
-                                {{ total_projects }}
-                            {% else %}
-                                {% trans 'Inga' %}
-                            {% endif %}
-                        </dd>
-                    </dl>
-                </div>
-                <div class="line grid">
-                    <dl class="s2of3">
-                        <dt>{% trans 'Startdatum' %}</dt>
-                        <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
-                    </dl>
-                    <dl class="s1of3">
-                        <dt>{% trans 'Debiteringsgrad' %}</dt>
-                        <dd>
-                            {% if billable_rank %}
-                                {{ billable_rank }}%
-                            {% else %}
-                                {% trans 'okänd' %}
-                            {% endif %}
-                        </dd>
-                    </dl>
-                </div>
-            </div>
-            <div class="wrap wrap-card">
-                <h2 class="wrap-card-hd">{% trans 'Arbetssätt' %}</h2>
-                <br><br><br><br><br>-<br><br><br><br><br><br>
+            <div class="row">
+                <dl class="col-3">
+                    <dt>{% trans 'Rapporterad tid' %}</dt>
+                    <dd>{{ total_time|pretty_minutes|capfirst }}</dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Projekt' %}</dt>
+                    <dd>
+                        {% if total_projects %}
+                            {{ total_projects }}
+                        {% else %}
+                            {% trans 'Inga' %}
+                        {% endif %}
+                    </dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Startdatum' %}</dt>
+                    <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Debiteringsgrad' %}</dt>
+                    <dd>
+                        {% if billable_rank %}
+                            {{ billable_rank }}%
+                        {% else %}
+                            {% trans 'okänd' %}
+                        {% endif %}
+                    </dd>
+                </dl>
             </div>
 
-            <div class="wrap wrap-card">
-                <h2 class="wrap-card-hd">{% trans 'Kollegor' %}</h2>
-                -
-            </div>
+            <h2>{% trans 'Projekt, all tid' %}</h2>
+            {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
+
+            <h2>{% trans 'Senast tidrapporterat' %}</h2>
+            {% include '_progresses.html' with progresses=most_recent_progresses only %}
         </div>
     </div>
 {% endblock %}

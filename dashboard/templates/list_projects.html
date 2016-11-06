@@ -17,9 +17,9 @@
 
     <div class="container">
         <div class="row">
-            <h1 class="col-md-6">{{ projects.count }} {% trans 'Projekt' %}</h1>
+            <h1 class="col-md-8">{{ projects.count }} {% trans 'Projekt' %}</h1>
 
-            <div class="card col-md-6"><br>
+            <div class="card col-md-4"><br>
                 <input id="id_filter" type="text" placeholder="{% trans 'Filtrera ...' %}" class="form-control">
             </div>
         </div>
@@ -46,7 +46,11 @@
                         {% else %}
                             <span class="label label-danger">{% trans 'it' %}</span>
                         {% endif %} </td>
-                        <td>{{ p.name }}</td>
+                        <td>
+                            <a href='{% url 'project' id=p.pk %}'>
+                                {{ p.name }}
+                            </a>
+                        </td>
                         {% with ps=p.progress_set us=p.user_set %}
                             <td>
                                 {{ ps|sumtime|hhmm|hours }}{% trans 't' %}

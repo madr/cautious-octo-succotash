@@ -24,6 +24,11 @@ def list_projects(request):
 
 
 @login_required
+def project(request, id):
+    return redirect('today')
+
+
+@login_required
 def dashboard(request):
     return redirect('today')
 
@@ -33,7 +38,7 @@ def profile(request, user_id=None):
     if user_id:
         profile = TajmUser.objects.get(id=user_id)
     else:
-        profile = request.user
+        profile = TajmUser.objects.get(pk=request.user.id)
 
     all_progresses = profile.progress_set.all()
 

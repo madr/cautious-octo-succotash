@@ -3,28 +3,23 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
-from core.models import Project, AbsenceCategory
+from core.models import Project, AbsenceCategory, TajmUser
 from reporter.lib import ProgressAbsenceEditForm, _delete_progress, _save_progress, _get_reporter_context, _get_edit_progress_context, \
     ProgressAbsenceForm, _save_absence, _delete_absence
 
 
 @login_required
 def report(request, year=None, week_label=None, day=None):
+    user = TajmUser.objects.get(pk=request.user.id)
     if request.method == 'POST':
         form = ProgressAbsenceForm(request.POST)
-
         if form.is_valid():
-            absence_saved = _save_absence(request.user, form)
-
-            return absence_saved if absence_saved else _save_progress(request.user, form)
+            absence_saved = _save_absence(user, form)
+            return absence_saved if absence_saved else _save_progress(user, form)
         else:
-            context = _get_reporter_context(form, request.user, year, week_label, day)
-
-            return render(request, 'reporter.html', context)
+            return render(request, 'reporter.html', _get_reporter_context(form, user, year, week_label, day))
     else:
-        context = _get_reporter_context(None, request.user, year, week_label, day)
-
-        return render(request, 'reporter.html', context)
+        return render(request, 'reporter.html', _get_reporter_context(None, user, year, week_label, day))
 
 
 @login_required
@@ -37,7 +32,6 @@ def delete_progress(request, progress_id):
 def projects(request):
     projects_and_absences = [p.name for p in Project.objects.filter(active=True)]
     projects_and_absences += [ac.name for ac in AbsenceCategory.objects.filter(active=True)]
-
     return JsonResponse(projects_and_absences, safe=False)
 
 
@@ -45,15 +39,12 @@ def projects(request):
 def edit_progress(request, progress_id):
     if request.method == 'POST':
         form = ProgressAbsenceEditForm(request.POST)
-
         if form.is_valid():
             return _save_progress(request.user, form, progress_id)
         else:
-            context = _get_edit_progress_context(form, progress_id)
-            return render(request, 'edit-progress.html', context)
+            return render(request, 'edit-progress.html', _get_edit_progress_context(form, progress_id))
     else:
-        context = _get_edit_progress_context(None, progress_id)
-        return render(request, 'edit-progress.html', context)
+        return render(request, 'edit-progress.html', _get_edit_progress_context(None, progress_id))
 
 
 @login_required
