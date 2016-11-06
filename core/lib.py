@@ -3,14 +3,6 @@ import re
 from time import strptime
 from django.utils.translation import ugettext
 
-the_magic_day = 5
-trimmer_a = re.compile('([^\d])0(\d) ')
-trimmer_b = re.compile('^0(\d) ')
-
-days = [u"Sön", u"Mån", u"Tis",
-        u"Ons", u"Tor", u"Fre",
-        u'Lör', u"Sön"]
-
 class TimeUtil:
     # todo: move unit tests from old repo to core/tests.py
     ''' Class with a set of static methods to manage time and progresses. '''
@@ -38,7 +30,7 @@ class TimeUtil:
         hhmm = hhmm.split(":")
 
         minutes = int(hhmm[0]) * 60
-        minutes = minutes + int(hhmm[1])
+        minutes += int(hhmm[1])
 
         return minutes
 
@@ -46,6 +38,9 @@ class TimeUtil:
     @staticmethod
     def duration(minutes):
         ''' transform a duration (in minutes) to spoken time '''
+        if minutes == 0:
+            return ugettext("ingen")
+
         hh = (minutes - (minutes % 60)) / 60
         mm = minutes % 60
         hh_label = ugettext("timmar")
@@ -70,44 +65,6 @@ class TimeUtil:
         hh = (minutes - (minutes % 60)) / 60
         mm = minutes % 60
         return "%02d:%02d" % (hh, mm)
-
-
-    @staticmethod
-    def ddmm(ymd):
-        ''' transforms YYYY-MM-DD to DD/MM '''
-        y, m, d = ymd.split("-")
-        return "%d/%d" % (int(d), int(m))
-
-
-    @staticmethod
-    def weekday(date_obj):
-        ''' return the name of a weekday (0-6) '''
-        return days[int(date_obj.strftime("%w"))]
-
-
-    @staticmethod
-    def prettydate(date_obj):
-        ''' return a date in the form <year>-<month>-<day> '''
-        today = datetime.today()
-        min1day = timedelta(days=1)
-        min1week = timedelta(days=8)
-
-        if date_obj > (today - min1day):
-            return ugettext(u"idag")
-
-        if date_obj > (today - min1day - min1day):
-            return ugettext(u"igår")
-
-        if date_obj > (today - min1week):
-            return "i %ss" % TimeUtil.weekday(date_obj).lower()
-
-        return date_obj.strftime("%Y-%m-%d")
-
-
-    @staticmethod
-    def ymd(date_obj):
-        ''' return a date in the form <year>-<month>-<day> '''
-        return date_obj.strftime("%Y-%m-%d")
 
 
     @staticmethod
@@ -140,6 +97,9 @@ class TimeUtil:
     def period(year, week):
         ''' return a date in the form <year>-<week>-<day> '''
         # get starting date and ending date of week
+        trimmer_a = re.compile('([^\d])0(\d) ')
+        trimmer_b = re.compile('^0(\d) ')
+
         week_started, week_ended = TimeUtil.week_start_end(year, week)
 
         reduced = "%d %b %Y"
@@ -169,11 +129,13 @@ class TimeUtil:
 
     @staticmethod
     def another_week(year, week, diff):
+        the_magic_day = 5
+
         future = (TimeUtil.ywd_to_date(year, week, the_magic_day) + timedelta(days=7 * diff))
 
         future_yw = future.isocalendar()
 
-        return (future_yw[0], future_yw[1])
+        return future_yw[0], future_yw[1]
 
 
     @staticmethod

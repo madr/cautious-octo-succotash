@@ -1,12 +1,5 @@
-Django==1.9.7
-django-cors-headers==1.1.0
-django-oauth-toolkit==0.10.0
-djangorestframework==3.3.3
-djangorestframework-jsonapi==2.0.1
-django-allauth==0.24.1
-djangorestframework-filters==0.8.0
-django-rest-swagger==0.3.6
-django-htmlmin==0.9.1
-django-haystack==2.5.dev1
-dj-database-url==0.4.1
-elasticsearch==2.3.0
+-r requirements.minimal.txt
+waitress==0.9.0
+psycopg2==2.6.1
+numpy==1.11.1
+slackclient==1.0.2

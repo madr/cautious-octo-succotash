@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{% trans 'Personer' %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("userfilter:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h1 class="col-md-8">{{ users.count }} {% trans 'Personer' %}</h1>
+
+            <div class="card col-md-4"><br>
+                <input id="id_filter" type="text" placeholder="{% trans 'Filtrera ...' %}" class="form-control">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="users">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans 'Login' %}</th>
+                    <th>{% trans 'Namn' %}</th>
+                    <th></th>
+                    <th><abbr title='{% trans 'Debiteringsgrad' %}'>{% trans 'DB' %}</abbr></th>
+                    <th>{% trans 'Projekt' %}</th>
+                    <th>{% trans 'Tid' %}</th>
+                    <th>{% trans 'Rader' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td>
+                            <a class="a" href="{% url 'profile' user_id=u.id %}">
+                                <img src="https://secure.gravatar.com/avatar/{{ u.email|gravatar }}.jpg?r=g&s=64&d=mm"
+                                     alt="{{ user }}" class="gravatar">
+                            </a>
+                        </td>
+                        <td>
+                            <a class="a" href="{% url 'profile' user_id=u.id %}">
+                                {{ u.username }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ u.first_name }} {{ u.last_name }}
+                        </td>
+                        {% with cb=u.progress_set|billable ob=u.progress_set|billable:31 %}
+                            <td class="text-right">
+                                {% if cb|subtract:ob < 0 %}
+                                    <span class="label label-danger">{{ bd }}</span>
+                                {% endif %}
+
+                                {% if cb|subtract:ob > 0 %}
+                                    <span class="label label-success">+{{ bd }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if cb != 0 %}
+                                    {{ cb }}%
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        {% endwith %}
+                        <td>
+                            {{ u.project_set.count }}
+                        </td>
+                        <td>
+                            {{ u.progress_set|sumtime|hhmm|hours }}{% trans 't' %}
+                        </td>
+                        <td>
+                            {{ u.progress_set.count }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
