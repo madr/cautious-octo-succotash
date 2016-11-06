@@ -28,9 +28,17 @@ class Project(models.Model):
         resource_name = "projects"
 
     def user_set(self):
-        users = list(set([p.user_id for p in self.progress_set.all()]))
-        user_set = TajmUser.objects.filter(pk__in=users)
-        return user_set
+        users = dict()
+        user_set = list()
+
+        for progress in self.progress_set.all():
+            if progress.user_id not in users:
+                users[progress.user_id] = [0, progress.user]
+            users[progress.user_id][0] += int(progress.duration)
+
+        most_active_users = sorted(users.items(), key=lambda x: int(x[1][0]), reverse=True)
+
+        return [mau[1] for id, mau in most_active_users]
 
 
 class TajmUser(User):

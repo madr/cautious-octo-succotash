@@ -122,35 +122,4 @@
             </table>
         {% endif %}
     </div>
-
-
-    <div class="wrap wrap-card">
-        <h2 class="wrap wrap-card-hd line">
-            <span>{% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}</span>
-            <a class="btn" href="{% url 'week_summary' year=year week_label=week %}">{% trans 'Mer statistik' %}</a>
-        </h2>
-
-        <div class="line line-justified grid">
-            <dl>
-                <dt>{% trans 'Projekt' %}</dt>
-                <dd>{{ ww_project_count }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Debiteringsgrad' %}</dt>
-                <dd>{{ ww_billable }}%</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Rader' %}</dt>
-                <dd>{{ ww_progresses_count }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Interntid' %}</dt>
-                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
-            </dl>
-            <dl>
-                <dt>{% trans 'Frånvaro' %}</dt>
-                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
-            </dl>
-        </div>
-    </div>
 {% endblock %}

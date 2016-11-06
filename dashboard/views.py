@@ -5,17 +5,22 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from core.lib import TimeUtil
 
-from core.models import Progress, Absence, TajmUser
+from core.models import Progress, Absence, TajmUser, Project
 from dashboard.lib import get_project_data, get_week_data, get_absence_data
 
 
 @login_required
 def list_users(request):
-    context = dict(
-        users=TajmUser.objects.filter(is_active=True, is_superuser=False).order_by('username')
-    )
+    return render(request, 'list_users.html', {
+        'users': TajmUser.objects.filter(is_active=True, is_superuser=False).order_by('username')
+    })
 
-    return render(request, 'list_users.html', context)
+
+@login_required
+def list_projects(request):
+    return render(request, 'list_projects.html', {
+        'projects': Project.objects.filter(active=True)
+    })
 
 
 @login_required

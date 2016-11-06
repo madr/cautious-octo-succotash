@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{% trans 'Personer' %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("userfilter:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h1 class="col-md-6">{{ projects.count }} {% trans 'Projekt' %}</h1>
+
+            <div class="card col-md-6"><br>
+                <input id="id_filter" type="text" placeholder="{% trans 'Filtrera ...' %}" class="form-control">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="users">
+                <thead>
+                <tr>
+                    <th>{% trans 'DB' %}</th>
+                    <th>{% trans 'Namn' %}</th>
+                    <th>{% trans 'Tid' %}</th>
+                    <th>{% trans 'P' %}</th>
+                    <th></th>
+                    <th>{% trans 'Rader' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in projects %}
+                    <tr>
+                        <td class="text-right">{% if p.billable %}
+                            <span class="label label-success">{% trans 'db' %}</span>
+                        {% else %}
+                            <span class="label label-danger">{% trans 'it' %}</span>
+                        {% endif %} </td>
+                        <td>{{ p.name }}</td>
+                        {% with ps=p.progress_set us=p.user_set %}
+                            <td>
+                                {{ ps|sumtime|hhmm|hours }}{% trans 't' %}
+                            </td>
+                            <td>
+                                {{ us|length }}
+                            </td>
+                            <td class="overflow: hidden; white-space: nowrap">
+                                {% for u in us %}
+                                    <a href='{% url 'profile' user_id=u.pk %}'>
+                                        {{ u.username }}
+                                    </a>
+                                    — {{ u.progress_set|sumtime:p.pk|hhmm|hours }}{% trans 't' %}{% if not forloop.last %}  <br>{% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {{ ps.count }}
+                            </td>
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
