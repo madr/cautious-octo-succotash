@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{{ profile.username }} - {{ profile.first_name }} {{ profile.last_name }}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-3">
+            <div class="well">
+                <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
+                     alt="{{ profile.username }}" class="pull-left">
+
+
+                <h1>
+                    {{ profile.first_name }} {{ profile.last_name }}
+                </h1>
+
+                {% if profile.username == request.user.username %}
+                    <a href="{% url 'account_logout' %}" class="pull-right btn btn-primary btn-sm">Logga ut</a>
+                {% endif %}
+
+                {{ profile.username }}
+
+                <br><br><br>
+
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="#">{% trans 'Översikt' %}</a></li>
+                    <li><a href="#">{% trans 'Projekt' %}</a></li>
+                    <li><a href="#">{% trans 'Kollegor' %}</a></li>
+                    <li><a href="#">{% trans 'Historik' %}</a></li>
+                    <li><a href="#">{% trans 'Frånvaro' %}</a></li>
+                    <li><a href="#">{% trans 'Debiteringsgrad' %}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h2>{% trans 'Nyckeltal' %}</h2>
+
+            <div class="row">
+                <dl class="col-3">
+                    <dt>{% trans 'Rapporterad tid' %}</dt>
+                    <dd>{{ total_time|pretty_minutes|capfirst }}</dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Projekt' %}</dt>
+                    <dd>
+                        {% if total_projects %}
+                            {{ total_projects }}
+                        {% else %}
+                            {% trans 'Inga' %}
+                        {% endif %}
+                    </dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Startdatum' %}</dt>
+                    <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
+                </dl>
+                <dl class="col-3">
+                    <dt>{% trans 'Debiteringsgrad' %}</dt>
+                    <dd>
+                        {% if billable_rank %}
+                            {{ billable_rank }}%
+                        {% else %}
+                            {% trans 'okänd' %}
+                        {% endif %}
+                    </dd>
+                </dl>
+            </div>
+
+            <h2>{% trans 'Projekt, all tid' %}</h2>
+            {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
+
+            <h2>{% trans 'Senast tidrapporterat' %}</h2>
+            {% include '_progresses.html' with progresses=most_recent_progresses only %}
+        </div>
+    </div>
+{% endblock %}

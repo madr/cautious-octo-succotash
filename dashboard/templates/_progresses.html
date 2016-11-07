@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load reporter_extras %}
+
+<table>
+    <thead>
+    <tr>
+        <th class="col-duration">{% trans "Tid" %}</th>
+        <th class="col-25">{% trans "Projekt" %}</th>
+        <th>{% trans "Anteckning" %}</th>
+        <th class="col-delete">{% trans "Datum" %}</th>
+    </tr>
+    </thead>
+    {% for progress in progresses %}
+        <tr>
+            <td class="col-duration">+{{ progress.duration|hhmm }}</td>
+            <td>{{ progress.project.name }}</td>
+            <td>
+                <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
+            </td>
+            <td>{{ progress.done_at|date:'d/m' }}</td>
+        </tr>
+    {% endfor %}
+    {% for absence in absences %}
+        <tr>
+            <td class="col-duration">-{{ absence.duration|hhmm }}</td>
+            <td>{{ absence.category.name }}</td>
+            <td>{{ absence.note }}</td>
+            <td>{{ absence.done_at|date:'d/m' }}</td>
+        </tr>
+    {% endfor %}
+</table>

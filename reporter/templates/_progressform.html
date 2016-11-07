@@ -1,0 +1,58 @@
+{% load i18n %}
+
+
+{% if progress_form.duration.errors %}
+    <label for="id_duration" class="mb">
+        <strong>{% trans "Hoppsan!" %}</strong><br>{% trans "Ange en tid i progress_formatet tt:mm, eller använd något" %}
+        <a class="a"
+           href="http://help.tajm.me/guides/report-time.html#duration-tips">{% trans "snabbkommando" %}.</a>
+    </label>
+{% endif %}
+
+{% if progress_form.project_or_absence_category.errors %}
+    <div class="mb">
+        <strong>{% trans "Hoppsan!" %}</strong><br>{% trans "Ett projekt behövs. Om du inte får några bra förslag, skapa ett nytt: det går alltid att döpa om eller slå ihop projektet med något annat projekt vid behov." %}
+    </div>
+{% endif %}
+
+{% if progress_form.note.errors %}
+    <div class="mb">
+        <strong>{% trans "Hoppsan!" %}</strong><br>
+        {% trans "Minnet är gott men kort: ange här något som summerar arbetet. Det kan vara en referens (telefonsamtal eller mail) eller en ticket." %}
+    </div>
+{% endif %}
+
+<div class="form-group">
+    <label for="id_duration" class="sr-only">{% trans "Tid" %}</label>
+
+    <div class="input-group">
+        <div class="input-group-btn">
+            <button class="btn btn-primary" data-plus-1-hour type="button">+1h</button>
+            <button class="btn btn-primary" data-minus-1-hour type="button">-1h</button>
+        </div>
+        <input class="form-control text-center" id="id_duration" name="duration" placeholder="00:00"
+                {% if progress_form.duration.value != None %}
+               value="{{ progress_form.duration.value }}"{% endif %}>
+
+        <div class="input-group-btn">
+            <button class="btn btn-primary" data-minus-15-min type="button">-15m</button>
+            <button class="btn btn-primary" data-plus-15-min type="button">+15m</button>
+        </div>
+    </div>
+</div>
+
+<div class="form-group relpos">
+    <label for="id_project">{% trans "Kund, projekt eller frånvaroskäl" %}</label>
+    <input data-project-autocomplete class="form-control" id="id_project"
+            {% if progress_form.project_or_absence_category.value != None %}
+           value="{{ progress_form.project_or_absence_category.value }}"{% endif %}
+           name="project_or_absence_category"
+           placeholder="{% trans 'Nya projekt skapas automatiskt' %}">
+</div>
+
+<div class="form-group">
+    <label for="id_note">{% trans "Anteckning" %}</label>
+    <input class="form-control" id="id_note" {% if progress_form.note.value != None %}
+           value="{{ progress_form.note.value }}"{% endif %} name="note"
+           placeholder="Vad gjorde du och för vem?">
+</div>
