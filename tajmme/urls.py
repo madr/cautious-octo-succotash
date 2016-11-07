@@ -14,3 +14,5 @@ urlpatterns = [
     url(r'^id/', include('allauth.urls')),
     url(r'^', include(dashboard.urls)),
 ]
+
+admin.site.site_header = 'Tajm admin'
