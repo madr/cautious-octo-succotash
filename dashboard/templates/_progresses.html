@@ -1,31 +1,42 @@
 {% load i18n %}
 {% load reporter_extras %}
 
-<table>
-    <thead>
-    <tr>
-        <th class="col-duration">{% trans "Tid" %}</th>
-        <th class="col-25">{% trans "Projekt" %}</th>
-        <th>{% trans "Anteckning" %}</th>
-        <th class="col-delete">{% trans "Datum" %}</th>
-    </tr>
-    </thead>
-    {% for progress in progresses %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
         <tr>
-            <td class="col-duration">+{{ progress.duration|hhmm }}</td>
-            <td>{{ progress.project.name }}</td>
-            <td>
-                <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
-            </td>
-            <td>{{ progress.done_at|date:'d/m' }}</td>
+            <th>{% trans "Typ" %}</th>
+            <th>{% trans "Tid" %}</th>
+            <th>{% trans "Projekt" %}</th>
+            <th>{% trans "Anteckning" %}</th>
+            <th>{% trans "Datum" %}</th>
         </tr>
-    {% endfor %}
-    {% for absence in absences %}
-        <tr>
-            <td class="col-duration">-{{ absence.duration|hhmm }}</td>
-            <td>{{ absence.category.name }}</td>
-            <td>{{ absence.note }}</td>
-            <td>{{ absence.done_at|date:'d/m' }}</td>
-        </tr>
-    {% endfor %}
-</table>
+        </thead>
+        {% for progress in progresses %}
+            <tr>
+                <td class="text-right">{% if progress.project.billable %}
+                    <span class="label label-success">db</span>
+                {% else %}
+                    <span class="label label-danger">it</span>
+                {% endif %}</td>
+                <td>+{{ progress.duration|hhmm }}</td>
+                <td>{{ progress.project.name }}</td>
+                <td>
+                    <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
+                </td>
+                <td>{{ progress.done_at|date:'d/m' }}</td>
+            </tr>
+        {% endfor %}
+        {% for absence in absences %}
+            <tr>
+                <td class="text-right">
+                    <span class="label label-info">fv</span>
+                </td>
+                <td>-{{ absence.duration|hhmm }}</td>
+                <td>{{ absence.category.name }}</td>
+                <td>{{ absence.note }}</td>
+                <td>{{ absence.done_at|date:'d/m' }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

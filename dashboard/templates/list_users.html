@@ -38,6 +38,7 @@
                     <th>{% trans 'Projekt' %}</th>
                     <th>{% trans 'Tid' %}</th>
                     <th>{% trans 'Rader' %}</th>
+                    <th>{% trans 'Frånvaro' %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,6 +84,9 @@
                         </td>
                         <td>
                             {{ u.progress_set.count }}
+                        </td>
+                        <td>
+                            {{ u.absence_set|sumtime|hhmm }}
                         </td>
                     </tr>
                 {% endfor %}
