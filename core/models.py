@@ -54,9 +54,13 @@ class TajmUser(User):
 class Deadline(models.Model):
     project = models.ForeignKey(Project)
     label = models.CharField(max_length=128)
-    ends_at = models.DateField(null=True, blank=True)
     starts_at = models.DateField(null=True, blank=True)
+    ends_at = models.DateField(null=True, blank=True)
     hour_amount = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1)])
+
+    class Meta:
+        ordering = ["-ends_at", '-starts_at']
+        verbose_name_plural = "deadlines"
 
 
 class Progress(models.Model):
