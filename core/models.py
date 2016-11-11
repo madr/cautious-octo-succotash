@@ -54,9 +54,9 @@ class TajmUser(User):
 class Deadline(models.Model):
     project = models.ForeignKey(Project)
     label = models.CharField(max_length=128)
-    ends_at = models.DateField(null=True)
-    starts_at = models.DateField(null=True)
-    amount = models.IntegerField(null=True, validators=[validate_duration])
+    ends_at = models.DateField(null=True, blank=True)
+    starts_at = models.DateField(null=True, blank=True)
+    hour_amount = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1)])
 
 
 class Progress(models.Model):
