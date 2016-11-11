@@ -29,7 +29,6 @@ class Project(models.Model):
 
     def user_set(self):
         users = dict()
-        user_set = list()
 
         for progress in self.progress_set.all():
             if progress.user_id not in users:
@@ -38,7 +37,7 @@ class Project(models.Model):
 
         most_active_users = sorted(users.items(), key=lambda x: int(x[1][0]), reverse=True)
 
-        return [mau[1] for id, mau in most_active_users]
+        return [mau for id, mau in most_active_users]
 
 
 class TajmUser(User):
@@ -61,6 +60,47 @@ class Deadline(models.Model):
     class Meta:
         ordering = ["-ends_at", '-starts_at']
         verbose_name_plural = "deadlines"
+
+    def is_billable(self):
+        billable = 0
+        for p in self.projects.all():
+            billable += 1 if p.billable else -1
+        return billable > 0
+
+
+    def burndown(self):
+        duration = 0
+        kwargs = {}
+
+        if self.starts_at:
+            kwargs['done_at__gte'] = self.starts_at
+        if self.ends_at:
+            kwargs['done_at__lte'] = self.ends_at
+
+        for p in self.projects.all():
+            for d in p.progress_set.filter(**kwargs):
+                duration += d.duration
+
+        return duration
+
+    def user_set(self):
+        users = dict()
+        kwargs = {}
+
+        if self.starts_at:
+            kwargs['done_at__gte'] = self.starts_at
+        if self.ends_at:
+            kwargs['done_at__lte'] = self.ends_at
+
+        for p in self.projects.all():
+            for progress in p.progress_set.filter(**kwargs):
+                if progress.user_id not in users:
+                    users[progress.user_id] = [0, progress.user]
+                users[progress.user_id][0] += int(progress.duration)
+
+        most_active_users = sorted(users.items(), key=lambda x: int(x[1][0]), reverse=True)
+
+        return [mau for id, mau in most_active_users]
 
 
 class Progress(models.Model):

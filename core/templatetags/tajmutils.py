@@ -21,6 +21,11 @@ def subtract(value, arg):
 
 
 @register.filter
+def times(value, arg):
+    return int(value) * int(arg)
+
+
+@register.filter
 def billable(progress_set, days=0):
     before = datetime.datetime.today() - datetime.timedelta(days=days)
     all_time = sum([p.duration for p in progress_set.filter(done_at__lte=before)])
