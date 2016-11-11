@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from core.lib import TimeUtil
 
-from core.models import Progress, Absence, TajmUser, Project
+from core.models import Progress, Absence, TajmUser, Project, Deadline
 from dashboard.lib import get_project_data, get_week_data, get_absence_data
 
 
@@ -24,7 +24,19 @@ def list_projects(request):
 
 
 @login_required
+def list_deadlines(request):
+    return render(request, 'list_deadlines.html', {
+        'deadlines': Deadline.objects.all()
+    })
+
+
+@login_required
 def project(request, id):
+    return redirect('today')
+
+
+@login_required
+def deadline(request, id):
     return redirect('today')
 
 

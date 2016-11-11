@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+{% load reporter_extras %}
+
+{% block sitetitle %}{% trans 'Projekt' %}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("userfilter:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h1 class="col-md-8">{{ deadlines.count }} {% trans 'Deadlines' %}</h1>
+
+            <div class="card col-md-4"><br>
+                <input id="id_filter" type="text" placeholder="{% trans 'Filtrera ...' %}" class="form-control">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="table-responsive">
+            <table class="table table-hover" id="users">
+                <thead>
+                <tr>
+                    <th>{% trans 'DB' %}</th>
+                    <th>{% trans 'Status' %}</th>
+                    <th>{% trans 'Beteckning' %}</th>
+                    <th>{% trans 'Projekt' %}</th>
+                    <th>{% trans 'Timmar' %}</th>
+                    <th>{% trans 'Personer' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for dl in deadlines %}
+                    <tr>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -93,8 +93,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Deadline)
 class DeadlineAdmin(admin.ModelAdmin):
-    list_display = ['project', 'label', 'starts_at', 'ends_at', 'hour_amount']
-    list_filter = ['project']
+    list_display = ['label', 'starts_at', 'ends_at', 'hour_amount']
+    list_filter = ['projects']
     search_fields = ['label', 'project__name']
 
 

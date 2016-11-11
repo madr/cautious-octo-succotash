@@ -52,7 +52,7 @@ class TajmUser(User):
 
 
 class Deadline(models.Model):
-    project = models.ForeignKey(Project)
+    projects = models.ManyToManyField(Project)
     label = models.CharField(max_length=128)
     starts_at = models.DateField(null=True, blank=True)
     ends_at = models.DateField(null=True, blank=True)
