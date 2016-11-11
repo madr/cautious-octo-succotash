@@ -51,6 +51,14 @@ class TajmUser(User):
         return project_set
 
 
+class Deadline(models.Model):
+    project = models.ForeignKey(Project)
+    label = models.CharField(max_length=128)
+    ends_at = models.DateField(null=True)
+    starts_at = models.DateField(null=True)
+    amount = models.IntegerField(null=True, validators=[validate_duration])
+
+
 class Progress(models.Model):
     user = models.ForeignKey(TajmUser)
     duration = models.IntegerField(default=15, validators=[MinValueValidator(15), validate_duration])
@@ -59,7 +67,7 @@ class Progress(models.Model):
     created_at = models.DateField(auto_now_add=True)
     started_at = models.TimeField(default='00:00:00')
 
-    project = models.ForeignKey(Project, null=True)
+    project = models.ForeignKey(Project)
 
     def __str__(self):
         return self.note
@@ -95,7 +103,7 @@ class Absence(models.Model):
     started_at = models.TimeField(default='00:00:00')
     created_at = models.DateField(auto_now_add=True)
 
-    category = models.ForeignKey(AbsenceCategory, null=True)
+    category = models.ForeignKey(AbsenceCategory)
 
     def __str__(self):
         return self.category.name
