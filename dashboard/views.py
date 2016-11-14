@@ -1,12 +1,13 @@
 import datetime
+
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.db.models.functions.datetime import ExtractWeekDay
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from core.lib import TimeUtil
 
-from core.models import Progress, Absence, TajmUser, Project, Deadline
-from dashboard.lib import get_project_data, get_week_data, get_absence_data
+from core.lib import TimeUtil
+from core.models import TajmUser, Project, Deadline
+from dashboard.lib import get_project_data, get_week_data, get_absence_data, generate_activity_table
 
 
 @login_required
@@ -46,6 +47,45 @@ def dashboard(request):
 
 
 @login_required
+def user_activity(request, user_id):
+    profile = TajmUser.objects.get(pk=user_id)
+    all_progresses = profile.progress_set.annotate(weekday=ExtractWeekDay('done_at')).all().reverse()
+    y, w, d = all_progresses.first().done_at.isocalendar()
+
+    activity = list()
+    for y in range(y, datetime.date.today().year + 1):
+        start_at = datetime.date(y, 1, 1)
+        stop_at = start_at + datetime.timedelta(days=(26 * 7 - 1))
+
+        activity.append([
+            '%s - %s %s' % (start_at.strftime('%d %B'), stop_at.strftime('%d %B'), y),
+            generate_activity_table(
+                all_progresses.filter(done_at__gte=start_at, done_at__lte=stop_at),
+                start_at,
+                stop_at,
+            )
+        ])
+
+        start_at = stop_at + datetime.timedelta(days=1)
+        stop_at = datetime.date(y, 12, 31)
+
+        activity.append([
+            '%s - %s %s' % (start_at.strftime('%d %B'), stop_at.strftime('%d %B'), y),
+            generate_activity_table(
+                all_progresses.filter(done_at__gte=start_at, done_at__lte=stop_at),
+                start_at,
+                stop_at,
+            )
+        ])
+
+    return render(request, 'user_activity.html', {
+        'profile': profile,
+        'progresses': all_progresses,
+        'activity': activity,
+    })
+
+
+@login_required
 def profile(request, user_id=None):
     if user_id:
         profile = TajmUser.objects.get(id=user_id)
@@ -76,7 +116,7 @@ def profile(request, user_id=None):
 
     most_recent_progresses = all_progresses[0:10]
 
-    context = dict(
+    return render(request, 'profile.html', dict(
         profile=profile,
         total_time=total_time,
         total_projects=total_projects,
@@ -85,9 +125,7 @@ def profile(request, user_id=None):
         max_count=max_count,
         most_recent_progresses=most_recent_progresses,
         billable_rank=billable_rank,
-    )
-
-    return render(request, 'profile.html', context=context)
+    ))
 
 
 @login_required

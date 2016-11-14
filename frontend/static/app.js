@@ -990,6 +990,9 @@
         ti = tables.length;
 
         for (i = 0; i < ti; i += 1) {
+            if (tables[i].classList.contains('no-sort')) {
+                continue;
+            }
             o = new g.tajmme.TableSort(tables[i]);
             o.makeSortable();
         }

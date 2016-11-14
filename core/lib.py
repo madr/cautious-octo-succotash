@@ -36,42 +36,11 @@ class TimeUtil:
 
 
     @staticmethod
-    def duration(minutes):
-        ''' transform a duration (in minutes) to spoken time '''
-        if minutes == 0:
-            return ugettext("ingen")
-
-        hh = (minutes - (minutes % 60)) / 60
-        mm = minutes % 60
-        hh_label = ugettext("timmar")
-
-        if hh == 1:
-            hh_label = ugettext("timme")
-
-        if hh == 0:
-            return "%d %s" % (mm, ugettext("minuter"))
-
-        if mm == 0:
-            return "%d %s" % (hh, hh_label)
-
-        ret = "%d %s, %d %s" % (hh, hh_label, mm, ugettext("minuter"))
-
-        return ret
-
-
-    @staticmethod
     def hhmm(minutes):
         ''' transforms minutes to a timestamp string (HH:MM) '''
         hh = (minutes - (minutes % 60)) / 60
         mm = minutes % 60
-        return "%02d:%02d" % (hh, mm)
-
-
-    @staticmethod
-    def ywd(date_obj):
-        ''' return a date in the form <year>-<week>-<day>,
-        where week is the SPOKEN week (1-53)'''
-        return "%d-%d-%d" % date_obj.isocalendar()
+        return "%d:%02d" % (hh, mm)
 
 
     @staticmethod
@@ -83,19 +52,8 @@ class TimeUtil:
 
 
     @staticmethod
-    def num_name_date(year, week):
-        weekdays = []
-
-        for i in range(1,8):
-            date = TimeUtil.ywd_to_date(year, week, i)
-            weekdays.append((i, date))
-
-        return weekdays
-
-
-    @staticmethod
     def period(year, week):
-        ''' return a date in the form <year>-<week>-<day> '''
+        ''' Return a readable date period. '''
         # get starting date and ending date of week
         trimmer_a = re.compile('([^\d])0(\d) ')
         trimmer_b = re.compile('^0(\d) ')

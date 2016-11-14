@@ -16,35 +16,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="well">
-                    <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
-                         alt="{{ profile.username }}" class="pull-left">
-
-
-                    <h1>
-                        {{ profile.first_name }} {{ profile.last_name }}
-                    </h1>
-
-                    {% if profile.username == request.user.username %}
-                        <a href="{% url 'account_logout' %}" class="pull-right btn btn-primary btn-sm">Logga ut</a>
-                    {% endif %}
-
-                    {{ profile.username }}
-
-                    <br><br><br>
-
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">{% trans 'Översikt' %}</a></li>
-                        <li><a href="#">{% trans 'Projekt' %}</a></li>
-                        <li><a href="#">{% trans 'Kollegor' %}</a></li>
-                        <li><a href="#">{% trans 'Historik' %}</a></li>
-                        <li><a href="#">{% trans 'Frånvaro' %}</a></li>
-                        <li><a href="#">{% trans 'Debiteringsgrad' %}</a></li>
-                    </ul>
-                </div>
-            </div>
-
+            {% include '_profile_nav.html' with profile=profile %}
             <div class="col-md-9">
                 <h2>{% trans 'Nyckeltal' %}</h2>
 

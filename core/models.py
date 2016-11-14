@@ -1,9 +1,9 @@
 import datetime
 
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 from django.db import models
 from rest_framework import serializers
-from rest_framework.compat import MinValueValidator
 
 
 def validate_duration(value):

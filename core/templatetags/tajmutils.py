@@ -9,9 +9,11 @@ register = template.Library()
 
 
 @register.filter
-def sumtime(progress_set, project_id=None):
-    if project_id:
-        return sum([p.duration for p in progress_set.filter(project_id=project_id)])
+def sumtime(progress_set, **kwargs):
+    if isinstance(progress_set, list):
+        return sum([p.duration for p in progress_set])
+    if kwargs:
+        return sum([p.duration for p in progress_set.filter(**kwargs)])
     return sum([p.duration for p in progress_set.all()])
 
 
@@ -61,7 +63,7 @@ def pretty_period(year, week):
 
 @register.filter
 def hours(hhmm):
-    if hhmm == '00:00':
+    if hhmm == '00:00' or hhmm == '0:00':
         return '-'
 
     hh, mm = hhmm.split(':')
@@ -71,7 +73,7 @@ def hours(hhmm):
     mm = mm.replace('45', '¾')
     mm = mm.replace('00', '')
 
-    if hh == '00':
+    if hh == '00' or hh == '0':
         return mm
 
     if mm == '':

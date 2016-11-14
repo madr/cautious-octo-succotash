@@ -1,5 +1,6 @@
 import datetime
 
+from core.lib import TimeUtil
 from core.models import Progress, Absence
 
 
@@ -61,3 +62,43 @@ def get_absence_data(absences, **kwargs):
         ))
 
     return sorted(values, key=lambda x: x['sum'], reverse=True)
+
+
+def generate_activity_table(progress_set, start_date, end_date):
+    one_week = datetime.timedelta(days=7)
+    r = range(0, 7)
+    y, w, d = start_date.isocalendar()
+    first_mon = TimeUtil.ywd_to_date(y, w, 1)
+    y, w, d = end_date.isocalendar()
+    last_sun = TimeUtil.ywd_to_date(y, w, 7)
+    l = int((last_sun - first_mon).days / 7) + 1
+
+    day_dates = [first_mon + datetime.timedelta(days=d) for d in r]
+
+    data = [[day_dates[d].strftime('%a'), [[]]] for d in r]
+
+    for progress in progress_set:
+        i = progress.weekday - 2 if progress.weekday > 1 else 6
+
+        if day_dates[i] < progress.done_at:
+            data[i][1].append([])
+
+            d = day_dates[i] + one_week
+            while d < progress.done_at:
+                data[i][1].append([])
+                d += one_week
+
+        day_dates[i] = progress.done_at
+        data[i][1][-1].append(progress)
+
+    for j in r:
+        while len(data[j][1]) < l:
+            data[j][1].append([])
+
+    m = first_mon
+    week_numbers = list()
+    while m < last_sun:
+        week_numbers.append(m.isocalendar()[1])
+        m += one_week
+
+    return [data, week_numbers]

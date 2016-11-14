@@ -1,5 +1,6 @@
+import allauth
 from django.conf.urls import url, include
-from django.contrib import admin
+from django.contrib import admin, auth
 import dashboard.urls as dashboard
 
 from httpapi.views import httpapi_router
@@ -10,7 +11,7 @@ urlpatterns = [
     url(r'^api/v1/', include(httpapi_router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^id/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^id/logout/$', auth.views.logout, {'next_page': '/'}),
     url(r'^id/', include('allauth.urls')),
     url(r'^', include(dashboard.urls)),
 ]
