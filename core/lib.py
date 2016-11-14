@@ -9,7 +9,6 @@ class TimeUtil:
     def __init__(self):
         pass
 
-
     @staticmethod
     def correct(anything):
         ''' make sure a duration (in minutes) is whole quarters. '''
@@ -23,7 +22,6 @@ class TimeUtil:
 
         return duration
 
-
     @staticmethod
     def to_minutes(hhmm):
         ''' calculates the number of minutes of a timestamp (hh:mm). '''
@@ -34,7 +32,6 @@ class TimeUtil:
 
         return minutes
 
-
     @staticmethod
     def hhmm(minutes):
         ''' transforms minutes to a timestamp string (HH:MM) '''
@@ -42,14 +39,12 @@ class TimeUtil:
         mm = minutes % 60
         return "%d:%02d" % (hh, mm)
 
-
     @staticmethod
     def week_start_end(year, week):
         week_started = TimeUtil.ywd_to_date(year, week, 1)
         week_ended = week_started + timedelta(days=6)
 
         return week_started, week_ended
-
 
     @staticmethod
     def period(year, week):
@@ -74,16 +69,13 @@ class TimeUtil:
 
         return period
 
-
     @staticmethod
     def prevweek(year, week):
         return TimeUtil.another_week(year, week, -1)
 
-
     @staticmethod
     def nextweek(year, week):
         return TimeUtil.another_week(year, week, 1)
-
 
     @staticmethod
     def another_week(year, week, diff):
@@ -94,7 +86,6 @@ class TimeUtil:
         future_yw = future.isocalendar()
 
         return future_yw[0], future_yw[1]
-
 
     @staticmethod
     def ywd_to_date(year, week_label, day):
@@ -128,3 +119,13 @@ class TimeUtil:
         # ahead of time.
         behave = timedelta(days=7)
         return (datetime(datestruct[0], datestruct[1], datestruct[2]) - behave).date()
+
+    @staticmethod
+    def num_name_date(year, week):
+        weekdays = []
+
+        for i in range(1,8):
+            date = TimeUtil.ywd_to_date(year, week, i)
+            weekdays.append((i, date))
+
+        return weekdays

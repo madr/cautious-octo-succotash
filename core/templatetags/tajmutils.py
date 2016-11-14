@@ -2,6 +2,7 @@ import datetime
 import hashlib
 
 from django import template
+from django.utils.translation import ugettext
 
 from core.lib import TimeUtil
 
@@ -53,7 +54,26 @@ def gravatar(email):
 
 @register.filter
 def pretty_minutes(minutes):
-    return TimeUtil.duration(TimeUtil.correct(minutes))
+    ''' transform a duration (in minutes) to spoken time '''
+    if minutes == 0:
+        return ugettext("ingen")
+
+    hh = (minutes - (minutes % 60)) / 60
+    mm = minutes % 60
+    hh_label = ugettext("timmar")
+
+    if hh == 1:
+        hh_label = ugettext("timme")
+
+    if hh == 0:
+        return "%d %s" % (mm, ugettext("minuter"))
+
+    if mm == 0:
+        return "%d %s" % (hh, hh_label)
+
+    ret = "%d %s, %d %s" % (hh, hh_label, mm, ugettext("minuter"))
+
+    return ret
 
 
 @register.filter
