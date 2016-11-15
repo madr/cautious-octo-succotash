@@ -1,9 +1,9 @@
 import datetime
 
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 from django.db import models
 from rest_framework import serializers
-from rest_framework.compat import MinValueValidator
 
 
 def validate_duration(value):
@@ -29,7 +29,6 @@ class Project(models.Model):
 
     def user_set(self):
         users = dict()
-        user_set = list()
 
         for progress in self.progress_set.all():
             if progress.user_id not in users:
@@ -38,7 +37,7 @@ class Project(models.Model):
 
         most_active_users = sorted(users.items(), key=lambda x: int(x[1][0]), reverse=True)
 
-        return [mau[1] for id, mau in most_active_users]
+        return [mau for id, mau in most_active_users]
 
 
 class TajmUser(User):
@@ -51,6 +50,59 @@ class TajmUser(User):
         return project_set
 
 
+class Deadline(models.Model):
+    projects = models.ManyToManyField(Project)
+    label = models.CharField(max_length=128)
+    starts_at = models.DateField(null=True, blank=True)
+    ends_at = models.DateField(null=True, blank=True)
+    hour_amount = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1)])
+
+    class Meta:
+        ordering = ["-ends_at", '-starts_at']
+        verbose_name_plural = "deadlines"
+
+    def is_billable(self):
+        billable = 0
+        for p in self.projects.all():
+            billable += 1 if p.billable else -1
+        return billable > 0
+
+
+    def burndown(self):
+        duration = 0
+        kwargs = {}
+
+        if self.starts_at:
+            kwargs['done_at__gte'] = self.starts_at
+        if self.ends_at:
+            kwargs['done_at__lte'] = self.ends_at
+
+        for p in self.projects.all():
+            for d in p.progress_set.filter(**kwargs):
+                duration += d.duration
+
+        return duration
+
+    def user_set(self):
+        users = dict()
+        kwargs = {}
+
+        if self.starts_at:
+            kwargs['done_at__gte'] = self.starts_at
+        if self.ends_at:
+            kwargs['done_at__lte'] = self.ends_at
+
+        for p in self.projects.all():
+            for progress in p.progress_set.filter(**kwargs):
+                if progress.user_id not in users:
+                    users[progress.user_id] = [0, progress.user]
+                users[progress.user_id][0] += int(progress.duration)
+
+        most_active_users = sorted(users.items(), key=lambda x: int(x[1][0]), reverse=True)
+
+        return [mau for id, mau in most_active_users]
+
+
 class Progress(models.Model):
     user = models.ForeignKey(TajmUser)
     duration = models.IntegerField(default=15, validators=[MinValueValidator(15), validate_duration])
@@ -59,7 +111,7 @@ class Progress(models.Model):
     created_at = models.DateField(auto_now_add=True)
     started_at = models.TimeField(default='00:00:00')
 
-    project = models.ForeignKey(Project, null=True)
+    project = models.ForeignKey(Project)
 
     def __str__(self):
         return self.note
@@ -95,7 +147,7 @@ class Absence(models.Model):
     started_at = models.TimeField(default='00:00:00')
     created_at = models.DateField(auto_now_add=True)
 
-    category = models.ForeignKey(AbsenceCategory, null=True)
+    category = models.ForeignKey(AbsenceCategory)
 
     def __str__(self):
         return self.category.name

@@ -2,7 +2,7 @@
 
 {% load i18n %}
 {% load staticfiles %}
-{% load reporter_extras %}
+{% load tajmutils %}
 
 {% block sitetitle %}{{ date|date:"l"|capfirst }} {% trans "vecka" %} {{ week }}
     {% if is_index == True %}{% if is_today == True %}({% trans "idag" %}){% else %}({% trans "nuv vecka" %}){% endif %}

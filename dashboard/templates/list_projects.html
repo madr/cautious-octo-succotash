@@ -2,7 +2,7 @@
 
 {% load i18n %}
 {% load staticfiles %}
-{% load reporter_extras %}
+{% load tajmutils %}
 
 {% block sitetitle %}{% trans 'Projekt' %}{% endblock %}
 
@@ -60,10 +60,10 @@
                             </td>
                             <td class="overflow: hidden; white-space: nowrap">
                                 {% for u in us %}
-                                    <a href='{% url 'profile' user_id=u.pk %}'>
-                                        {{ u.username }}
+                                    <a href='{% url 'profile' user_id=u.1.pk %}'>
+                                        {{ u.1.username }}
                                     </a>
-                                    — {{ u.progress_set|sumtime:p.pk|hhmm|hours }}{% trans 't' %}{% if not forloop.last %}  <br>{% endif %}
+                                    — {{ u.0|hhmm|hours }}{% trans 't' %}{% if not forloop.last %}  <br>{% endif %}
                                 {% endfor %}
                             </td>
                             <td>

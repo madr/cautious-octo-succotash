@@ -9,7 +9,6 @@ class TimeUtil:
     def __init__(self):
         pass
 
-
     @staticmethod
     def correct(anything):
         ''' make sure a duration (in minutes) is whole quarters. '''
@@ -23,7 +22,6 @@ class TimeUtil:
 
         return duration
 
-
     @staticmethod
     def to_minutes(hhmm):
         ''' calculates the number of minutes of a timestamp (hh:mm). '''
@@ -34,45 +32,12 @@ class TimeUtil:
 
         return minutes
 
-
-    @staticmethod
-    def duration(minutes):
-        ''' transform a duration (in minutes) to spoken time '''
-        if minutes == 0:
-            return ugettext("ingen")
-
-        hh = (minutes - (minutes % 60)) / 60
-        mm = minutes % 60
-        hh_label = ugettext("timmar")
-
-        if hh == 1:
-            hh_label = ugettext("timme")
-
-        if hh == 0:
-            return "%d %s" % (mm, ugettext("minuter"))
-
-        if mm == 0:
-            return "%d %s" % (hh, hh_label)
-
-        ret = "%d %s, %d %s" % (hh, hh_label, mm, ugettext("minuter"))
-
-        return ret
-
-
     @staticmethod
     def hhmm(minutes):
         ''' transforms minutes to a timestamp string (HH:MM) '''
         hh = (minutes - (minutes % 60)) / 60
         mm = minutes % 60
-        return "%02d:%02d" % (hh, mm)
-
-
-    @staticmethod
-    def ywd(date_obj):
-        ''' return a date in the form <year>-<week>-<day>,
-        where week is the SPOKEN week (1-53)'''
-        return "%d-%d-%d" % date_obj.isocalendar()
-
+        return "%d:%02d" % (hh, mm)
 
     @staticmethod
     def week_start_end(year, week):
@@ -81,21 +46,9 @@ class TimeUtil:
 
         return week_started, week_ended
 
-
-    @staticmethod
-    def num_name_date(year, week):
-        weekdays = []
-
-        for i in range(1,8):
-            date = TimeUtil.ywd_to_date(year, week, i)
-            weekdays.append((i, date))
-
-        return weekdays
-
-
     @staticmethod
     def period(year, week):
-        ''' return a date in the form <year>-<week>-<day> '''
+        ''' Return a readable date period. '''
         # get starting date and ending date of week
         trimmer_a = re.compile('([^\d])0(\d) ')
         trimmer_b = re.compile('^0(\d) ')
@@ -116,16 +69,13 @@ class TimeUtil:
 
         return period
 
-
     @staticmethod
     def prevweek(year, week):
         return TimeUtil.another_week(year, week, -1)
 
-
     @staticmethod
     def nextweek(year, week):
         return TimeUtil.another_week(year, week, 1)
-
 
     @staticmethod
     def another_week(year, week, diff):
@@ -136,7 +86,6 @@ class TimeUtil:
         future_yw = future.isocalendar()
 
         return future_yw[0], future_yw[1]
-
 
     @staticmethod
     def ywd_to_date(year, week_label, day):
@@ -170,3 +119,13 @@ class TimeUtil:
         # ahead of time.
         behave = timedelta(days=7)
         return (datetime(datestruct[0], datestruct[1], datestruct[2]) - behave).date()
+
+    @staticmethod
+    def num_name_date(year, week):
+        weekdays = []
+
+        for i in range(1,8):
+            date = TimeUtil.ywd_to_date(year, week, i)
+            weekdays.append((i, date))
+
+        return weekdays

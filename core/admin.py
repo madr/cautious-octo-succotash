@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 
-from core.models import Project, Progress, Absence, AbsenceCategory
+from core.models import Project, Progress, Absence, AbsenceCategory, Deadline
 
 
 def convert_projects_to_absence_category(modeladmin, request, queryset):
@@ -89,6 +89,13 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name']
     actions = [make_active, make_not_active, make_billable, make_not_billable, merge_projects,
                convert_projects_to_absence_category]
+
+
+@admin.register(Deadline)
+class DeadlineAdmin(admin.ModelAdmin):
+    list_display = ['label', 'starts_at', 'ends_at', 'hour_amount']
+    list_filter = ['projects']
+    search_fields = ['label', 'project__name']
 
 
 @admin.register(Absence)
