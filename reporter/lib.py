@@ -63,7 +63,7 @@ def _save_progress(user, form, existing_id=None):
                                            user=user,
                                            note=note)
 
-        year, week_label, day = TimeUtil.ywd(done_at).split('-')
+        year, week_label, day = done_at.isocalendar()
 
     else:
         progress = Progress.objects.get(pk=existing_id)
@@ -263,4 +263,4 @@ def _delete_absence(absence_id):
     done_at = absence.done_at
     absence.delete()
 
-    return TimeUtil.ywd(done_at).split('-')
+    return done_at.isocalendar()
