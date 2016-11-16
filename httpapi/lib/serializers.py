@@ -5,6 +5,7 @@ from core.models import Project, AbsenceCategory, Progress, Absence
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
+        fields = '__all__'
         model = Project
 
 
@@ -17,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AbsentiaSerializer(serializers.ModelSerializer):
     class Meta:
+        fields = '__all__'
         model = AbsenceCategory
 
 
@@ -27,6 +29,7 @@ class ProgressSerializer(serializers.ModelSerializer):
     }
 
     class Meta:
+        fields = '__all__'
         model = Progress
 
 
@@ -37,6 +40,7 @@ class AbsenceSerializer(serializers.ModelSerializer):
     }
 
     class Meta:
+        fields = '__all__'
         model = Absence
 
 
