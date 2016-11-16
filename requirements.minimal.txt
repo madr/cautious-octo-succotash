@@ -4,7 +4,7 @@ django-oauth-toolkit==0.10.0
 djangorestframework==3.5
 djangorestframework-jsonapi==2.0.1
 django-allauth==0.24.1
-djangorestframework-filters==0.8.0
+djangorestframework-filters==0.9.0
 django-rest-swagger==0.3.6
 django-htmlmin==0.9.1
 dj-database-url==0.4.1
