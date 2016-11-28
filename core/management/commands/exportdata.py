@@ -23,7 +23,8 @@ class Command(BaseCommand):
             progresses.append({
                 'duration': progress.duration,
                 'note': progress.note,
-                'done_at': progress.done_at,
+                'done_at': progress.done_at.strftime('%Y-%m-%d'),
+                'created_at': progress.created_at.strftime('%Y-%m-%d'),
                 'project_name': progress.project.name,
                 'project_billable': progress.project.billable,
                 'project_active': progress.project.active,
@@ -36,7 +37,8 @@ class Command(BaseCommand):
             absentia.append({
                 'duration': absence.duration,
                 'note': absence.note,
-                'done_at': absence.done_at,
+                'done_at': absence.done_at.strftime('%Y-%m-%d'),
+                'created_at': absence.created_at.strftime('%Y-%m-%d'),
                 'category_name': absence.category.name,
                 'category_active': absence.category.active,
                 'user_name': absence.user.username,
@@ -46,6 +48,6 @@ class Command(BaseCommand):
             })
 
         with open(options['target_file'][0], 'w+') as f:
-            json.dumps([progresses, absentia])
+            f.write(json.dumps([progresses, absentia]))
 
         self.stdout.write(self.style.SUCCESS('Successfully exported tajm content'))
