@@ -102,3 +102,45 @@ def generate_activity_table(progress_set, start_date, end_date):
         m += one_week
 
     return [data, week_numbers]
+
+
+def get_weekday_summary(all_progresses):
+    start_at = all_progresses.first().done_at
+    stop_at = all_progresses.last().done_at
+
+    days, week_labels = generate_activity_table(all_progresses, start_at,
+                                                stop_at)
+
+    week_day_data = list()
+    for d in days:
+        billable = 0
+        duration = 0
+        count = 0
+        projects = list()
+        for progresses in d[1]:
+            if len(progresses) > 0:
+                count += 1
+            for p in progresses:
+                duration += p.duration
+                if p.project.billable:
+                    billable += p.duration
+                projects.append(p.project.pk)
+
+        try:
+            billable_percent = int((billable / duration) * 100)
+        except ZeroDivisionError:
+            billable_percent = 0
+
+        try:
+            duration_average = int(duration / count)
+        except ZeroDivisionError:
+            duration_average = 0
+
+        try:
+            project_count_average = round(len(projects) / count, 1)
+        except ZeroDivisionError:
+            project_count_average = 0
+
+        week_day_data.append((d[0], duration_average, billable_percent, project_count_average))
+
+    return week_day_data

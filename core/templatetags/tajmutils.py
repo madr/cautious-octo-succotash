@@ -82,6 +82,13 @@ def pretty_period(year, week):
 
 
 @register.filter
+def percent(number):
+    if not number or number == 0:
+        return '-'
+    return '%d%%' % number
+
+
+@register.filter
 def hours(hhmm):
     if hhmm == '00:00' or hhmm == '0:00':
         return '-'
