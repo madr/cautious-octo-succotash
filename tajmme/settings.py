@@ -15,10 +15,8 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('TAJM_SECRET_KEY', '-0jr90^zs@lr(0ysg05vj6rm^@#d^)r_ybqt=$jq6itm#n0sm7')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('TAJM_DEBUG', True)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -98,8 +96,6 @@ DATABASES = {
         'NAME': 'tajm_dev',
         'USER': 'ay',
         'PASSWORD': 'q1w2e3r4',
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -167,16 +163,6 @@ LOGGING = {
             'propagate': False,
         },
         'dashboard': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'haystack': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'elasticsearch': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
