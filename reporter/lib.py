@@ -254,8 +254,8 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
         'prev_week': TimeUtil.prevweek(year, week_label),
         'next_week': TimeUtil.nextweek(year, week_label),
         'spoken_week': TimeUtil.period(year, week_label),
-        'ww_minute_count': ww_minute_count,
-        'ww_absence_count': ww_absence_count,
+        'ww_minutes': ww_minute_count,
+        'ww_absences': ww_absence_count,
     }
 
     return context
