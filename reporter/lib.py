@@ -218,20 +218,20 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
                                                      day)
 
     the_date = TimeUtil.ywd_to_date(year, week_label, day)
+    week_start, week_end = TimeUtil.week_start_end(year, week_label)
+
+    whole_week_progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
+    whole_week_absences = user.absence_set.filter(done_at__gte=week_start, done_at__lte=week_end)
+
     progresses = user.progress_set.filter(done_at=the_date)
     absences = user.absence_set.filter(done_at=the_date)
 
     if progress_form is None:
         progress_form = ProgressAbsenceForm(initial={'done_at': the_date})
 
-    week_start, week_end = TimeUtil.week_start_end(year, week_label)
-
     absence_count = sum([a.duration for a in absences])
     minute_count = sum([p.duration for p in progresses])
     project_count = len(set([p.project.name for p in progresses]))
-
-    whole_week_progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
-    whole_week_absences = user.absence_set.filter(done_at__gte=week_start, done_at__lte=week_end)
 
     ww_minute_count = sum([p.duration for p in whole_week_progresses])
     ww_absence_count = sum([p.duration for p in whole_week_absences])
