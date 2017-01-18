@@ -49,8 +49,8 @@
             {% endfor %}
             <li role="presentation" class="pull-right">
                 <a href="{% url 'week_summary' year=year week_label=week %}">
-                    {{ ww_minutes }} |
-                    {{ ww_absences }} |
+                    {{ total_minutes }} |
+                    {{ total_absences }}
 
                 </a>
             </li>

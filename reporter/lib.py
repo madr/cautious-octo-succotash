@@ -95,10 +95,10 @@ def _save_absence(user, form, existing_id=None):
     if existing_id is None:
         done_at = form.cleaned_data['done_at']
         absence = Absence.objects.create(category=existing_ac,
-                                           duration=duration,
-                                           done_at=done_at,
-                                           user=user,
-                                           note=note)
+                                         duration=duration,
+                                         done_at=done_at,
+                                         user=user,
+                                         note=note)
 
         year, week_label, day = done_at.isocalendar()
     else:
@@ -139,7 +139,6 @@ def _year_week_day(year, week_label, day):
                 is_index = 1
         else:
             is_index = 0
-
 
     if year is None:
         year = int(today[0])
@@ -233,8 +232,8 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
     minute_count = sum([p.duration for p in progresses])
     project_count = len(set([p.project.name for p in progresses]))
 
-    ww_minute_count = sum([p.duration for p in whole_week_progresses])
-    ww_absence_count = sum([p.duration for p in whole_week_absences])
+    total_minute_count = sum([p.duration for p in whole_week_progresses])
+    total_absence_count = sum([p.duration for p in whole_week_absences])
 
     context = {
         'weekdays': TimeUtil.num_name_date(year, week_label),
@@ -254,8 +253,8 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
         'prev_week': TimeUtil.prevweek(year, week_label),
         'next_week': TimeUtil.nextweek(year, week_label),
         'spoken_week': TimeUtil.period(year, week_label),
-        'ww_minutes': ww_minute_count,
-        'ww_absences': ww_absence_count,
+        'total_minutes': total_minute_count,
+        'total_absences': total_absence_count,
     }
 
     return context
