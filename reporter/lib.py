@@ -231,8 +231,10 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
     project_count = len(set([p.project.name for p in progresses]))
 
     whole_week_progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
+    whole_week_absences = user.absence_set.filter(done_at__gte=week_start, done_at__lte=week_end)
 
     ww_minute_count = sum([p.duration for p in whole_week_progresses])
+    ww_absence_count = sum([p.duration for p in whole_week_absences])
 
     context = {
         'weekdays': TimeUtil.num_name_date(year, week_label),
@@ -253,6 +255,7 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
         'next_week': TimeUtil.nextweek(year, week_label),
         'spoken_week': TimeUtil.period(year, week_label),
         'ww_minute_count': ww_minute_count,
+        'ww_absence_count': ww_absence_count,
     }
 
     return context
