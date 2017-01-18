@@ -7,7 +7,8 @@ from django.shortcuts import redirect, render
 
 from core.lib import TimeUtil
 from core.models import TajmUser, Project, Deadline
-from dashboard.lib import get_project_data, get_week_data, get_absence_data, generate_activity_table
+from dashboard.lib import get_project_data, get_week_data, get_absence_data, generate_activity_table, \
+    get_weekday_summary
 
 
 @login_required
@@ -81,7 +82,7 @@ def user_activity(request, user_id):
     return render(request, 'user_activity.html', {
         'profile': profile,
         'progresses': all_progresses,
-        'activity': activity,
+        'activity': activity
     })
 
 
@@ -92,13 +93,14 @@ def profile(request, user_id=None):
     else:
         profile = TajmUser.objects.get(pk=request.user.id)
 
-    all_progresses = profile.progress_set.all()
+    all_progresses = profile.progress_set.annotate(weekday=ExtractWeekDay('done_at')).all()
 
     total_time = sum([p.duration for p in all_progresses])
     total_projects = len(set([p.project.name for p in all_progresses]))
 
     try:
-        billable_rank = int((sum([p.duration for p in all_progresses.filter(project__billable=True)]) / total_time) * 100)
+        billable_rank = int(
+            (sum([p.duration for p in all_progresses.filter(project__billable=True)]) / total_time) * 100)
     except ZeroDivisionError:
         billable_rank = None
 
@@ -125,6 +127,7 @@ def profile(request, user_id=None):
         max_count=max_count,
         most_recent_progresses=most_recent_progresses,
         billable_rank=billable_rank,
+        wdd=get_weekday_summary(all_progresses.reverse())
     ))
 
 
@@ -224,7 +227,7 @@ def week_summary(request, year, week_label):
         ww_max_summary_sum = None
 
     try:
-        ww_billable_pc = int((ww_billable  / float(ww_minute_count)) * 100)
+        ww_billable_pc = int((ww_billable / float(ww_minute_count)) * 100)
     except ZeroDivisionError:
         ww_billable_pc = 0
 

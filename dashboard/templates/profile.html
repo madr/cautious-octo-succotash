@@ -51,6 +51,32 @@
                     </dl>
                 </div>
 
+                <h2>{% trans "Arbetsmönster" %}</h2>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-condensed no-sort">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{% trans 'Tid, genomsnitt' %}</th>
+                            <th>{% trans 'Projekt, genomsnitt' %}</th>
+                            <th>{% trans 'Debiteringsgrad' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for day, duration_average, billable, project_count_average in wdd %}
+                            <tr>
+                                <td>{{ day }}</td>
+                                <td>{{ duration_average|hhmm }}</td>
+                                <td>{{ project_count_average }}</td>
+                                <td>{{ billable|percent }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
                 <h2>{% trans 'Projekt, all tid' %}</h2>
                 {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
 

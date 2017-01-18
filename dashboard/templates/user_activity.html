@@ -6,16 +6,10 @@
 
 {% block sitetitle %}{{ profile.username }} - {{ profile.first_name }} {{ profile.last_name }}{% endblock %}
 
-{% block customscripts %}
-    <script>
-        "use strict";
-        tajmme.fire("toggabletitles:init");
-    </script>
-{% endblock %}
-
 {% block content %}
     <div class="container">
         <h1>{% trans 'Historik' %}</h1>
+
 
         {% for y, d in activity %}
             <hr>
@@ -49,5 +43,13 @@
                 </table>
             </div>
         {% endfor %}
+
     </div>
+{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
 {% endblock %}
