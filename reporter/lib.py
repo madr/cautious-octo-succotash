@@ -234,6 +234,7 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
 
     total_minute_count = sum([p.duration for p in whole_week_progresses])
     total_absence_count = sum([p.duration for p in whole_week_absences])
+    total_intern_count = sum([p.duration for p in whole_week_absences.filter(project__billable=False)])
 
     context = {
         'weekdays': TimeUtil.num_name_date(year, week_label),
@@ -253,8 +254,9 @@ def _get_reporter_context(progress_form, user, year, week_label, day):
         'prev_week': TimeUtil.prevweek(year, week_label),
         'next_week': TimeUtil.nextweek(year, week_label),
         'spoken_week': TimeUtil.period(year, week_label),
-        'total_minutes': total_minute_count,
+        'total_minutes': total_minute_count - total_intern_count,
         'total_absences': total_absence_count,
+        'total_intern': total_intern_count,
     }
 
     return context
