@@ -1,4 +1,0 @@
-{{ object.project.name }}
-{{ object.user.get_full_name }}
-{{ object.note }}
-{{ object.done_at }}

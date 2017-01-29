@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin, auth
 
-import dashboard.urls as dashboard
+import tajm.dashboard.urls as dashboard
 from tajm.httpapi.views import httpapi_router
 
 urlpatterns = [
