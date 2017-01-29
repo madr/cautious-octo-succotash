@@ -21,8 +21,6 @@ DEBUG = os.environ.get('TAJM_DEBUG', True)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = os.environ.get('TAJM_ALLOWED_HOSTS', 'reborn.tajm.me').split(',')
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,12 +38,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
 
+    'tajm.httpapi',
     'frontend',
     'core',
-    'httpapi',
-    'reporter',
     'dashboard',
 ]
+ALLOWED_HOSTS = os.environ.get('TAJM_ALLOWED_HOSTS', '127.0.0.1 localhost reborn.tajm.me').split()
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

@@ -1,13 +1,10 @@
-import allauth
 from django.conf.urls import url, include
 from django.contrib import admin, auth
-import dashboard.urls as dashboard
 
-from httpapi.views import httpapi_router
-import reporter.urls as reporter
+import dashboard.urls as dashboard
+from tajm.httpapi.views import httpapi_router
 
 urlpatterns = [
-    url(r'^reporter/', include(reporter.urls)),
     url(r'^api/v1/', include(httpapi_router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
