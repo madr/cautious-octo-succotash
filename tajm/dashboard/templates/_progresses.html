@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load tajmutils %}
+{% load tajm %}
 
 <div class="table-responsive">
     <table class="table table-hover">
@@ -22,7 +22,7 @@
                 <td>+{{ progress.duration|hhmm }}</td>
                 <td>{{ progress.project.name }}</td>
                 <td>
-                    <a href="{% url "edit_progress" progress_id=progress.id %}">{{ progress.note }}</a>
+                    <a href="">{{ progress.note }}</a>
                 </td>
                 <td>{{ progress.done_at|date:'d/m' }}</td>
             </tr>
