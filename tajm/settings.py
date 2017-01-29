@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import sys
 
 import dj_database_url
-import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -147,11 +147,6 @@ LOGGING = {
     },
     'loggers': {
         'core': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'legacy': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,

@@ -1,11 +1,9 @@
-from datetime import datetime, timedelta
 import re
+from datetime import datetime, timedelta
 from time import strptime
-from django.utils.translation import ugettext
+
 
 class TimeUtil:
-    # todo: move unit tests from old repo to core/tests.py
-    ''' Class with a set of static methods to manage time and progresses. '''
     def __init__(self):
         pass
 
