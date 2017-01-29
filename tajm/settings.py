@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
 
-    'tajm.httpapi',
     'tajm.dashboard',
+    'tajm.core',
+    'tajm.httpapi',
     'frontend',
-    'core',
 ]
 ALLOWED_HOSTS = os.environ.get('TAJM_ALLOWED_HOSTS', '127.0.0.1 localhost reborn.tajm.me').split()
 
@@ -65,7 +65,7 @@ ROOT_URLCONF = 'tajm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'core/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'tajm/core/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
