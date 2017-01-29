@@ -374,7 +374,7 @@
 
   // untested by design
   if (g.tajmme === undefined) {
-    throw new Error("global object tajmme is missing!");
+    throw new Error("global object tajm is missing!");
   }
 
   g.tajmme.Autocomplete = Autocomplete;
@@ -409,7 +409,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.Autosubmit = Autosubmit;
@@ -488,7 +488,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.DateField = DateField;
@@ -560,7 +560,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.TableFilter = TableFilter;
@@ -736,7 +736,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.TableSort = TableSort;
@@ -875,7 +875,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.TimeSpent = TimeSpent;
@@ -922,7 +922,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.ToggableTitle = ToggableTitle;

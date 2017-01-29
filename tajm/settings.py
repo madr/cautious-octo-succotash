@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = [
     'htmlmin.middleware.MarkRequestMiddleware',
 ]
 
-ROOT_URLCONF = 'tajmme.urls'
+ROOT_URLCONF = 'tajm.urls'
 
 TEMPLATES = [
     {
@@ -84,7 +84,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-WSGI_APPLICATION = 'tajmme.wsgi.application'
+WSGI_APPLICATION = 'tajm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

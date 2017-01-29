@@ -169,7 +169,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.TableSort = TableSort;
