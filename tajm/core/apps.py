@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CoreConfig(AppConfig):
-    name = 'tajm.core'
+    name = 'core'
     verbose_name = 'Core models and libs'

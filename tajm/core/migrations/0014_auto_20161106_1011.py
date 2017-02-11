@@ -31,11 +31,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='absence',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.TajmUser'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.TajmUser'),
         ),
         migrations.AlterField(
             model_name='progress',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.TajmUser'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.TajmUser'),
         ),
     ]

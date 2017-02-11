@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='progress',
             name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.Project'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Project'),
         ),
         migrations.AddField(
             model_name='progress',

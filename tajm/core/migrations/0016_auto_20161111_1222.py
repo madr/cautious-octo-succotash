@@ -23,17 +23,17 @@ class Migration(migrations.Migration):
                 ('ends_at', models.DateField(null=True)),
                 ('starts_at', models.DateField(null=True)),
                 ('amount', models.IntegerField(null=True, validators=[tajm.core.models.validate_duration])),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.Project')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Project')),
             ],
         ),
         migrations.AlterField(
             model_name='absence',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.AbsenceCategory'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.AbsenceCategory'),
         ),
         migrations.AlterField(
             model_name='progress',
             name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tajm.core.Project'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Project'),
         ),
     ]
