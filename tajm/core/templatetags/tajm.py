@@ -51,6 +51,14 @@ def hhmm(value):
 def gravatar(email):
     return hashlib.md5(email.encode('latin1')).hexdigest()
 
+@register.filter
+def gravatar_tag(email, size=None):
+    if not email:
+        return ''
+    if not size:
+        size = 32
+    return '<img class="gravatar" src="https://secure.gravatar.com/avatar/%s.jpg?r=g&s=%s&d=mm">' % (hashlib.md5(email.encode('latin1')).hexdigest(), size)
+
 
 @register.filter
 def pretty_minutes(minutes):

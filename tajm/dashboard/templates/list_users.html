@@ -34,9 +34,9 @@
                     <th>{% trans 'Login' %}</th>
                     <th>{% trans 'Namn' %}</th>
                     <th></th>
-                    <th><abbr title='{% trans 'Debiteringsgrad' %}'>{% trans 'DB' %}</abbr></th>
+                    <th><abbr title='{% trans 'Debiteringsgrad' %}'>{% trans 'DB (%)' %}</abbr></th>
                     <th>{% trans 'Projekt' %}</th>
-                    <th>{% trans 'Tid' %}</th>
+                    <th>{% trans 'Tid (t)' %}</th>
                     <th>{% trans 'Rader' %}</th>
                     <th>{% trans 'Frånvaro' %}</th>
                 </tr>
@@ -70,7 +70,7 @@
                             </td>
                             <td>
                                 {% if cb != 0 %}
-                                    {{ cb }}%
+                                    {{ cb }}
                                 {% else %}
                                     -
                                 {% endif %}
@@ -80,7 +80,7 @@
                             {{ u.project_set.count }}
                         </td>
                         <td>
-                            {{ u.progress_set|sumtime|hhmm|hours }}{% trans 't' %}
+                            {{ u.progress_set|sumtime|hhmm|hours }}
                         </td>
                         <td>
                             {{ u.progress_set.count }}

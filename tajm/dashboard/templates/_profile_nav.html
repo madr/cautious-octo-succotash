@@ -3,26 +3,22 @@
 {% load tajm %}
 
 <div class="col-md-3">
-    <div class="well">
-        <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
-             alt="{{ profile.username }}" class="pull-left">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ profile.first_name }} {{ profile.last_name }}</div>
+        <div class="panel-body">
+            <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
+                 alt="{{ profile.username }}" class="pull-left">
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#">{% trans 'Översikt' %}</a></li>
+            <li class="list-group-item"><a
+                    href="{% url 'user_activity' user_id=profile.pk %}">{% trans 'Historik' %}</a></li>
+            {% if profile.username == request.user.username %}
+                <li class="list-group-item">
+                    <a href="{% url 'account_logout' %}">Logga ut</a>
+                </li>
+            {% endif %}
 
-
-        <h1>
-            {{ profile.first_name }} {{ profile.last_name }}
-        </h1>
-
-        {% if profile.username == request.user.username %}
-            <a href="{% url 'account_logout' %}" class="pull-right btn btn-primary btn-sm">Logga ut</a>
-        {% endif %}
-
-        {{ profile.username }} ({{ profile.pk }})
-
-        <br><br><br>
-
-        <ul class="nav nav-pills nav-stacked">
-            <li><a href="#">{% trans 'Översikt' %}</a></li>
-            <li><a href="{% url 'user_activity' user_id=profile.pk %}">{% trans 'Historik' %}</a></li>
             <!-- <li><a href="#">{% trans 'Projekt' %}</a></li>
                         <li><a href="#">{% trans 'Grupper' %}</a></li> -->
             <!-- <li><a href="#">{% trans 'Frånvaro' %}</a></li>

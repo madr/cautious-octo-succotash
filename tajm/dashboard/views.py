@@ -6,9 +6,9 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from tajm.core.lib import TimeUtil
-from tajm.core.models import TajmUser, Project, Deadline
+from tajm.core.models import TajmUser, Project, Deadline, Absence, Progress
 from tajm.dashboard.lib import get_project_data, get_week_data, get_absence_data, generate_activity_table, \
-    get_weekday_summary
+    get_weekday_summary, get_user_data
 
 
 @login_required
@@ -27,8 +27,10 @@ def list_projects(request):
 
 @login_required
 def list_deadlines(request):
+    today = datetime.date.today()
     return render(request, 'list_deadlines.html', {
-        'deadlines': Deadline.objects.all()
+        'deadlines': Deadline.objects.filter(ends_at__isnull=False),
+        'deadlines_without_date': Deadline.objects.filter(ends_at__isnull=True)
     })
 
 
@@ -44,7 +46,40 @@ def deadline(request, id):
 
 @login_required
 def dashboard(request):
-    return redirect('today')
+    today = datetime.date.today()
+    year, week, day = today.isocalendar()
+    this_week = TimeUtil.period(year, week)
+    week_start, week_end = TimeUtil.week_start_end(year, week)
+    month_started, month_ended = TimeUtil.month_start_end(2015, 30)
+
+    absences = Absence.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
+    progresses = Progress.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
+
+    absences = sum([a.duration for a in absences])
+    projects = len(set([p.project.name for p in progresses]))
+    minutes = sum([p.duration for p in progresses])
+    billable = sum([p.duration for p in progresses.filter(project__billable=True)])
+
+    people = sorted(get_user_data(done_at__lte=month_ended, done_at__gte=month_started), key=lambda x: x['progresses'],
+                    reverse=True)
+
+    try:
+        db = (minutes - billable) / minutes
+    except ZeroDivisionError:
+        db = 100
+
+    return render(request, 'dashboard.html', {
+        'absences': absences,
+        'projects': projects,
+        'minutes': minutes,
+        'people': people,
+        'db': db,
+        'year': year,
+        'week': week,
+        'today': today,
+        'this_week': this_week,
+        'deadlines': Deadline.objects.filter(ends_at__gte=datetime.date.today())
+    })
 
 
 @login_required
@@ -171,15 +206,13 @@ def projects_bar_chart_data(request):
 
 @login_required
 def week_summary(request, year, week_label):
-    user = TajmUser.objects.get(pk=request.user.pk)
-
     year = int(year)
     week_label = int(week_label)
 
     week_start, week_end = TimeUtil.week_start_end(year, week_label)
 
-    absences = user.absence_set.filter(done_at__gte=week_start, done_at__lte=week_end)
-    progresses = user.progress_set.filter(done_at__gte=week_start, done_at__lte=week_end)
+    absences = Absence.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
+    progresses = Progress.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
 
     ww_absence_count = sum([a.duration for a in absences])
     ww_project_count = len(set([p.project.name for p in progresses]))
@@ -187,9 +220,12 @@ def week_summary(request, year, week_label):
     ww_minute_count = sum([p.duration for p in progresses])
     ww_billable = sum([p.duration for p in progresses.filter(project__billable=True)])
 
-    ww_project_toplist = get_project_data(progresses, done_at__gte=week_start, done_at__lte=week_end, user=user)
-    ww_absence_toplist = get_absence_data(absences, done_at__gte=week_start, done_at__lte=week_end, user=user)
-    ww_summary = get_week_data(week_start, week_end, user)
+    ww_project_toplist = get_project_data(progresses.filter(project__billable=True), done_at__gte=week_start,
+                                          done_at__lte=week_end)
+    ww_project_nb_toplist = get_project_data(progresses.filter(project__billable=False), done_at__gte=week_start,
+                                             done_at__lte=week_end)
+    ww_absence_toplist = get_absence_data(absences, done_at__gte=week_start, done_at__lte=week_end)
+    ww_summary = get_week_data(week_start, week_end)
 
     try:
         ww_max_project_toplist_sum = max([v['sum'] for v in ww_project_toplist])
@@ -250,6 +286,7 @@ def week_summary(request, year, week_label):
         'ww_billable': ww_billable_pc,
         'ww_nonbillable_count': ww_minute_count - ww_billable,
         'ww_project_toplist': ww_project_toplist,
+        'ww_project_nb_toplist': ww_project_nb_toplist,
 
         'ww_absence_toplist': ww_absence_toplist,
 
@@ -265,3 +302,9 @@ def week_summary(request, year, week_label):
     }
 
     return render(request, 'week_summary.html', context)
+
+
+@login_required
+def current_week_summary(request):
+    year, week_label, day = datetime.date.today().isocalendar()
+    return week_summary(request, year, week_label)

@@ -5,23 +5,25 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th class="col-50">{% trans 'DB' %}</th>
+            {% if mixed %}
+                <th class="col-50">{% trans 'DB' %}</th>
+            {% endif %}
             <th class="col-50">{% trans 'Projekt' %}</th>
-            <th class="col-25">{% trans 'Tid' %}</th>
+            <th class="col-25">{% trans 'Tid (t)' %}</th>
             <th class="col-25">{% trans 'Rader' %}</th>
         </tr>
         </thead>
         <tbody>
         {% for p in projects %}
             <tr>
-                <td class="text-right">{% if p.billable %}
-                    <span class="label label-success">db</span>
-                {% else %}
-                    <span class="label label-danger">it</span>
-                {% endif %}</td>
+                {% if mixed %}
+                    <td class="text-right">{% if not p.billable %}
+                        <span class="label label-danger">it</span>
+                    {% endif %}</td>
+                {% endif %}
                 <td>{{ p.name }}</td>
-                <td>
-                    {{ p.sum|pretty_minutes }}<br>
+                <td data-sortable="{{ p.sum }}">
+                    {{ p.sum|hhmm|hours }}<br>
                     {% if max_sum %}
                         {% if p.billable == False %}
                             {% include 'charts/bar.html' with bar_max=max_sum bar_value=p.sum color='nonbillable' only %}

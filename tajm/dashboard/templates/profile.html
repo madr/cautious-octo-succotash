@@ -16,7 +16,6 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            {% include '_profile_nav.html' with profile=profile %}
             <div class="col-md-9">
                 <h2>{% trans 'Nyckeltal' %}</h2>
 
@@ -83,6 +82,8 @@
                 <h2>{% trans 'Senast tidrapporterat' %}</h2>
                 {% include '_progresses.html' with progresses=most_recent_progresses only %}
             </div>
+            {% include '_profile_nav.html' with profile=profile %}
+
         </div>
     </div>
 {% endblock %}

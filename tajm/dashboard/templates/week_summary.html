@@ -26,22 +26,57 @@
                href="{% url "week_summary" year=next_week.0 week_label=next_week.1 %}"><br>{{ next_week.1 }} →</a>
         </div>
     </div>
-    <hr>
+    <div class="container">
+        <div class="well">
+            <h2 class="wrap wrap-card-hd line">
+                {% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}
+            </h2>
+
+            <div class="row">
+                <dl class="col-sm-2">
+                    <dt>{% trans 'Projekt' %}</dt>
+                    <dd>{{ ww_project_count }}</dd>
+                </dl>
+                <dl class="col-sm-2">
+                    <dt>{% trans 'Debiteringsgrad' %}</dt>
+                    <dd>{{ ww_billable }}%</dd>
+                </dl>
+                <dl class="col-sm-2">
+                    <dt>{% trans 'Rader' %}</dt>
+                    <dd>{{ ww_progresses_count }}</dd>
+                </dl>
+                <dl class="col-sm-2">
+                    <dt>{% trans 'Interntid' %}</dt>
+                    <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
+                </dl>
+                <dl class="col-sm-2">
+                    <dt>{% trans 'Frånvaro' %}</dt>
+                    <dd>{{ ww_absence_count|pretty_minutes }}</dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
     <div class="container">
         <div class="col-md-6">
-            <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
-            {% include '_projects_toplist.html' with projects=ww_project_toplist max_sum=ww_max_project_toplist_sum max_count=ww_max_project_toplist_count only %}
+            <h3 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h3>
+            {% include '_projects_toplist.html' with mixed=False projects=ww_project_toplist max_sum=ww_max_project_toplist_sum max_count=ww_max_project_toplist_count only %}
         </div>
         <div class="col-md-6">
+            <div>
+                    <h3 class="wrap-card-hd">{% trans 'Interntid' %}</h3>
+                    {% include '_projects_toplist.html' with mixed=False projects=ww_project_nb_toplist max_sum=ww_max_project_toplist_sum max_count=ww_max_project_toplist_count only %}
+
+            </div>
             <div class="wrap wrap-card">
-                <h2 class="wrap-card-hd">{% trans 'Frånvaro' %}</h2>
+                <h3 class="wrap-card-hd">{% trans 'Frånvaro' %}</h3>
                 {% if ww_absence_toplist %}
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th class="col-50">{% trans 'Orsak' %}</th>
-                                <th class="col-25">{% trans 'Tid' %}</th>
+                                <th class="col-25">{% trans 'Tid (t)' %}</th>
                                 <th class="col-25">{% trans 'Rader' %}</th>
                             </tr>
                             </thead>
@@ -69,9 +104,9 @@
                 {% endif %}
             </div>
             <div class="wrap wrap-card">
-                <h2 class="wrap wrap-card-hd">{% trans 'Tid dag för dag' %}
+                <h3 class="wrap wrap-card-hd">{% trans 'Tid dag för dag' %}
                     <small>{% trans 'debiterbart, internt och frånvaro' %}</small>
-                </h2>
+                </h3>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -124,36 +159,9 @@
     </div>
 
     <div class="container">
-        <h2 class="wrap wrap-card-hd line">
-            {% trans 'Veckan har' %} {{ ww_minute_count|pretty_minutes }} {% trans 'inrapporterad tid' %}
-        </h2>
-
-        <div class="row">
-            <dl class="col-sm-2">
-                <dt>{% trans 'Projekt' %}</dt>
-                <dd>{{ ww_project_count }}</dd>
-            </dl>
-            <dl class="col-sm-2">
-                <dt>{% trans 'Debiteringsgrad' %}</dt>
-                <dd>{{ ww_billable }}%</dd>
-            </dl>
-            <dl class="col-sm-2">
-                <dt>{% trans 'Rader' %}</dt>
-                <dd>{{ ww_progresses_count }}</dd>
-            </dl>
-            <dl class="col-sm-2">
-                <dt>{% trans 'Interntid' %}</dt>
-                <dd>{{ ww_nonbillable_count|pretty_minutes }}</dd>
-            </dl>
-            <dl class="col-sm-2">
-                <dt>{% trans 'Frånvaro' %}</dt>
-                <dd>{{ ww_absence_count|pretty_minutes }}</dd>
-            </dl>
-        </div>
-
         <div class="wrap wrap-card">
             <h2 class="wrap-card-hd">{% trans 'Tid, fördelat över projekt' %}</h2>
-            {% include '_progresses.html' with progresses=progresses only %}
+            {% include '_progresses.html' with progresses=progresses absences=absences only %}
         </div>
     </div>
 {% endblock %}

@@ -50,6 +50,26 @@ def get_project_data(progresses, **kwargs):
     return sorted(values, key=lambda x: x['sum'], reverse=True)
 
 
+def get_user_data(**kwargs):
+    progresses = Progress.objects.filter(**kwargs)
+    absences = Absence.objects.filter(**kwargs)
+    users = set([p.user for p in progresses]) | set([a.user for a in absences])
+
+    values = list()
+
+    for u in users:
+        user_progresses = u.progress_set.filter(**kwargs)
+        values.append(dict(
+            username=u.username,
+            userdata=u,
+            progresses=(sum([p.duration for p in user_progresses])),
+            absences=(sum([a.duration for a in u.absence_set.filter(**kwargs)])),
+            projects=len(set([p.project for p in user_progresses]))
+        ))
+
+    return sorted(values, key=lambda x: x['username'])
+
+
 def get_absence_data(absences, **kwargs):
     absence_categories = set([p.category for p in absences])
 

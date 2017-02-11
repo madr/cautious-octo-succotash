@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from time import strptime
 
 
@@ -43,6 +43,14 @@ class TimeUtil:
         week_ended = week_started + timedelta(days=6)
 
         return week_started, week_ended
+
+    @staticmethod
+    def month_start_end(year, week):
+        d = TimeUtil.ywd_to_date(year, week, 1)
+        month_started = date(d.year, d.month, 1)
+        month_ended = date(d.year, (d.month + 1), 1) - timedelta(days=1)
+
+        return month_started, month_ended
 
     @staticmethod
     def period(year, week):
