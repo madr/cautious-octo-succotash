@@ -5,8 +5,8 @@
 <div class="col-md-3">
     <div class="panel panel-default">
         <div class="panel-heading">{{ profile.first_name }} {{ profile.last_name }}</div>
-        <div class="panel-body">
-            <img src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=192&d=mm"
+        <div class="panel-body text-center">
+            <img class="img-responsive" src="https://secure.gravatar.com/avatar/{{ profile.email|gravatar }}.jpg?r=g&s=250&d=mm"
                  alt="{{ profile.username }}" class="pull-left">
         </div>
         <ul class="list-group">
