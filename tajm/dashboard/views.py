@@ -64,7 +64,7 @@ def dashboard(request):
                     reverse=True)
 
     try:
-        db = (minutes - billable) / minutes
+        db = int(billable / minutes * 100)
     except ZeroDivisionError:
         db = 100
 
