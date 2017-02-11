@@ -50,7 +50,7 @@ def dashboard(request):
     year, week, day = today.isocalendar()
     this_week = TimeUtil.period(year, week)
     week_start, week_end = TimeUtil.week_start_end(year, week)
-    month_started, month_ended = TimeUtil.month_start_end(2015, 30)
+    month_started, month_ended = TimeUtil.month_start_end(year, week)
 
     absences = Absence.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
     progresses = Progress.objects.filter(done_at__gte=week_start, done_at__lte=week_end)
