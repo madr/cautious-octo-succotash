@@ -77,6 +77,9 @@
             for (i = 0; i < max; i += 1) {
                 cell = rows[i].cells[cellIndex];
                 content = cell.textContent || cell.innerText;
+                if (cell.dataset['sortable']) {
+                    content = cell.dataset['sortable'];
+                }
                 num = content.replace(/(\$|\,|\%|\s)/g, "");
 
                 if (parseFloat(num, 10) == num) {
@@ -169,7 +172,7 @@
 
     // untested by design
     if (g.tajmme === undefined) {
-        throw new Error("global object tajmme is missing!");
+        throw new Error("global object tajm is missing!");
     }
 
     g.tajmme.TableSort = TableSort;

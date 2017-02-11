@@ -1,0 +1,84 @@
+{% load account %}
+{% load i18n %}
+{% load static %}
+{% load tajm %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block sitetitle %}{% endblock %} | Tajm</title>
+    <meta name="apple-mobile-web-app-title" content="Tajm">
+    <meta name="viewport" content="width=device-width">
+    <link rel="authors" href="/humans.txt">
+    <link rel="stylesheet" href="{% static "bootstrap/bootstrap.alt.min.css" %}">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"><img src="{% static 'svg/logo.svg' %}" width="39" style="vertical-align: middle" height="30"></a>
+        </div>
+        {% if user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'this_week' %}">
+                            <span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span>
+                            {% trans 'Veckohistorik' %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'list_projects' %}">
+                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                            {% trans 'Projekt' %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'list_users' %}">
+                            <span class="glyphicon glyphicon-knight" aria-hidden="true"></span>
+                            {% trans 'Personer' %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'list_deadlines' %}">
+                            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            {% trans 'Deadlines' %}
+                        </a>
+                    </li>
+                    {% if request.user.is_staff %}
+                    <li>
+                        <a href="/admin">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            {% trans 'Admin' %}
+                        </a>
+                    </li>
+                {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'my_profile' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            {{ user }}
+                        </a>
+                    </li>
+                </ul>
+
+        {% endif %}
+    </div>
+</nav>
+<br><br><br><br>
+{% block content %}{% endblock %}
+<footer class="container text-center">
+    <hr>
+<p>Drivs av <a href="http://tidrapporteringsuger.se">Tajm</a>, för att tidrapportering suger. Följ <a rel="nofollow noreferrer" href="https://tajmme.tumblr.com">{% trans 'utvecklarbloggen' %}.</a><br>
+            {% trans 'Synpunkter, förslag eller vilja att medverka?' %}
+            <a href="https://github.com/madr/tajm" rel="nofollow noreferrer">Github</a> {% trans 'eller' %}
+            <a href="https://twitter.com/madr" rel="nofollow noreferrer">Twitter</a>.
+            <br>
+            {% trans 'Ett initiativ av' %} <a href="https://madr.se">Anders Ytterström</a>.</p>
+</footer>
+<script src="{% static "app.min.js" %}"></script>
+<script>tajmme.fire("init");</script>
+{% block customscripts %}{% endblock %}
+</body>
+</html>

@@ -1,28 +1,38 @@
-# Semirhage reborn
+# Tajm time tracking
 
-The API backend for Tajm.me time tracking, powered by Django and Python 3.
+Yet another time tracking suite, built out of frustration regarding daily pain of using really bad
+time trackers.
+
+It is also a side project to discover Python 3, Django, DRF, OAuth 2 and progressive web apps.
+
+This git repository contains the API backend, the evaluation UI frontend and the web-based admin.
 
 ## Setup
 
 Requirements:
 
 * Python 3 (3.5 will work fine)
-* SQLite
+* PostgreSQL
 * Virtualenv
+* Node.js and NPM (for the frontend assets)
+
+To use MySQL or other database alternatives, it is recommended to create a settings file
+(using `tajm/settings.py` as a starting point) and use the
+`--settings` flag when running `manage.py`. More info: [Django docs regarding manage.py](https://docs.djangoproject.com/en/1.10/ref/django-admin/#cmdoption-settings).
 
 ```bash
-virtualenv /path/to/venv
+virtualenv -p $(which python3) /path/to/venv
 . /path/to/venv/bin/activate
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
+./manage.py migrate
+./manage.py createsuperuser
+cd frontend && npm install && npm run build && cd -
+./manage.py runserver
 ```
 
-Visit the site at http://localhost:8000. This installs a SQLite database for local development.
+Visit the site at http://localhost:8000, and the admin at http://localhost:8000/admin.
 
 
 ## API Auth Quickstart
-
 
 Create a client on http://localhost:8000/oauth2/applications with Resource owner password as grant type. Copy the generated
 client id.
@@ -47,13 +57,14 @@ curl -H 'Authorization: bearer yxe3bTtUJnI6hc0ukVH5pQsdt5PKIP' -H 'Accept: appli
 
 ## Component overview
 
+* [Django](https://docs.djangoproject.com/en/1.10/), the web framework for perfectionists with deadlines.
 * Oauth 2, using [Django OAuth toolkit](https://django-oauth-toolkit.readthedocs.org)
 * [Django REST Framework](http://www.django-rest-framework.org)
   * JSONAPI 1.0 spec, by [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.org)
+* [Twitter Bootstrap](https://getbootstrap.com), version 3.3.7
+* [Lumen](http://bootswatch.com/lumen/), a Twitter Bootstrap theme by [Bootswatch](http://bootswatch.com/lumen/).
 
 
-## What about that bad-ass name?
+## Contributions are welcome, so is feedback!
 
-This repo is named after one of the female Forsakens in Wheel of Time, the series of epic fantasy novels. This is said about [Semirhage](http://wot.wikia.com/wiki/Semirhage):
-
-> Semirhage was among the most prominent Restorers, or healers, in the Age of Legends, and even before turning to the Shadow she was known to be cruel, often needlessly causing people extra pain when Healing them. Among the Forsaken she was the most depraved and sadistic, known for her unsurpassed skill with torturing and the pleasure she took in it, and she was in general the one people were most afraid to fall into the hands of for that reason.
+Fork or write an issue with your thoughts. Don't be a stranger.

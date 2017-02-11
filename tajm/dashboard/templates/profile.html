@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load tajm %}
+
+{% block sitetitle %}{{ profile.username }} - {{ profile.first_name }} {{ profile.last_name }}{% endblock %}
+
+{% block customscripts %}
+    <script>
+        "use strict";
+        tajmme.fire("toggabletitles:init");
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h2>{% trans 'Nyckeltal' %}</h2>
+
+                <div class="row">
+                    <dl class="col-md-6">
+                        <dt>{% trans 'Rapporterad tid' %}</dt>
+                        <dd>{{ total_time|pretty_minutes|capfirst }}</dd>
+                    </dl>
+                    <dl class="col-md-2">
+                        <dt>{% trans 'Projekt' %}</dt>
+                        <dd>
+                            {% if total_projects %}
+                                {{ total_projects }}
+                            {% else %}
+                                {% trans 'Inga' %}
+                            {% endif %}
+                        </dd>
+                    </dl>
+                    <dl class="col-md-2">
+                        <dt>{% trans 'Startdatum' %}</dt>
+                        <dd>{{ profile.date_joined|date:'Y-m-d' }}</dd>
+                    </dl>
+                    <dl class="col-md-2">
+                        <dt>{% trans 'Debiteringsgrad' %}</dt>
+                        <dd>
+                            {% if billable_rank %}
+                                {{ billable_rank }}%
+                            {% else %}
+                                {% trans 'okänd' %}
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+
+                <h2>{% trans "Arbetsmönster" %}</h2>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-condensed no-sort">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{% trans 'Tid, genomsnitt' %}</th>
+                            <th>{% trans 'Projekt, genomsnitt' %}</th>
+                            <th>{% trans 'Debiteringsgrad' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for day, duration_average, billable, project_count_average in wdd %}
+                            <tr>
+                                <td>{{ day }}</td>
+                                <td>{{ duration_average|hhmm }}</td>
+                                <td>{{ project_count_average }}</td>
+                                <td>{{ billable|percent }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <h2>{% trans 'Projekt, all tid' %}</h2>
+                {% include '_projects_toplist.html' with projects=projects max_sum=max_sum max_count=max_count only %}
+
+                <h2>{% trans 'Senast tidrapporterat' %}</h2>
+                {% include '_progresses.html' with progresses=most_recent_progresses only %}
+            </div>
+            {% include '_profile_nav.html' with profile=profile %}
+
+        </div>
+    </div>
+{% endblock %}
