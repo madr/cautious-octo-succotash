@@ -34,7 +34,6 @@ Visit the site at http://localhost:8000, and the admin at http://localhost:8000/
 
 ## API Auth Quickstart
 
-
 Create a client on http://localhost:8000/oauth2/applications with Resource owner password as grant type. Copy the generated
 client id.
 
@@ -64,3 +63,8 @@ curl -H 'Authorization: bearer yxe3bTtUJnI6hc0ukVH5pQsdt5PKIP' -H 'Accept: appli
   * JSONAPI 1.0 spec, by [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.org)
 * [Twitter Bootstrap](https://getbootstrap.com), version 3.3.7
 * [Lumen](http://bootswatch.com/lumen/), a Twitter Bootstrap theme by [Bootswatch](http://bootswatch.com/lumen/).
+
+
+## Contributions are welcome, so is feedback!
+
+Fork or write an issue with your thoughts. Don't be a stranger.
