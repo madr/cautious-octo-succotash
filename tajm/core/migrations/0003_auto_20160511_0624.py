@@ -50,12 +50,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='progress',
             name='project',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='tajm.core.Project'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Project'),
         ),
         migrations.AddField(
             model_name='absence',
             name='reason',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='tajm.core.AbsenceReason'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.AbsenceReason'),
         ),
         migrations.AddField(
             model_name='absence',

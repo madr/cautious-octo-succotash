@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='deadline',
             name='projects',
-            field=models.ManyToManyField(to='tajm.core.Project'),
+            field=models.ManyToManyField(to='core.Project'),
         ),
     ]
