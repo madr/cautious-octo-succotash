@@ -90,7 +90,7 @@
                 </li>
                 <li class="list-group-item">
                     {% if absences != 0 %}
-                        {{ absences }} {% trans 'timmar' %}
+                        {{ absences|hhmm|hours }} {% trans 'timmar' %}
                     {% else %}
                         {% trans 'Ingen' %}
                     {% endif %}
