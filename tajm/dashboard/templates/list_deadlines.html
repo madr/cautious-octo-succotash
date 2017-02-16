@@ -43,13 +43,13 @@
                     <tr class="warning">
                         <td>
                             {% if not dl.is_billable %}
-                                <span class="label label-danger">it</span>
+                                <span class="label label-danger">i</span>
                             {% endif %}
                         </td>
                         <td>
                             {{ dl.label }}
                         </td>
-                        <td>
+                        <td data-sortable="{{ dl.burndown }}">
                             {{ dl.burndown|hhmm|hours }}{% trans 't' %}
 
                             {% if dl.hour_amount %}

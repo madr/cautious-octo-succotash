@@ -79,13 +79,13 @@
                         <td>
                             {{ u.project_set.count }}
                         </td>
-                        <td>
+                        <td data-sortable="{{ u.progress_set|sumtime }}">
                             {{ u.progress_set|sumtime|hhmm|hours }}
                         </td>
                         <td>
                             {{ u.progress_set.count }}
                         </td>
-                        <td>
+                        <td data-sortable="{{ u.absence_set|sumtime }}">
                             {{ u.absence_set|sumtime|hhmm }}
                         </td>
                     </tr>

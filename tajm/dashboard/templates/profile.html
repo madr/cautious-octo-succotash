@@ -66,9 +66,9 @@
                         {% for day, duration_average, billable, project_count_average in wdd %}
                             <tr>
                                 <td>{{ day }}</td>
-                                <td>{{ duration_average|hhmm }}</td>
+                                <td data-sortable="{{ duration_average }}">{{ duration_average|hhmm }}</td>
                                 <td>{{ project_count_average }}</td>
-                                <td>{{ billable|percent }}</td>
+                                <td data-sortable="{{ billable }}">{{ billable|percent }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

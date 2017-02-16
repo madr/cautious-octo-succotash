@@ -29,7 +29,7 @@
         {% for progress in progresses %}
             <tr>
                 <td class="text-right">{% if not progress.project.billable %}
-                    <span class="label label-danger">it</span>
+                    <span class="label label-danger">i</span>
                 {% endif %}</td>
                 <td>+{{ progress.duration|hhmm }}</td>
                 <td><a href="{% url 'profile' user_id=progress.user.pk %}">
@@ -40,7 +40,7 @@
                 <td>
                     {{ progress.note }}
                 </td>
-                <td>{{ progress.done_at|date:'d/m' }}</td>
+                <td data-sortable="{{ progress.done_at }}">{{ progress.done_at|date:'d/m' }}</td>
             </tr>
         {% endfor %}</tbody>
     </table>

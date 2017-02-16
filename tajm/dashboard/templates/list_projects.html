@@ -32,7 +32,7 @@
                 <tr>
                     <th>{% trans 'DB' %}</th>
                     <th>{% trans 'Namn' %}</th>
-                    <th>{% trans 'Tid' %}</th>
+                    <th>{% trans 'Tid (t)' %}</th>
                     <th>{% trans 'Projekt' %}</th>
                     <th></th>
                     <th>{% trans 'Rader' %}</th>
@@ -50,8 +50,8 @@
                             </a>
                         </td>
                         {% with ps=p.progress_set us=p.user_set %}
-                            <td>
-                                {{ ps|sumtime|hhmm|hours }}{% trans 't' %}
+                            <td data-sortable="{{ ps|sumtime }}">
+                                {{ ps|sumtime|hhmm|hours }}
                             </td>
                             <td>
                                 {{ us|length }}
