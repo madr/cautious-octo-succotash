@@ -55,7 +55,7 @@ class Command(BaseCommand):
             data = json.loads(f.read())
 
         for progress in data[0]:
-            #create_progress(progress)
+            create_progress(progress)
             pass
         for absence in data[1]:
             create_absence(absence)

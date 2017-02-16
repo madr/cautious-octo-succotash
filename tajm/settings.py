@@ -195,9 +195,9 @@ REST_FRAMEWORK = {
 # https://django-oauth-toolkit.readthedocs.org/en/latest/rest-framework/getting_started.html
 OAUTH2_PROVIDER = {
     'SCOPES': {
-        'userinfo': 'Time reporter user centralized scope',
-        'read': 'Stats clients read-only scope',
-        'readwrite': 'Staff and superuser scope',
+        'userinfo': 'Basic user information',
+        'read': 'Can read time, project and absence data',
+        'write': 'Can write time, project and absence data',
     },
 }
 
