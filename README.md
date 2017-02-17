@@ -57,12 +57,12 @@ curl -H 'Authorization: bearer yxe3bTtUJnI6hc0ukVH5pQsdt5PKIP' -H 'Accept: appli
 
 ## Component overview
 
-* [Django](https://docs.djangoproject.com/en/1.10/), the web framework for perfectionists with deadlines.
+* [Django](https://docs.djangoproject.com/en/latest/), the web framework for perfectionists with deadlines.
 * Oauth 2, using [Django OAuth toolkit](https://django-oauth-toolkit.readthedocs.org)
 * [Django REST Framework](http://www.django-rest-framework.org)
   * JSONAPI 1.0 spec, by [Django REST Framework JSON API](http://django-rest-framework-json-api.readthedocs.org)
 * [Twitter Bootstrap](https://getbootstrap.com), version 3.3.7
-* [Lumen](http://bootswatch.com/lumen/), a Twitter Bootstrap theme by [Bootswatch](http://bootswatch.com/lumen/).
+* [Paper](http://bootswatch.com/paper/), a Twitter Bootstrap theme by [Bootswatch](http://bootswatch.com/lumen/).
 
 
 ## Contributions are welcome, so is feedback!
