@@ -19,7 +19,7 @@ class WhoAmI(object):
 
 class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    required_scopes = ['read', 'write']
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     filter_class = ProjectFilter
@@ -27,7 +27,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class ProgressViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    required_scopes = ['read', 'write']
     queryset = Progress.objects.all()
     serializer_class = ProgressSerializer
     filter_class = ProgressFilter
@@ -35,7 +35,7 @@ class ProgressViewSet(viewsets.ModelViewSet):
 
 class AbsenceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    required_scopes = ['read', 'write']
     queryset = Absence.objects.all()
     serializer_class = AbsenceSerializer
     filter_class = AbsenceFilter
@@ -43,7 +43,7 @@ class AbsenceViewSet(viewsets.ModelViewSet):
 
 class AbsenceCategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['reporter']
+    required_scopes = ['read', 'write']
     queryset = AbsenceCategory.objects.all()
     serializer_class = AbsentiaSerializer
     filter_class = AbsenceCategoryFilter
@@ -53,7 +53,7 @@ class WhoAmIViewSet(viewsets.ViewSet):
     allowed_methods = ['GET']
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
     queryset = User.objects.all()
-    required_scopes = ['reporter']
+    required_scopes = ['read', 'write']
     resource_name = 'user'
 
     def list(self, request):
