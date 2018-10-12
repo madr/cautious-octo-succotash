@@ -4,11 +4,7 @@
 .idea
 static/admin
 static/rest_framework
-static/old
 .DS_Store
 **/.DS_Store
-frontend/node_modules
 Vagrantfile
 .vagrant
-static/frontend
-static/rest_framework_swagger/

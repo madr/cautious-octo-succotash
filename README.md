@@ -14,7 +14,6 @@ Requirements:
 * Python 3 (3.5 will work fine)
 * PostgreSQL
 * Virtualenv
-* Node.js and NPM (for the frontend assets)
 
 To use MySQL or other database alternatives, it is recommended to create a settings file
 (using `tajm/settings.py` as a starting point) and use the
@@ -25,7 +24,6 @@ virtualenv -p $(which python3) /path/to/venv
 . /path/to/venv/bin/activate
 ./manage.py migrate
 ./manage.py createsuperuser
-cd frontend && npm install && npm run build && cd -
 ./manage.py runserver
 ```
 
