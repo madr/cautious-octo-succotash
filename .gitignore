@@ -8,3 +8,4 @@ static/rest_framework
 **/.DS_Store
 Vagrantfile
 .vagrant
+.python-version
