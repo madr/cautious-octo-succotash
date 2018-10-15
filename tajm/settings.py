@@ -38,10 +38,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
 
-    'tajm.dashboard',
     'tajm.core',
     'tajm.httpapi',
-    'frontend',
 ]
 ALLOWED_HOSTS = os.environ.get('TAJM_ALLOWED_HOSTS', '127.0.0.1 localhost reborn.tajm.me').split()
 
